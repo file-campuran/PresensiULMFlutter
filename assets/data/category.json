@@ -1,0 +1,80 @@
+{
+  "success": true,
+  "data": {
+    "category": [
+      {
+        "id": 1,
+        "title": "Shopping",
+        "count": 52,
+        "image": "assets/images/category-1.jpg",
+        "icon": "shopping_basket",
+        "color": "#ff8a65",
+        "type": "shop"
+      },
+      {
+        "id": 2,
+        "title": "Coffee & Bar",
+        "count": 54,
+        "image": "assets/images/category-2.jpg",
+        "icon": "local_drink",
+        "color": "#5d6d7e",
+        "type": "drink"
+      },
+      {
+        "id": 3,
+        "title": "Events",
+        "count": 32,
+        "image": "assets/images/category-3.jpg",
+        "icon": "event_available",
+        "color": "#a569bd",
+        "type": "event"
+      },
+      {
+        "id": 4,
+        "title": "Real Estate",
+        "count": 12,
+        "image": "assets/images/category-4.jpg",
+        "icon": "all_inclusive",
+        "color": "#5dade2",
+        "type": "estate"
+      },
+      {
+        "id": 5,
+        "title": "Job Street",
+        "count": 54,
+        "image": "assets/images/location-1.jpg",
+        "icon": "card_travel",
+        "color": "#4a90a4",
+        "type": "job"
+      },
+      {
+        "id": 6,
+        "title": "Restaurant",
+        "count": 63,
+        "image": "assets/images/location-2.jpg",
+        "icon": "restaurant",
+        "color": "#58d68d",
+        "type": "restaurant"
+      },
+      {
+        "id": 7,
+        "title": "Automotive",
+        "count": 22,
+        "image": "assets/images/location-3.jpg",
+        "icon": "directions_car",
+        "color": "#fdc60a",
+        "type": "automotive"
+      },
+      {
+        "id": 8,
+        "title": "Hotel",
+        "count": 25,
+        "image": "assets/images/room-1.jpg",
+        "icon": "hotel",
+        "color": "#ff8a65",
+        "type": "hotel"
+      }
+    ]
+  },
+  "message": "get data success"
+}

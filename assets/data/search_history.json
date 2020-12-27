@@ -1,0 +1,53 @@
+{
+  "success": true,
+  "data": {
+    "tag": [
+      { "id": 1, "title": "Lexus Room" },
+      { "id": 2, "title": "Triple Room" },
+      { "id": 3, "title": "Single Room" },
+      { "id": 4, "title": "King Room" },
+      { "id": 5, "title": "Vip Room" },
+      { "id": 6, "title": "Standard Room" }
+    ],
+    "discover": [
+      { "id": 1, "title": "Michigan" },
+      { "id": 2, "title": "Colorado" },
+      { "id": 3, "title": "Utah" },
+      { "id": 4, "title": "King Utah" },
+      { "id": 5, "title": "Colorado" }
+    ],
+    "popular": [
+      {
+        "id": 11,
+        "title": "Michigan",
+        "subtitle": "Arts & Humanities",
+        "image": "assets/images/trip-1.jpg"
+      },
+      {
+        "id": 12,
+        "title": "Colorado",
+        "subtitle": "Arts & Humanities",
+        "image": "assets/images/trip-4.jpg"
+      },
+      {
+        "id": 13,
+        "title": "Utah",
+        "subtitle": "Arts & Humanities",
+        "image": "assets/images/trip-5.jpg"
+      },
+      {
+        "id": 14,
+        "title": "King Utah",
+        "subtitle": "Arts & Humanities",
+        "image": "assets/images/trip-6.jpg"
+      },
+      {
+        "id": 15,
+        "title": "Colorado King",
+        "subtitle": "Arts & Humanities",
+        "image": "assets/images/trip-7.jpg"
+      }
+    ]
+  },
+  "message": "get data success"
+}

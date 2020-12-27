@@ -1,0 +1,16 @@
+export 'aboutus_page_model.dart';
+export 'category_page_model.dart';
+export 'chat_page_model.dart';
+export 'filter_page_model.dart';
+export 'home_page_model.dart';
+export 'message_detail_page_model.dart';
+export 'message_page_model.dart';
+export 'notification_page_model.dart';
+export 'product_detail_page_model.dart';
+export 'product_detail_page_model.dart';
+export 'product_detail_tab_page_model.dart';
+export 'product_list_page_model.dart';
+export 'profile_page_model.dart';
+export 'review_page_model.dart';
+export 'search_history_page_model.dart';
+export 'wish_list_page_model.dart';

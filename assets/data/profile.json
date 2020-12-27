@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "data": {
+    "user": {
+      "id": 1,
+      "full_name": "Steve Garrett",
+      "nickname": "Steve",
+      "photo": "assets/images/profile-2.jpg",
+      "url": "http://passionui.com",
+      "level": "Developer",
+      "description": "from Singapore, Golden Mile",
+      "tag": "@steve.garrett",
+      "rate": 4.5,
+      "token": "abc"
+    },
+    "value": [
+      {
+        "title": "feedback",
+        "value": "97.01%"
+      },
+      {
+        "title": "post",
+        "value": "245"
+      },
+      {
+        "title": "follower",
+        "value": "78"
+      }
+    ]
+  },
+  "message": "get data success"
+}

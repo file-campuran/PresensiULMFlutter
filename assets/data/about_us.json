@@ -1,0 +1,56 @@
+{
+  "data": {
+    "banner": "assets/images/trip-4.jpg",
+    "who_we_are": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+    "what_we_do": [
+      "- First Class Flights",
+      "- 5 Star Accommodations",
+      "- Inclusive Packages",
+      "- Latest Model Vehicles"
+    ],
+    "team": [
+      {
+        "id": 1,
+        "full_name": "Kondo Ieyasu",
+        "nickname": "",
+        "photo": "assets/images/profile-2.jpg",
+        "url": "http://passionui.com",
+        "level": "CEO Founder",
+        "description": "",
+        "locale": ""
+      },
+      {
+        "id": 2,
+        "full_name": "Yeray Rosales",
+        "nickname": "",
+        "photo": "assets/images/profile-3.jpg",
+        "url": "http://passionui.com",
+        "level": "Sale Manager",
+        "description": "",
+        "locale": ""
+      },
+      {
+        "id": 3,
+        "full_name": "Alf Huncoot",
+        "nickname": "",
+        "photo": "assets/images/profile-5.jpg",
+        "url": "http://passionui.com",
+        "level": "Product Manager",
+        "description": "",
+        "locale": ""
+      },
+      {
+        "id": 4,
+        "full_name": "Chioke Okonkwo",
+        "nickname": "",
+        "photo": "assets/images/profile-4.jpg",
+        "url": "http://passionui.com",
+        "level": "Designer UI/UX",
+        "description": "",
+        "locale": ""
+      }
+    ]
+  },
+  "success": true,
+  "message": "get data success"
+}

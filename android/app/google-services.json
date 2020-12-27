@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "478168368282",
+    "project_id": "presensiulm",
+    "storage_bucket": "presensiulm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:478168368282:android:36b9077317af410a3d0b23",
+        "android_client_info": {
+          "package_name": "com.absen_online"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "478168368282-dl4kuqjrua0922uhvgv5g5mecs9koioe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_dRnT0IclOTTP2Xu-DsvwYTEDzh6belc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "478168368282-dl4kuqjrua0922uhvgv5g5mecs9koioe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,84 @@
+{
+  "success": true,
+  "data": {
+    "room_name": "Jame",
+    "online": 1,
+    "member": [
+      {
+        "id": 2,
+        "full_name": "Jame",
+        "photo": "assets/images/profile-6.jpg",
+        "url": "http://passionui.com"
+      }
+    ],
+    "message": [
+      {
+        "id":1,
+        "from":{
+          "id": 2,
+          "full_name": "Jame",
+          "photo": "assets/images/profile-6.jpg",
+          "url": "http://passionui.com"
+        },
+        "message": "Hi mate, I would like to hire you to create a mobile app for my business",
+        "date": "08:43 AM",
+        "status":"received"
+      },
+      {
+        "id": 2,
+        "message": "Hi, I hope you are doing great!",
+        "date": "08:45 AM",
+        "status":"sent"
+      },
+      {
+        "id": 3,
+        "message": "Please share with me the details of your project, as well as your time and budgets constraints.",
+        "date": "08:48 AM",
+        "status":"sent"
+      },
+      {
+        "id": 4,
+        "from":{
+          "id": 2,
+          "full_name": "Jame",
+          "photo": "assets/images/profile-6.jpg",
+          "url": "http://passionui.com"
+        },
+        "message": "Sure, let me send you a document that explains everything.",
+        "date": "08:50 AM",
+        "status":"received"
+      },
+      {
+        "id": 5,
+        "from":{
+          "id": 2,
+          "full_name": "Jame",
+          "photo": "assets/images/profile-6.jpg",
+          "url": "http://passionui.com"
+        },
+        "file": "assets/images/location-3.jpg",
+        "date": "08:51 AM",
+        "status":"received"
+      },
+      {
+        "id": 6,
+        "message": "Ok",
+        "date": "08:55 AM",
+        "status":"sent"
+      },
+      {
+        "id": 7,
+        "from":{
+          "id": 2,
+          "full_name": "Jame",
+          "photo": "assets/images/profile-6.jpg",
+          "url": "http://passionui.com"
+        },
+        "message": "That sound cool!",
+        "date": "08:58 AM",
+        "status":"received"
+      }
+    ]
+  },
+  "message": "get data success"
+}

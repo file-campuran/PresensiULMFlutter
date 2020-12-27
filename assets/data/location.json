@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "data": {
+    "location": [
+      {
+        "id": 1,
+        "name": "Alabama",
+        "lat": 37.774929,
+        "long": -122.419418
+      },
+      {
+        "id": 2,
+        "name": "Columbia",
+        "lat": 37.774929,
+        "long": -122.419418
+      },
+      {
+        "id": 3,
+        "name": "Arkansas",
+        "lat": 37.774929,
+        "long": -122.419418
+      },
+      {
+        "id": 4,
+        "name": "Missouri",
+        "lat": 37.774929,
+        "long": -122.419418
+      },
+      {
+        "id": 5,
+        "name": "Texas",
+        "lat": 37.774929,
+        "long": -122.419418
+      },
+      {
+        "id": 6,
+        "name": "Utah",
+        "lat": 37.774929,
+        "long": -122.419418
+      },
+      {
+        "id": 7,
+        "name": "Washington",
+        "lat": 37.774929,
+        "long": -122.419418
+      },
+      {
+        "id": 8,
+        "name": "West Virginia",
+        "lat": 37.774929,
+        "long": -122.419418
+      }
+    ]
+  },
+  "message": "get data success"
+}
