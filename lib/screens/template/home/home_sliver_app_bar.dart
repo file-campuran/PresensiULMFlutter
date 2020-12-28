@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/screens/home/home_swiper.dart';
+import 'home_swiper.dart';
 import 'package:absen_online/utils/utils.dart';
 
 class AppBarHomeSliver extends SliverPersistentHeaderDelegate {

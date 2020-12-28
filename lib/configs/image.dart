@@ -62,6 +62,9 @@ class Images {
   static const String Service6 = "assets/images/service-job.jpg";
   static const String Service7 = "assets/images/service-restaurant.jpg";
 
+  ///Lottie
+  static const String Writting = "assets/lottie/writing.json";
+
   ///Singleton factory
   static final Images _instance = Images._internal();
 

@@ -32,10 +32,17 @@ class _ProfileState extends State<Profile> {
   Future<void> _loadData() async {
     final ResultApiModel result = await Api.getProfile();
     if (result.success) {
-      setState(() {
-        _profilePage = ProfilePageModel.fromJson(result.data);
-      });
+      if (this.mounted) {
+        setState(() {
+          _profilePage = ProfilePageModel.fromJson(result.data);
+        });
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   ///On logout

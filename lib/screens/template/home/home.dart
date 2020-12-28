@@ -3,9 +3,9 @@ import 'package:absen_online/api/api.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/models/screen_models/screen_models.dart';
-import 'package:absen_online/screens/home/home_category_item.dart';
-import 'package:absen_online/screens/home/home_category_list.dart';
-import 'package:absen_online/screens/home/home_sliver_app_bar.dart';
+import 'home_category_item.dart';
+import 'home_category_list.dart';
+import 'home_sliver_app_bar.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 

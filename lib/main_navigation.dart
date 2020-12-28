@@ -6,6 +6,9 @@ import 'package:absen_online/configs/application.dart';
 import 'package:absen_online/screens/screen.dart';
 import 'package:absen_online/utils/logger.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/models/model.dart';
+
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class MainNavigation extends StatefulWidget {
   MainNavigation({Key key}) : super(key: key);
@@ -47,6 +50,10 @@ class _MainNavigationState extends State<MainNavigation> {
       },
     );
     Application.pushToken = await _fcm.getToken();
+    UtilLogger.log("MY TOKEN", Application.pushToken);
+
+    RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();
+    Application.remoteConfig = configModelFromJson(config.getString('config'));
   }
 
   ///On change tab bottom menu
@@ -95,24 +102,17 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.bookmark),
+        icon: Icon(Icons.face_sharp),
         title: Padding(
           padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('wish_list')),
+          child: Text('Presensi'),
         ),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.message),
+        icon: Icon(Icons.history),
         title: Padding(
           padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('message')),
-        ),
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.notifications),
-        title: Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('notification')),
+          child: Text("Riwayat"),
         ),
       ),
       BottomNavigationBarItem(
@@ -125,23 +125,17 @@ class _MainNavigationState extends State<MainNavigation> {
     ];
   }
 
+  final List<Widget> _widgetOptions = [
+    Beranda(),
+    Presensi(),
+    Riwayat(),
+    Profile()
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AuthBloc, AuthenticationState>(
-        builder: (context, auth) {
-          return IndexedStack(
-            index: _selectedIndex,
-            children: <Widget>[
-              Home(),
-              WishList(),
-              MessageList(),
-              NotificationList(),
-              auth is AuthenticationSuccess ? Profile() : SignIn()
-            ],
-          );
-        },
-      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomBarItem(context),
         currentIndex: _selectedIndex,

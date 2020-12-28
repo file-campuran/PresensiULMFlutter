@@ -8,3 +8,7 @@ export 'preferences.dart';
 export 'theme.dart';
 export 'translate.dart';
 export 'validate.dart';
+export 'firebase_remote_config.dart';
+export 'my_location.dart';
+export 'ml_vision.dart';
+export 'api/consumer.dart';

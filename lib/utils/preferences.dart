@@ -65,6 +65,29 @@ class UtilPreferences {
     return Application.preferences.setStringList(key, value);
   }
 
+  /*
+   * Ambil access dan refresh token ke cache 
+   */
+  static Map<String, dynamic> getToken() {
+    return {
+      'accessToken': Application.preferences.getString('accessToken'),
+      'refreshToken': Application.preferences.getString('refreshToken'),
+    };
+  }
+
+  /*
+   * Simpan access dan refresh token ke cache 
+   */
+  static Future setToken({String accessToken, String refreshToken}) {
+    if (accessToken != null) {
+      Application.preferences.setString('accessToken', accessToken);
+    }
+
+    if (refreshToken != null) {
+      Application.preferences.setString('refreshToken', refreshToken);
+    }
+  }
+
   ///Singleton factory
   static final UtilPreferences _instance = UtilPreferences._internal();
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/screens/chat/receive_message.dart';
-import 'package:absen_online/screens/chat/send_message.dart';
+import 'receive_message.dart';
+import 'send_message.dart';
 
 class ChatItem extends StatelessWidget {
   final MessageModel item;

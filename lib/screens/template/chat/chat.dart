@@ -5,7 +5,7 @@ import 'package:absen_online/api/api.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/models/screen_models/chat_page_model.dart';
 import 'package:absen_online/models/screen_models/screen_models.dart';
-import 'package:absen_online/screens/chat/chat_item.dart';
+import 'chat_item.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

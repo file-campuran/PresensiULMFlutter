@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/screens/home/home_category_item.dart';
+import 'beranda_category_item.dart';
 import 'package:absen_online/utils/utils.dart';
 
 class HomeCategoryList extends StatelessWidget {

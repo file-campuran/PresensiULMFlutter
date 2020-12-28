@@ -61,7 +61,7 @@ class AppTheme {
   ].map((item) => ThemeModel.fromJson(item)).toList();
 
   ///Dark Theme option
-  static DarkOption darkThemeOption = DarkOption.dynamic;
+  static DarkOption darkThemeOption = DarkOption.alwaysOff;
 
   static ThemeData lightTheme = CollectionTheme.getCollectionTheme(
     theme: currentTheme.lightTheme,

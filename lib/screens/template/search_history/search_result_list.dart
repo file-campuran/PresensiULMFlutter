@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/screens/search_history/tab_bar_search.dart';
+import 'tab_bar_search.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:shimmer/shimmer.dart';
