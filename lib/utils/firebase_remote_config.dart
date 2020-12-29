@@ -25,50 +25,50 @@ class FirebaseRemoteConfig {
       print(
           '‘Unable to fetch remote config. Cached or default values will be ‘‘used’');
     }
-    remoteConfig.setDefaults(<String, dynamic>{
-      'api_url': 'http://google_default.com',
-      'api_key': 'api_key_default',
-      'image':
-          '{"name":"Fischl","image":"https://images7.alphacoders.com/111/1110664.png"}',
-      'presensi_config': {
-        "api": {
-          "url": "https://api.ulm.ac.id",
-          "key": "12344",
-          "image_location": "https://presensi.ulm.ac.id/image",
-          "file_location": "https://presensi.ulm.ac.id/file"
-        },
-        "config": {
-          "version": "2.0.0",
-          "min_version": 10,
-          "upload": {"max": "213", "mime": "xls|jpg|png"},
-          "presensi": {
-            "detect_fake_gps": false,
-            "detect_face": true,
-            "detect_face_recognition": true
-          }
-        }
-      }
-    });
+    // remoteConfig.setDefaults(<String, dynamic>{
+    //   'api_url': 'http://google_default.com',
+    //   'api_key': 'api_key_default',
+    //   'image':
+    //       '{"name":"Fischl","image":"https://images7.alphacoders.com/111/1110664.png"}',
+    //   'presensi_config': {
+    //     "api": {
+    //       "url": "https://api.ulm.ac.id",
+    //       "key": "12344",
+    //       "image_location": "https://presensi.ulm.ac.id/image",
+    //       "file_location": "https://presensi.ulm.ac.id/file"
+    //     },
+    //     "config": {
+    //       "version": "2.0.0",
+    //       "min_version": 10,
+    //       "upload": {"max": "213", "mime": "xls|jpg|png"},
+    //       "presensi": {
+    //         "detect_fake_gps": false,
+    //         "detect_face": true,
+    //         "detect_face_recognition": true
+    //       }
+    //     }
+    //   }
+    // });
     return remoteConfig;
   }
 }
 
-class ImageHeader {
-  ImageHeader({
-    this.name,
-    this.image,
-  });
+// class ImageHeader {
+//   ImageHeader({
+//     this.name,
+//     this.image,
+//   });
 
-  String name;
-  String image;
+//   String name;
+//   String image;
 
-  factory ImageHeader.fromJson(Map<String, dynamic> json) => ImageHeader(
-        name: json["name"],
-        image: json["image"],
-      );
+//   factory ImageHeader.fromJson(Map<String, dynamic> json) => ImageHeader(
+//         name: json["name"],
+//         image: json["image"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "name": name,
-        "image": image,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "name": name,
+//         "image": image,
+//       };
+// }

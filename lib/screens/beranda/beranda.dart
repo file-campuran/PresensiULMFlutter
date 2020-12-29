@@ -181,17 +181,37 @@ class _BerandaState extends State<Beranda> {
     }
 
     return Column(
-      children: _homePage.list.map((item) {
-        return Padding(
+      children: [
+        Padding(
           padding: EdgeInsets.only(bottom: 15),
           child: Center(
             child: Container(
               width: 360.0,
-              child: _DeliveryProcesses(processes: _data(1).deliveryProcesses),
+              child: _DeliveryProcesses(
+                processes: [
+                  _DeliveryProcess(
+                    'Pagi Mulai',
+                    messages: [
+                      _DeliveryMessage('8:30am', 'Package received by driver'),
+                      _DeliveryMessage('11:30am', 'Reached halfway mark'),
+                      _DeliveryMessage('11:30am', 'Reached halfway mark'),
+                    ],
+                  ),
+                  _DeliveryProcess(
+                    'Selesai ',
+                    messages: [
+                      _DeliveryMessage(
+                          '13:00pm', 'Driver arrived at destination'),
+                      _DeliveryMessage(
+                          '11:35am', 'Package delivered by m.vassiliades'),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        );
-      }).toList(),
+        ),
+      ],
     );
   }
 
@@ -294,88 +314,6 @@ class _BerandaState extends State<Beranda> {
   }
 }
 
-class _OrderTitle extends StatelessWidget {
-  const _OrderTitle({
-    Key key,
-    @required this.orderInfo,
-  })  : assert(orderInfo != null),
-        super(key: key);
-
-  final _OrderInfo orderInfo;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          'Delivery #${orderInfo.id}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Spacer(),
-        Text(
-          '${orderInfo.date.day}/${orderInfo.date.month}/${orderInfo.date.year}',
-          style: TextStyle(
-            color: Color(0xffb6b2b2),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _InnerTimeline extends StatelessWidget {
-  const _InnerTimeline({
-    @required this.messages,
-  });
-
-  final List<_DeliveryMessage> messages;
-
-  @override
-  Widget build(BuildContext context) {
-    bool isEdgeIndex(int index) {
-      return index == 0 || index == messages.length + 1;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: FixedTimeline.tileBuilder(
-        theme: TimelineTheme.of(context).copyWith(
-          nodePosition: 0,
-          connectorTheme: TimelineTheme.of(context).connectorTheme.copyWith(
-                thickness: 1.0,
-              ),
-          indicatorTheme: TimelineTheme.of(context).indicatorTheme.copyWith(
-                size: 10.0,
-                position: 0.5,
-              ),
-        ),
-        builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index) =>
-              !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
-          startConnectorBuilder: (_, index) => Connector.solidLine(),
-          endConnectorBuilder: (_, index) => Connector.solidLine(),
-          contentsBuilder: (_, index) {
-            if (isEdgeIndex(index)) {
-              return null;
-            }
-
-            return Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: Text(messages[index - 1].toString()),
-            );
-          },
-          itemExtentBuilder: (_, index) => isEdgeIndex(index) ? 10.0 : 30.0,
-          nodeItemOverlapBuilder: (_, index) =>
-              isEdgeIndex(index) ? true : null,
-          itemCount: messages.length + 2,
-        ),
-      ),
-    );
-  }
-}
-
 class _DeliveryProcesses extends StatelessWidget {
   const _DeliveryProcesses({Key key, @required this.processes})
       : assert(processes != null),
@@ -407,7 +345,7 @@ class _DeliveryProcesses extends StatelessWidget {
             connectionDirection: ConnectionDirection.before,
             itemCount: processes.length,
             contentsBuilder: (_, index) {
-              if (processes[index].isCompleted) return null;
+              // if (processes[index].isCompleted) return null;
 
               return Padding(
                 padding: EdgeInsets.only(left: 8.0),
@@ -421,26 +359,27 @@ class _DeliveryProcesses extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                     ),
-                    _InnerTimeline(messages: processes[index].messages),
+                    AppProductItem(type: ProductViewType.cardSmall),
+                    Text('12')
                   ],
                 ),
               );
             },
             indicatorBuilder: (_, index) {
-              if (processes[index].isCompleted) {
-                return DotIndicator(
-                  color: Theme.of(context).primaryColor,
-                  child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                    size: 12.0,
-                  ),
-                );
-              } else {
-                return OutlinedDotIndicator(
-                  borderWidth: 2.5,
-                );
-              }
+              return DotIndicator(
+                color: Theme.of(context).primaryColor,
+                child: Icon(
+                  Icons.circle,
+                  color: Colors.white,
+                  size: 12.0,
+                ),
+              );
+              // if (processes[index].isCompleted) {
+              // } else {
+              //   return OutlinedDotIndicator(
+              //     borderWidth: 2.5,
+              //   );
+              // }
             },
             connectorBuilder: (_, index, ___) => SolidLineConnector(
               color: processes[index].isCompleted
@@ -452,57 +391,6 @@ class _DeliveryProcesses extends StatelessWidget {
       ),
     );
   }
-}
-
-_OrderInfo _data(int id) => _OrderInfo(
-      id: id,
-      date: DateTime.now(),
-      driverInfo: _DriverInfo(
-        name: 'Philipe',
-        thumbnailUrl:
-            'https://i.pinimg.com/originals/08/45/81/084581e3155d339376bf1d0e17979dc6.jpg',
-      ),
-      deliveryProcesses: [
-        _DeliveryProcess(
-          'Package Process',
-          messages: [
-            _DeliveryMessage('8:30am', 'Package received by driver'),
-            _DeliveryMessage('11:30am', 'Reached halfway mark'),
-          ],
-        ),
-        _DeliveryProcess(
-          'In Transit',
-          messages: [
-            _DeliveryMessage('13:00pm', 'Driver arrived at destination'),
-            _DeliveryMessage('11:35am', 'Package delivered by m.vassiliades'),
-          ],
-        ),
-        _DeliveryProcess.complete(),
-      ],
-    );
-
-class _OrderInfo {
-  const _OrderInfo({
-    @required this.id,
-    @required this.date,
-    @required this.driverInfo,
-    @required this.deliveryProcesses,
-  });
-
-  final int id;
-  final DateTime date;
-  final _DriverInfo driverInfo;
-  final List<_DeliveryProcess> deliveryProcesses;
-}
-
-class _DriverInfo {
-  const _DriverInfo({
-    @required this.name,
-    this.thumbnailUrl,
-  });
-
-  final String name;
-  final String thumbnailUrl;
 }
 
 class _DeliveryProcess {

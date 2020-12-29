@@ -1,8 +1,9 @@
 import 'dart:developer' as developer;
-
+import 'dart:convert';
 import 'package:absen_online/configs/application.dart';
 
 enum LogType { INFO, WARN, DANGER }
+enum ColorsHeader { RED, GREEN, PURPLE, YELLOW, DEFAULT }
 
 class UtilLogger {
   static const String TAG = "LISTAR";
@@ -25,6 +26,33 @@ class UtilLogger {
         default:
           developer.log('\x1b[32m $msg \x1b[0m', name: tag);
       }
+    }
+  }
+
+  static String convert(var data) {
+    return JsonEncoder.withIndent('\t').convert(data);
+  }
+
+  static String color(String text, ColorsHeader colors) {
+    switch (colors) {
+      case ColorsHeader.RED:
+        return ("\x1b[31m $text \x1b[0m");
+        break;
+
+      case ColorsHeader.PURPLE:
+        return ("\x1b[35m $text \x1b[0m");
+        break;
+
+      case ColorsHeader.GREEN:
+        return ("\x1b[32m $text \x1b[0m");
+        break;
+
+      case ColorsHeader.YELLOW:
+        return ("\x1b[33m $text \x1b[0m");
+        break;
+
+      default:
+        return (text);
     }
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:absen_online/api/api.dart';
+import 'package:absen_online/api/siapps.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/models/screen_models/screen_models.dart';
@@ -16,7 +17,7 @@ enum PageType { map, list }
 class Riwayat extends StatefulWidget {
   final String title;
 
-  Riwayat({Key key, this.title = 'Place'}) : super(key: key);
+  Riwayat({Key key, this.title = 'Riwayat Presensi'}) : super(key: key);
 
   @override
   _RiwayatState createState() {
@@ -34,8 +35,8 @@ class _RiwayatState extends State<Riwayat> {
   CameraPosition _initPosition;
   Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
   PageType _pageType = PageType.list;
-  ProductViewType _modeView = ProductViewType.gird;
-  ProductListPageModel _productList;
+  PresensiViewType _modeView = PresensiViewType.list;
+  PresensiListModel _presensiList;
   SortModel _currentSort = AppSort.defaultSort;
   List<SortModel> _listSort = AppSort.listSortDefault;
 
@@ -47,17 +48,18 @@ class _RiwayatState extends State<Riwayat> {
 
   ///On Fetch API
   Future<void> _loadData() async {
-    final ResultApiModel result = await Api.getProduct();
-    if (result.success) {
-      final listProduct = ProductListPageModel.fromJson(result.data);
+    final getPresensi = await SiappsRepository().getPresensi();
+
+    if (getPresensi.code == CODE.SUCCESS) {
+      final listProduct = PresensiListModel.fromJson(getPresensi.data);
 
       ///Setup list marker map from list
       listProduct.list.forEach((item) {
         final markerId = MarkerId(item.id.toString());
         final marker = Marker(
           markerId: markerId,
-          position: LatLng(item.location.lat, item.location.long),
-          infoWindow: InfoWindow(title: item.title),
+          position: LatLng(item.latitude, item.longitude),
+          infoWindow: InfoWindow(title: item.status),
           onTap: () {
             _onSelectLocation(item);
           },
@@ -66,11 +68,11 @@ class _RiwayatState extends State<Riwayat> {
       });
 
       setState(() {
-        _productList = listProduct;
+        _presensiList = listProduct;
         _initPosition = CameraPosition(
           target: LatLng(
-            listProduct.list[0].location.lat,
-            listProduct.list[0].location.long,
+            listProduct.list[0].latitude,
+            listProduct.list[0].longitude,
           ),
           zoom: 14.4746,
         );
@@ -112,14 +114,14 @@ class _RiwayatState extends State<Riwayat> {
   ///On Change View
   void _onChangeView() {
     switch (_modeView) {
-      case ProductViewType.gird:
-        _modeView = ProductViewType.list;
+      case PresensiViewType.gird:
+        _modeView = PresensiViewType.list;
         break;
-      case ProductViewType.list:
-        _modeView = ProductViewType.block;
+      case PresensiViewType.list:
+        _modeView = PresensiViewType.block;
         break;
-      case ProductViewType.block:
-        _modeView = ProductViewType.gird;
+      case PresensiViewType.block:
+        _modeView = PresensiViewType.gird;
         break;
       default:
         return;
@@ -170,8 +172,8 @@ class _RiwayatState extends State<Riwayat> {
   }
 
   ///On tap marker map location
-  void _onSelectLocation(ProductModel item) {
-    final index = _productList.list.indexOf(item);
+  void _onSelectLocation(PresensiModel item) {
+    final index = _presensiList.list.indexOf(item);
     _swipeController.move(index);
   }
 
@@ -187,8 +189,8 @@ class _RiwayatState extends State<Riwayat> {
         CameraPosition(
           bearing: 270.0,
           target: LatLng(
-            _productList.list[_indexLocation].location.lat,
-            _productList.list[_indexLocation].location.long,
+            _presensiList.list[_indexLocation].latitude,
+            _presensiList.list[_indexLocation].longitude,
           ),
           tilt: 30.0,
           zoom: 15.0,
@@ -198,11 +200,11 @@ class _RiwayatState extends State<Riwayat> {
   }
 
   ///On navigate product detail
-  void _onProductDetail(ProductModel item) {
-    String route = item.type == ProductType.place
-        ? Routes.productDetail
-        : Routes.productDetailTab;
-    Navigator.pushNamed(context, route, arguments: item.id);
+  void _onProductDetail(PresensiModel item) {
+    // String route = item.type == ProductType.place
+    //     ? Routes.productDetail
+    //     : Routes.productDetailTab;
+    Navigator.pushNamed(context, Routes.productDetail, arguments: item);
   }
 
   ///On search
@@ -213,11 +215,11 @@ class _RiwayatState extends State<Riwayat> {
   ///Export Icon for Mode View
   IconData _exportIconView() {
     switch (_modeView) {
-      case ProductViewType.list:
+      case PresensiViewType.list:
         return Icons.view_list;
-      case ProductViewType.gird:
+      case PresensiViewType.gird:
         return Icons.view_quilt;
-      case ProductViewType.block:
+      case PresensiViewType.block:
         return Icons.view_array;
       default:
         return Icons.help;
@@ -225,43 +227,43 @@ class _RiwayatState extends State<Riwayat> {
   }
 
   ///_build Item Loading
-  Widget _buildItemLoading(ProductViewType type) {
+  Widget _buildItemLoading(PresensiViewType type) {
     switch (type) {
-      case ProductViewType.gird:
+      case PresensiViewType.gird:
         return FractionallySizedBox(
           widthFactor: 0.5,
           child: Container(
             padding: EdgeInsets.only(left: 15),
-            child: AppProductItem(
+            child: AppPresensiItem(
               type: _modeView,
             ),
           ),
         );
 
-      case ProductViewType.list:
+      case PresensiViewType.list:
         return Container(
           padding: EdgeInsets.only(left: 15),
-          child: AppProductItem(
+          child: AppPresensiItem(
             type: _modeView,
           ),
         );
 
       default:
-        return AppProductItem(
+        return AppPresensiItem(
           type: _modeView,
         );
     }
   }
 
   ///_build Item
-  Widget _buildItem(ProductModel item, ProductViewType type) {
+  Widget _buildItem(PresensiModel item, PresensiViewType type) {
     switch (type) {
-      case ProductViewType.gird:
+      case PresensiViewType.gird:
         return FractionallySizedBox(
           widthFactor: 0.5,
           child: Container(
             padding: EdgeInsets.only(left: 15),
-            child: AppProductItem(
+            child: AppPresensiItem(
               onPressed: _onProductDetail,
               item: item,
               type: _modeView,
@@ -269,10 +271,10 @@ class _RiwayatState extends State<Riwayat> {
           ),
         );
 
-      case ProductViewType.list:
+      case PresensiViewType.list:
         return Container(
           padding: EdgeInsets.only(left: 15),
-          child: AppProductItem(
+          child: AppPresensiItem(
             onPressed: _onProductDetail,
             item: item,
             type: _modeView,
@@ -280,7 +282,7 @@ class _RiwayatState extends State<Riwayat> {
         );
 
       default:
-        return AppProductItem(
+        return AppPresensiItem(
           onPressed: _onProductDetail,
           item: item,
           type: _modeView,
@@ -290,7 +292,7 @@ class _RiwayatState extends State<Riwayat> {
 
   ///Widget build Content
   Widget _buildList() {
-    if (_productList?.list == null) {
+    if (_presensiList?.list == null) {
       ///Build Loading
       return Wrap(
         runSpacing: 15,
@@ -305,7 +307,7 @@ class _RiwayatState extends State<Riwayat> {
     return Wrap(
       runSpacing: 15,
       alignment: WrapAlignment.spaceBetween,
-      children: _productList.list.map((item) {
+      children: _presensiList.list.map((item) {
         return _buildItem(item, _modeView);
       }).toList(),
     );
@@ -316,8 +318,8 @@ class _RiwayatState extends State<Riwayat> {
     if (_pageType == PageType.list) {
       return SafeArea(
         child: SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: true,
+          enablePullDown: false,
+          enablePullUp: false,
           onRefresh: _onRefresh,
           onLoading: _onLoading,
           controller: _controller,
@@ -348,8 +350,8 @@ class _RiwayatState extends State<Riwayat> {
           child: Padding(
             padding: EdgeInsets.only(
               top: 10,
-              left: _modeView == ProductViewType.block ? 0 : 5,
-              right: _modeView == ProductViewType.block ? 0 : 20,
+              left: _modeView == PresensiViewType.block ? 0 : 5,
+              right: _modeView == PresensiViewType.block ? 0 : 20,
               bottom: 15,
             ),
             child: _buildList(),
@@ -437,7 +439,7 @@ class _RiwayatState extends State<Riwayat> {
                   Expanded(
                     child: Swiper(
                       itemBuilder: (context, index) {
-                        final ProductModel item = _productList.list[index];
+                        final PresensiModel item = _presensiList.list[index];
                         return Container(
                           padding: EdgeInsets.only(top: 5, bottom: 5),
                           child: Container(
@@ -458,10 +460,10 @@ class _RiwayatState extends State<Riwayat> {
                                 )
                               ],
                             ),
-                            child: AppProductItem(
-                              onPressed: _onProductDetail,
+                            child: AppPresensiItem(
+                              // onPressed: _onProductDetail,
                               item: item,
-                              type: ProductViewType.list,
+                              type: PresensiViewType.list,
                             ),
                           ),
                         );
@@ -470,7 +472,7 @@ class _RiwayatState extends State<Riwayat> {
                       onIndexChanged: (index) {
                         _onIndexChange(index);
                       },
-                      itemCount: _productList.list.length,
+                      itemCount: _presensiList.list.length,
                       viewportFraction: 0.8,
                       scale: 0.9,
                     ),
@@ -493,19 +495,19 @@ class _RiwayatState extends State<Riwayat> {
           widget.title,
         ),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: _onSearch,
-          ),
-          Visibility(
-            visible: _productList?.list != null,
-            child: IconButton(
-              icon: Icon(
-                _pageType == PageType.map ? Icons.view_compact : Icons.map,
-              ),
-              onPressed: _onChangePageStyle,
-            ),
-          )
+          // IconButton(
+          //   icon: Icon(Icons.search),
+          //   onPressed: _onSearch,
+          // ),
+          // Visibility(
+          //   visible: _presensiList?.list != null,
+          //   child: IconButton(
+          //     icon: Icon(
+          //       _pageType == PageType.map ? Icons.view_compact : Icons.map,
+          //     ),
+          //     onPressed: _onChangePageStyle,
+          //   ),
+          // )
         ],
       ),
       body: Column(
@@ -517,18 +519,6 @@ class _RiwayatState extends State<Riwayat> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(_currentSort.icon),
-                        onPressed: _onChangeSort,
-                      ),
-                      Text(
-                        Translate.of(context).translate(_currentSort.name),
-                        style: Theme.of(context).textTheme.subtitle2,
-                      )
-                    ],
-                  ),
                   Row(
                     children: <Widget>[
                       Visibility(
@@ -569,14 +559,29 @@ class _RiwayatState extends State<Riwayat> {
                           ],
                         ),
                       ),
-                      IconButton(
-                        icon: Icon(Icons.track_changes),
-                        onPressed: _onChangeFilter,
+                      Text(
+                        'Ubah Tampilan',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Visibility(
+                        visible: _presensiList?.list != null,
+                        child: IconButton(
+                          icon: Icon(
+                            _pageType == PageType.map
+                                ? Icons.view_compact
+                                : Icons.map,
+                          ),
+                          onPressed: _onChangePageStyle,
+                        ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(right: 20, left: 20),
                         child: Text(
-                          Translate.of(context).translate('filter'),
+                          _pageType == PageType.map ? 'List' : 'Peta',
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                       )

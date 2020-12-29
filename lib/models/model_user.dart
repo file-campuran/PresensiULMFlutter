@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+
 class UserModel {
   final int id;
   final String name;
@@ -51,5 +55,21 @@ class UserModel {
       'rate': rate,
       'token': token,
     };
+  }
+
+  @override
+  String toString() {
+    return '''{
+      "id": $id,
+      "full_name": $name,
+      "nickname": $nickname,
+      "photo": $image,
+      "url": $link,
+      "level": $level,
+      "description": $description,
+      "tag": $tag,
+      "rate": $rate,
+      "token": $token,
+    }''';
   }
 }

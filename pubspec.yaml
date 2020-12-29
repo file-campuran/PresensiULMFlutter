@@ -1,8 +1,8 @@
 name: absen_online
 description: Presensi ULM
-version: 1.0.6+12
+version: 2.0.0+1
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 dependencies:
   flutter:
     sdk: flutter
@@ -39,6 +39,12 @@ dependencies:
   flutter_svg: ^0.18.0
   geolocator: ^5.3.1
   timelines: ^0.0.2+1
+  flutter_html: ^0.11.1
+  url_launcher: ^5.4.2
+  # flutter_inappwebview: ^2.1.0+1
+  # timeline_tile: ^1.0.0
+  # google_fonts: ^1.1.0
+  # flutter_highlight: ^0.6.0
 
   # FIREBASE
   cloud_firestore: ^0.14.4
@@ -52,12 +58,15 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^1.0.0
+  json_serializable: ^2.0.0
 flutter:
   assets:
     - assets/data/
     - assets/images/
     - assets/lottie/
     - assets/locale/
+    - assets/svg/
   fonts:
     - family: Raleway
       fonts:

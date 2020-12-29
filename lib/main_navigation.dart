@@ -52,8 +52,9 @@ class _MainNavigationState extends State<MainNavigation> {
     Application.pushToken = await _fcm.getToken();
     UtilLogger.log("MY TOKEN", Application.pushToken);
 
-    RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();
-    Application.remoteConfig = configModelFromJson(config.getString('config'));
+    // RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();
+    // Application.remoteConfig = configModelFromJson(config.getString('config'));
+    // UtilLogger.log('REMOTE CONFIG', Application.remoteConfig.toJson());
   }
 
   ///On change tab bottom menu

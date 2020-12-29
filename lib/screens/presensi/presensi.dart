@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:absen_online/widgets/widget.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,8 +15,6 @@ import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/configs/config.dart';
 
 import 'package:image_editor/image_editor.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:presensi/utilities/Services/MlVision.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:device_info/device_info.dart';
 import 'package:trust_fall/trust_fall.dart';
@@ -52,15 +51,12 @@ class PresensiState extends State<Presensi> {
 
   bool isSendPresensi = false;
 
-  final double _initFabHeight = 120.0;
   double _panelHeightOpen;
   double _panelHeightClosed = 95.0;
 
   CameraController controller;
   bool isReady = false;
   bool showCamera = true;
-
-  final Set<Marker> _markers = {};
 
   double latitude, longitude;
   bool mocked;
@@ -75,7 +71,6 @@ class PresensiState extends State<Presensi> {
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   bool cameraInitializated = false;
-  bool _detectingFaces = false;
   bool pictureTaked = false;
 
   Size imageSize;
@@ -130,15 +125,6 @@ class PresensiState extends State<Presensi> {
 
             print('LATITUDE');
             print(latitude);
-
-            _markers.clear();
-            _markers.add(
-              Marker(
-                markerId: MarkerId("3.595196, 98.672226"),
-                position: LatLng(position.latitude, position.longitude),
-                icon: BitmapDescriptor.defaultMarker,
-              ),
-            );
           }));
   }
 
@@ -458,18 +444,18 @@ class PresensiState extends State<Presensi> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10))),
                         ),
+                        SizedBox(height: 10),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                RaisedButton(
-                                  color: Colors.orange,
-                                  // textColor: Colors.white,
+                                AppButton(
                                   onPressed: chooseFile,
-                                  child: Text(filePath == null
+                                  text: filePath == null
                                       ? 'Pilih Berkas'
-                                      : 'Ubah Berkas'),
+                                      : 'Ubah Berkas',
+                                  disableTouchWhenLoading: true,
                                 ),
                                 SizedBox(
                                   width: 10,
@@ -488,6 +474,7 @@ class PresensiState extends State<Presensi> {
                                 )
                               ],
                             ),
+                            SizedBox(height: 10),
                             Text(
                               "infoPresensi['upload_info']['maks']",
                               style:
@@ -505,37 +492,6 @@ class PresensiState extends State<Presensi> {
                   ),
                   SizedBox(
                     height: 36.0,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Lokasi",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                            )),
-                        SizedBox(
-                          height: 12.0,
-                        ),
-                        longitude != null
-                            ? Container(
-                                width: double.infinity,
-                                height: 200,
-                                child: ClipRRect(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    child: GoogleMap(
-                                      initialCameraPosition: CameraPosition(
-                                        target: LatLng(latitude, longitude),
-                                        zoom: 14.4746,
-                                      ),
-                                      markers: _markers,
-                                    )),
-                              )
-                            : Text(''),
-                      ],
-                    ),
                   ),
                 ],
               ),
@@ -555,8 +511,8 @@ class PresensiState extends State<Presensi> {
           : FittedBox(
               fit: BoxFit.cover,
               child: SizedBox(
-                width: _image.width.toDouble(),
-                height: _image.height.toDouble(),
+                width: _image.width.toDouble() - 30,
+                height: _image.height.toDouble() - 30,
                 child: CustomPaint(
                   painter: FacePainter(_image, _faces),
                 ),
@@ -668,24 +624,6 @@ class PresensiState extends State<Presensi> {
 
         _faces = faces;
         _image = value;
-
-        for (var item in faces) {
-          print('ITEMS');
-          print(item.trackingId);
-        }
-
-        controller.startImageStream((image) {
-          controller.stopImageStream();
-
-          if (faces.length != 0) {
-            // _faceNetService.setCurrentPrediction(image, faces[0]);
-            print('_faceNetService.predictedData');
-            // user = _faceNetService.predict();
-            // print('USER ' + user);
-          } else {
-            user = '';
-          }
-        });
       }),
     );
   }
@@ -698,15 +636,7 @@ class PresensiState extends State<Presensi> {
       return Text('Tidak Ready');
     }
 
-    Size size = MediaQuery.of(context).size;
-
     return AspectRatio(aspectRatio: 3 / 1, child: CameraPreview(controller));
-
-    return Container(child: CameraPreview(controller));
-
-    return Container(
-      child: CameraPreview(controller),
-    );
   }
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();

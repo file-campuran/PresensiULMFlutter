@@ -8,6 +8,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:absen_online/app.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/configs/config.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class AppDelegate extends BlocDelegate {
   ///Support Development
@@ -34,11 +36,17 @@ class AppDelegate extends BlocDelegate {
 
 void main() async {
   BlocSupervisor.delegate = AppDelegate();
+  // SharedPreferences.setMockInitialValues({});
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runZonedGuarded(() {
+
+  if (!Application.debug) {
+    runZonedGuarded(() {
+      runApp(App());
+    }, (error, stackTrace) {
+      FirebaseCrashlytics.instance.recordError(error, stackTrace);
+    });
+  } else {
     runApp(App());
-  }, (error, stackTrace) {
-    FirebaseCrashlytics.instance.recordError(error, stackTrace);
-  });
+  }
 }

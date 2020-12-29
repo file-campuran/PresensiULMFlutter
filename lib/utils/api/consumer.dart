@@ -2,6 +2,7 @@ import 'package:absen_online/configs/config.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/models/model.dart';
 import 'exception.dart';
 import 'interceptor.dart';
 
@@ -28,21 +29,21 @@ class Consumer {
   Consumer._internal();
 
   final String appId = 'SIAPPs';
-  final String baseUrl = 'https://git.ulm.ac.id/api-siapps/public/api';
+  final String baseUrl = 'http://192.168.0.101/PTIK/api-siapps/public/api';
   final String apiKey = '605dafe39ee0780e8cf2c829434eeae8';
   final int timeout = 30; //Seconds
 
   /*
    * Request ke API
    */
-  Future execute(
+  Future<ApiModel> execute(
       {String url,
       FormData formData,
       String getData,
       MethodRequest method = MethodRequest.GET}) async {
     try {
-      String urlRequest = url + '?';
-      urlRequest += getData ?? '';
+      String urlRequest = url;
+      // urlRequest += getData ?? '';
 
       Application.preferences = await SharedPreferences.getInstance();
       BaseOptions options = new BaseOptions(
@@ -60,9 +61,15 @@ class Consumer {
       );
 
       Dio dio = new Dio(options);
-      dio.interceptors.add(DioLoggingInterceptors(dio, false));
-      var res = await dio.request(urlRequest, data: formData);
-      return res.data;
+
+      if (Application.debug) {
+        dio.interceptors.add(DioLoggingInterceptors(dio, false));
+      }
+
+      Response<Map<String, dynamic>> res =
+          await dio.request(urlRequest, data: formData);
+
+      return ApiModel.fromJson(res.data);
     } on DioError catch (e) {
       return MyException.getException(e);
     }
@@ -71,23 +78,24 @@ class Consumer {
   /*
    * Autentikasi
    */
-  Future auth() async {
-    Application.preferences = await SharedPreferences.getInstance();
-
+  Future<ApiModel> auth({String username, String password}) async {
+    print(username);
+    print(password);
     FormData formData =
-        new FormData.fromMap({"username": 'admin', 'password': '1q2w3e4r'});
+        new FormData.fromMap({"username": username, 'password': password});
 
-    var response = await this
+    return await this
         .execute(url: '/auth', formData: formData, method: MethodRequest.POST);
+  }
 
-    if (response['code'] == 200) {
-      UtilPreferences.setToken(
-          accessToken: response['data']['accessToken'],
-          refreshToken: response['data']['refreshToken']);
-      return true;
-    }
+  /*
+   * Validate Refresh Token Jika masih berlaku
+   */
+  Future<ApiModel> validateToken(String token) async {
+    FormData formData = new FormData.fromMap({"tokenRefresh": token});
 
-    return false;
+    return await this.execute(
+        url: '/auth/refresh', formData: formData, method: MethodRequest.PUT);
   }
 
   /*
@@ -100,11 +108,11 @@ class Consumer {
       "tokenRefresh": await UtilPreferences.getToken()['refreshToken'],
     });
 
-    var response = await this.execute(
+    final response = await this.execute(
         url: '/auth/refresh', formData: formData, method: MethodRequest.PUT);
 
-    if (response['code'] == 200) {
-      return response['data']['accessToken'];
+    if (response.code == CODE.SUCCESS) {
+      return response.data['accessToken'];
     } else {
       return null;
     }

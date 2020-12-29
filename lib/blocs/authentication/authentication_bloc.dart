@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:absen_online/api/api.dart';
+import 'package:absen_online/api/siapps.dart';
 import 'package:absen_online/api/http_manager.dart';
 import 'package:absen_online/blocs/authentication/bloc.dart';
 import 'package:absen_online/configs/config.dart';
@@ -18,27 +18,25 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
     if (event is AuthenticationCheck) {
       ///Notify state AuthenticationBeginCheck
       yield AuthenticationBeginCheck();
-      final hasToken = UtilPreferences.containsKey(Preferences.user);
+      final hasToken = UtilPreferences.containsKey(Preferences.refreshToken);
 
       if (hasToken) {
-        ///Getting data from Storage
+        //Getting data from Storage
         final getUserPreferences = UtilPreferences.getString(
-          Preferences.user,
+          Preferences.refreshToken,
         );
-        final user = UserModel.fromJson(jsonDecode(getUserPreferences));
-        httpManager.baseOptions.headers["Authorization"] =
-            "Bearer " + user.token;
-        await Future.delayed(Duration(seconds: 1));
-        final ResultApiModel result = await Api.validateToken();
+
+        // Cek refresh token apakah masih valid
+        final result = await Consumer().validateToken(getUserPreferences);
 
         ///Fetch api success
-        if (result.success) {
+        if (result.code == CODE.SUCCESS) {
           ///Set user
-          Application.user = user;
+          UtilPreferences.setString(
+              Preferences.accessToken, result.data[Preferences.accessToken]);
           yield AuthenticationSuccess();
         } else {
           ///Fetch api fail
-          ///
           ///Delete user when can't verify token
           await UtilPreferences.remove(Preferences.user);
 
@@ -49,6 +47,7 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
         ///Notify loading to UI
         yield AuthenticationFail();
       }
+      // }
     }
 
     if (event is AuthenticationSave) {
@@ -70,7 +69,9 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
 
     if (event is AuthenticationClear) {
       ///Delete user
-      final deletePreferences = await UtilPreferences.remove(Preferences.user);
+      final deletePreferences =
+          await UtilPreferences.remove(Preferences.refreshToken);
+      await UtilPreferences.remove(Preferences.accessToken);
 
       ///Check result delete user
       if (deletePreferences) {

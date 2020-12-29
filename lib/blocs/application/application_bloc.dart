@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
@@ -104,6 +105,17 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       } else {
         ///Pending preview intro
         yield ApplicationIntroView();
+      }
+
+      RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();
+      Application.remoteConfig =
+          configModelFromJson(config.getString('config'));
+      UtilLogger.log('REMOTE CONFIG', Application.remoteConfig.toJson());
+
+      // Cek Update Aplikasi
+      if (Application.remoteConfig.application.minVersion >
+          Application.versionCode) {
+        yield ApplicationUpdateView(Application.remoteConfig);
       }
     }
 

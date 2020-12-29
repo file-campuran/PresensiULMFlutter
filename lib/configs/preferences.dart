@@ -6,6 +6,8 @@ class Preferences {
   static String theme = 'theme';
   static String darkOption = 'darkOption';
   static String font = 'font';
+  static String accessToken = 'accessToken';
+  static String refreshToken = 'refreshToken';
 
   ///Singleton factory
   static final Preferences _instance = Preferences._internal();

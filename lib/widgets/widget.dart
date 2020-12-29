@@ -8,6 +8,7 @@ export 'app_loading.dart';
 export 'app_model_bottom_sheet.dart';
 export 'app_notification_item.dart';
 export 'app_product_item.dart';
+export 'app_presensi_item.dart';
 export 'app_profile_performance.dart';
 export 'app_rating.dart';
 export 'app_star_rating.dart';

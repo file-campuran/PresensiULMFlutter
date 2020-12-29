@@ -10,9 +10,9 @@ import 'package:absen_online/widgets/widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProductDetail extends StatefulWidget {
-  ProductDetail({Key key, this.id = 0}) : super(key: key);
+  ProductDetail({Key key, this.id = '0'}) : super(key: key);
 
-  final num id;
+  final String id;
 
   @override
   _ProductDetailState createState() {

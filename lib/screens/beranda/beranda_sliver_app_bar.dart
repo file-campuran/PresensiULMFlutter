@@ -44,9 +44,10 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   onPressed: () {
-                    SiappsRepository si = new SiappsRepository();
-                    si.getToken();
-                    // Navigator.pushNamed(context, Routes.searchHistory);
+                    // SiappsRepository si = new SiappsRepository();
+                    // si.getKuesioner();
+
+                    Navigator.pushNamed(context, Routes.faq);
                   },
                   child: Container(
                     decoration: BoxDecoration(

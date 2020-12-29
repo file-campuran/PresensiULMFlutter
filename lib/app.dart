@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -77,6 +79,7 @@ class _AppState extends State<App> {
           return BlocBuilder<ThemeBloc, ThemeState>(
             builder: (context, theme) {
               return MaterialApp(
+                color: Colors.white,
                 title: "Presensi ULM",
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.lightTheme,
@@ -91,13 +94,33 @@ class _AppState extends State<App> {
                 supportedLocales: AppLanguage.supportLanguage,
                 home: BlocBuilder<ApplicationBloc, ApplicationState>(
                   builder: (context, app) {
-                    if (app is ApplicationSetupCompleted) {
-                      return MainNavigation();
-                    }
-                    if (app is ApplicationIntroView) {
-                      return IntroPreview();
-                    }
-                    return SplashScreen();
+                    return BlocBuilder<AuthBloc, AuthenticationState>(
+                        builder: (context, auth) {
+                      if (auth is AuthenticationFail) {
+                        return Login();
+                      } else if (auth is AuthenticationSuccess) {
+                        if (app is ApplicationSetupCompleted) {
+                          return MainNavigation();
+                        }
+                        if (app is ApplicationIntroView) {
+                          return IntroPreview();
+                        }
+
+                        if (app is ApplicationUpdateView) {
+                          return Update(
+                            message:
+                                'Aplikasi membutuhkan pembaharuan ke versi ${app.config.application.releaseVersion}',
+                            title: 'Pembaharuan',
+                            isAndroid: Platform.isAndroid,
+                            linkIos: app.config.application.update.iosUrl,
+                            linkAndroid:
+                                app.config.application.update.androidUrl,
+                            news: app.config.application.update.news,
+                          );
+                        }
+                      }
+                      return SplashScreen();
+                    });
                   },
                 ),
               );
