@@ -135,6 +135,20 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
+                          title:
+                              Translate.of(context).translate('privacy_policy'),
+                          onPressed: () {
+                            _onNavigate(Routes.privacyPolicy);
+                          },
+                          trailing: RotatedBox(
+                            quarterTurns: UtilLanguage.isRTL() ? 2 : 0,
+                            child: Icon(
+                              Icons.keyboard_arrow_right,
+                              textDirection: TextDirection.ltr,
+                            ),
+                          ),
+                        ),
+                        AppListTitle(
                           title: Translate.of(context).translate('setting'),
                           onPressed: () {
                             _onNavigate(Routes.setting);
@@ -171,10 +185,12 @@ class _ProfileState extends State<Profile> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text('Logout'),
-                            content: Text('Apakah anda yakin ingin keluar'),
+                            content: Text(Translate.of(context)
+                                .translate('confirm_sign_out')),
                             actions: <Widget>[
                               FlatButton(
-                                child: Text('Batal'),
+                                child: Text(
+                                    Translate.of(context).translate('close')),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },

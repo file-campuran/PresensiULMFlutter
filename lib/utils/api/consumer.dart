@@ -28,10 +28,14 @@ class Consumer {
 
   Consumer._internal();
 
-  final String appId = 'SIAPPs';
-  final String baseUrl = 'http://192.168.0.101/PTIK/api-siapps/public/api';
+  final String appId = 'PresensiULM';
+  final String baseUrl = 'http://192.168.147.2/PTIK/api-siapps/public/api';
   final String apiKey = '605dafe39ee0780e8cf2c829434eeae8';
-  final int timeout = 30; //Seconds
+  final int timeout = 10; //Seconds
+
+  int limits;
+  Map<String, dynamic> orders;
+  Map<String, dynamic> fillters;
 
   /*
    * Request ke API
@@ -42,10 +46,9 @@ class Consumer {
       String getData,
       MethodRequest method = MethodRequest.GET}) async {
     try {
-      String urlRequest = url;
-      // urlRequest += getData ?? '';
+      String urlRequest = url + generateQuery();
 
-      Application.preferences = await SharedPreferences.getInstance();
+      // Application.preferences = await SharedPreferences.getInstance();
       BaseOptions options = new BaseOptions(
         headers: {
           'AppId': appId,
@@ -79,8 +82,6 @@ class Consumer {
    * Autentikasi
    */
   Future<ApiModel> auth({String username, String password}) async {
-    print(username);
-    print(password);
     FormData formData =
         new FormData.fromMap({"username": username, 'password': password});
 
@@ -116,6 +117,97 @@ class Consumer {
     } else {
       return null;
     }
+  }
+
+  /* 
+   * Generate Query API
+   */
+  generateQuery() {
+    String _tempOrder = '';
+    String _tempFillter = '';
+
+    orders?.forEach((key, value) {
+      _tempOrder += '&$key=$value';
+    });
+
+    fillters?.forEach((key, value) {
+      _tempFillter += _applyQueryFilter(key, value);
+    });
+
+    String _tempLimit = limits != null ? '&limit=$limits' : '';
+    return '?' + _tempFillter + _tempOrder + _tempLimit;
+  }
+
+  /* 
+   * Private Method Fillter Query
+   */
+  _applyQueryFilter(String key, String value) {
+    final split = key.split(" ");
+    final splitKey = split[0];
+
+    String splitValue = split.length > 1 ? split[1] : '';
+    switch (splitValue) {
+      case '=':
+        splitValue = '';
+        break;
+      case '>=':
+        splitValue = '[gte]';
+        break;
+      case '<':
+        splitValue = '[lt]';
+        break;
+      case '<=':
+        splitValue = '[lte]';
+        break;
+      case '!=':
+        splitValue = '[nq]';
+        break;
+      case 'is_null':
+        splitValue = '[is_null]';
+        break;
+      case 'not_null':
+        splitValue = '[not_null]';
+        break;
+      case 'in':
+        splitValue = '[in]';
+        break;
+      case 'not_in':
+        splitValue = '[not_in]';
+        break;
+      case 'like':
+        splitValue = '[like]';
+        break;
+      case 'or_like':
+        splitValue = '[or_like]';
+        break;
+      default:
+        splitValue = '[eq]';
+    }
+    return "&$splitKey$splitValue=$value";
+  }
+
+  /* 
+   * Limit data
+   */
+  limit(int limit) {
+    this.limits = limit;
+    return this;
+  }
+
+  /* 
+   * Order Data
+   */
+  orderBy(Map<String, dynamic> order) {
+    this.orders = order;
+    return this;
+  }
+
+  /* 
+   * Fillter Data
+   */
+  where(Map<String, dynamic> fillter) {
+    this.fillters = fillter;
+    return this;
   }
 
   // Private convert method

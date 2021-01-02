@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
+import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -213,7 +214,7 @@ class AppPresensiItem extends StatelessWidget {
                       Radius.circular(8),
                     ),
                     image: DecorationImage(
-                      image: NetworkImage(item.fileGambar),
+                      image: new CachedNetworkImageProvider(item.fileGambar),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -392,7 +393,7 @@ class AppPresensiItem extends StatelessWidget {
                 height: 140,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(item.fileGambar),
+                    image: new CachedNetworkImageProvider(item.fileGambar),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.only(
@@ -427,49 +428,40 @@ class AppPresensiItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        item.status,
+                        item.tanggalManusia,
                         style: Theme.of(context).textTheme.caption.copyWith(
                               fontWeight: FontWeight.w600,
                             ),
                       ),
                       Padding(padding: EdgeInsets.only(top: 5)),
-                      Text(
-                        item.status,
-                        maxLines: 1,
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2
-                            .copyWith(fontWeight: FontWeight.w600),
-                      ),
-                      Padding(padding: EdgeInsets.only(top: 5)),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          AppTag(
-                            "RATE",
-                            type: TagType.rateSmall,
-                          ),
-                          Padding(padding: EdgeInsets.only(left: 5)),
-                          StarRating(
-                            rating: 1,
-                            size: 14,
-                            color: AppTheme.yellowColor,
-                            borderColor: AppTheme.yellowColor,
-                          )
-                        ],
-                      ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                      //   children: <Widget>[
+                      //     AppTag(
+                      //       "RATE",
+                      //       type: TagType.rateSmall,
+                      //     ),
+                      //     Padding(padding: EdgeInsets.only(left: 5)),
+                      //     StarRating(
+                      //       rating: 1,
+                      //       size: 14,
+                      //       color: AppTheme.yellowColor,
+                      //       borderColor: AppTheme.yellowColor,
+                      //     )
+                      //   ],
+                      // ),
                       Padding(padding: EdgeInsets.only(top: 5)),
                       Row(
                         children: <Widget>[
                           Icon(
-                            Icons.location_on,
+                            Icons.timer,
                             size: 12,
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).buttonColor,
                           ),
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.only(left: 3, right: 3),
-                              child: Text("item.address",
+                              child: Text(item.jamPresensi,
                                   maxLines: 1,
                                   style: Theme.of(context).textTheme.caption),
                             ),
@@ -480,15 +472,36 @@ class AppPresensiItem extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Icon(
-                            Icons.phone,
+                            Icons.info,
                             size: 12,
-                            color: Theme.of(context).primaryColor,
+                            color: Theme.of(context).buttonColor,
                           ),
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.only(left: 3, right: 3),
-                              child: Text("item.phone",
+                              child: Text("Deskripsi Kinerja",
                                   maxLines: 1,
+                                  style: Theme.of(context).textTheme.caption),
+                            ),
+                          )
+                        ],
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 5)),
+                      Row(
+                        children: <Widget>[
+                          // Icon(
+                          //   Icons.phone,
+                          //   size: 12,
+                          //   color: Theme.of(context).buttonColor,
+                          // ),
+                          SizedBox(
+                            width: 14,
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 3, right: 3),
+                              child: Text(item.deskripsiKinerja,
+                                  maxLines: 3,
                                   style: Theme.of(context).textTheme.caption),
                             ),
                           )
@@ -497,10 +510,17 @@ class AppPresensiItem extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Icon(
-                            true ? Icons.favorite : Icons.favorite_border,
-                            color: Theme.of(context).primaryColor,
-                          )
+                          Visibility(
+                              visible: item.fileBerkas != null,
+                              child: InkWell(
+                                child: Icon(
+                                  Icons.file_download,
+                                  color: Theme.of(context).buttonColor,
+                                ),
+                                onTap: () {
+                                  launchExternal(item.fileBerkas);
+                                },
+                              )),
                         ],
                       )
                     ],
@@ -576,7 +596,7 @@ class AppPresensiItem extends StatelessWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(item.fileGambar),
+                    image: new CachedNetworkImageProvider(item.fileGambar),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -697,7 +717,7 @@ class AppPresensiItem extends StatelessWidget {
                         Icon(
                           Icons.location_on,
                           size: 12,
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).buttonColor,
                         ),
                         Expanded(
                           child: Padding(
@@ -717,7 +737,7 @@ class AppPresensiItem extends StatelessWidget {
                         Icon(
                           Icons.phone,
                           size: 12,
-                          color: Theme.of(context).primaryColor,
+                          color: Theme.of(context).buttonColor,
                         ),
                         Expanded(
                           child: Padding(
@@ -775,7 +795,7 @@ class AppPresensiItem extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(item.fileGambar),
+                    image: new CachedNetworkImageProvider(item.fileGambar),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -837,7 +857,7 @@ class AppPresensiItem extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(item.fileGambar),
+                    image: new CachedNetworkImageProvider(item.fileGambar),
                     fit: BoxFit.cover,
                   ),
                 ),

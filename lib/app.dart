@@ -94,33 +94,33 @@ class _AppState extends State<App> {
                 supportedLocales: AppLanguage.supportLanguage,
                 home: BlocBuilder<ApplicationBloc, ApplicationState>(
                   builder: (context, app) {
-                    return BlocBuilder<AuthBloc, AuthenticationState>(
-                        builder: (context, auth) {
-                      if (auth is AuthenticationFail) {
-                        return Login();
-                      } else if (auth is AuthenticationSuccess) {
-                        if (app is ApplicationSetupCompleted) {
+                    if (app is ApplicationSetupCompleted) {
+                      return BlocBuilder<AuthBloc, AuthenticationState>(
+                          builder: (context, auth) {
+                        if (auth is AuthenticationFail) {
+                          return Login();
+                        } else if (auth is AuthenticationSuccess) {
                           return MainNavigation();
                         }
-                        if (app is ApplicationIntroView) {
-                          return IntroPreview();
-                        }
+                      });
+                    }
+                    if (app is ApplicationIntroView) {
+                      return IntroPreview();
+                    }
 
-                        if (app is ApplicationUpdateView) {
-                          return Update(
-                            message:
-                                'Aplikasi membutuhkan pembaharuan ke versi ${app.config.application.releaseVersion}',
-                            title: 'Pembaharuan',
-                            isAndroid: Platform.isAndroid,
-                            linkIos: app.config.application.update.iosUrl,
-                            linkAndroid:
-                                app.config.application.update.androidUrl,
-                            news: app.config.application.update.news,
-                          );
-                        }
-                      }
-                      return SplashScreen();
-                    });
+                    if (app is ApplicationUpdateView) {
+                      return Update(
+                        message:
+                            'Aplikasi membutuhkan pembaharuan ke versi ${app.config.application.releaseVersion}',
+                        title: 'Pembaharuan',
+                        isAndroid: Platform.isAndroid,
+                        linkIos: app.config.application.update.iosUrl,
+                        linkAndroid: app.config.application.update.androidUrl,
+                        news: app.config.application.update.news,
+                      );
+                    }
+
+                    return SplashScreen();
                   },
                 ),
               );

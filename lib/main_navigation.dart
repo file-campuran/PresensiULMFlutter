@@ -106,14 +106,14 @@ class _MainNavigationState extends State<MainNavigation> {
         icon: Icon(Icons.face_sharp),
         title: Padding(
           padding: EdgeInsets.only(top: 3),
-          child: Text('Presensi'),
+          child: Text(Translate.of(context).translate('presence')),
         ),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.history),
         title: Padding(
           padding: EdgeInsets.only(top: 3),
-          child: Text("Riwayat"),
+          child: Text(Translate.of(context).translate('history')),
         ),
       ),
       BottomNavigationBarItem(

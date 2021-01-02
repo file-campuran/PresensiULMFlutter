@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:absen_online/api/siapps.dart';
+import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/api/http_manager.dart';
 import 'package:absen_online/blocs/authentication/bloc.dart';
 import 'package:absen_online/configs/config.dart';
@@ -21,28 +21,30 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
       final hasToken = UtilPreferences.containsKey(Preferences.refreshToken);
 
       if (hasToken) {
-        //Getting data from Storage
-        final getUserPreferences = UtilPreferences.getString(
-          Preferences.refreshToken,
-        );
+        yield AuthenticationSuccess();
 
-        // Cek refresh token apakah masih valid
-        final result = await Consumer().validateToken(getUserPreferences);
+        // //Getting data from Storage
+        // final getUserPreferences = UtilPreferences.getString(
+        //   Preferences.refreshToken,
+        // );
 
-        ///Fetch api success
-        if (result.code == CODE.SUCCESS) {
-          ///Set user
-          UtilPreferences.setString(
-              Preferences.accessToken, result.data[Preferences.accessToken]);
-          yield AuthenticationSuccess();
-        } else {
-          ///Fetch api fail
-          ///Delete user when can't verify token
-          await UtilPreferences.remove(Preferences.user);
+        // // Cek refresh token apakah masih valid
+        // final result = await Consumer().validateToken(getUserPreferences);
 
-          ///Notify loading to UI
-          yield AuthenticationFail();
-        }
+        // ///Fetch api success
+        // if (result.code == CODE.SUCCESS) {
+        //   ///Set user
+        //   UtilPreferences.setString(
+        //       Preferences.accessToken, result.data[Preferences.accessToken]);
+        //   yield AuthenticationSuccess();
+        // } else {
+        //   ///Fetch api fail
+        //   ///Delete user when can't verify token
+        //   await UtilPreferences.remove(Preferences.user);
+
+        //   ///Notify loading to UI
+        //   yield AuthenticationFail();
+        // }
       } else {
         ///Notify loading to UI
         yield AuthenticationFail();

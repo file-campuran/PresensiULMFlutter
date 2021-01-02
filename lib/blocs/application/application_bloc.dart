@@ -30,7 +30,9 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       yield ApplicationWaiting();
 
       ///Setup SharedPreferences
+      UtilLogger.log('INITIALIZE SHARED PREF');
       Application.preferences = await SharedPreferences.getInstance();
+      UtilLogger.log('SUCCESS INITIALIZE SHARED PREF');
 
       ///Get old Theme & Font & Language
       final oldTheme = UtilPreferences.getString(Preferences.theme);

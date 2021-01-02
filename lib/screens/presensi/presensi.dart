@@ -18,8 +18,6 @@ import 'package:image_editor/image_editor.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:device_info/device_info.dart';
 import 'package:trust_fall/trust_fall.dart';
-import 'package:path/path.dart' show join;
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 
 import 'dart:ui' as ui;
 
@@ -214,11 +212,11 @@ class PresensiState extends State<Presensi> {
 
   Widget mainPresensi() {
     _panelHeightOpen = MediaQuery.of(context).size.height * .6;
-    _panelHeightClosed = MediaQuery.of(context).size.height * .26;
+    _panelHeightClosed = MediaQuery.of(context).size.height * .28;
 
     return Theme(
         data: Theme.of(context).copyWith(
-          brightness: Brightness.light,
+          brightness: Brightness.dark,
         ),
         child: Scaffold(
           backgroundColor: Colors.indigo,
@@ -345,7 +343,7 @@ class PresensiState extends State<Presensi> {
                                 },
                                 backgroundColor: isSendPresensi
                                     ? Colors.grey
-                                    : Colors.orange,
+                                    : Theme.of(context).primaryColor,
                               ),
                             )
                           : Container(),
@@ -358,146 +356,153 @@ class PresensiState extends State<Presensi> {
     return MediaQuery.removePadding(
         context: context,
         removeTop: true,
-        child: Column(children: <Widget>[
-          Container(
-            // color: Colors.orange,
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 6.0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: 30,
-                      height: 3,
-                      decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(12.0))),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 6.0,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ScrollConfiguration(
-              behavior: new ScrollBehavior()
-                ..buildViewportChrome(context, null, AxisDirection.down),
-              child: ListView(
-                controller: sc,
+        child: Container(
+          decoration: new BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: new BorderRadius.only(
+                  topLeft: const Radius.circular(18.0),
+                  topRight: const Radius.circular(18.0))),
+          child: Column(children: <Widget>[
+            Container(
+              child: Column(
                 children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Lottie.asset(
-                          Images.Writting,
-                          width: 35,
-                          height: 35,
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Text(
-                          "Presensi",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(),
                   SizedBox(
-                    height: 10.0,
+                    height: 6.0,
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text("Keterangan Kinerja",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                            )),
-                        SizedBox(height: 4),
-                        TextFormField(
-                          keyboardType: TextInputType.multiline,
-                          // maxLines: 3,
-                          maxLines: null,
-                          onChanged: (value) {
-                            setState(() {
-                              deskripsi = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                              // labelText: 'Keterangan Kerja',
-                              contentPadding: EdgeInsets.all(15.0),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                        ),
-                        SizedBox(height: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                AppButton(
-                                  onPressed: chooseFile,
-                                  text: filePath == null
-                                      ? 'Pilih Berkas'
-                                      : 'Ubah Berkas',
-                                  disableTouchWhenLoading: true,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                  child: Text(
-                                    filePath != null
-                                        ? filePath.split("/")?.last
-                                        : 'Tidak ada berkas yang dipilih',
-                                    softWrap: true,
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 12),
-                                  ),
-                                )
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              "infoPresensi['upload_info']['maks']",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
-                            Text(
-                              "infoPresensi['upload_info']['allowed_type']",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        width: 30,
+                        height: 3,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0))),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    height: 36.0,
+                    height: 6.0,
                   ),
                 ],
               ),
             ),
-          )
-        ]));
+            Expanded(
+              child: ScrollConfiguration(
+                behavior: new ScrollBehavior()
+                  ..buildViewportChrome(context, null, AxisDirection.down),
+                child: ListView(
+                  controller: sc,
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Lottie.asset(
+                            Images.Writting,
+                            width: 35,
+                            height: 35,
+                          ),
+                          SizedBox(
+                            width: 10.0,
+                          ),
+                          Text(
+                            "Presensi",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Divider(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("Keterangan Kinerja",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              )),
+                          SizedBox(height: 4),
+                          TextFormField(
+                            keyboardType: TextInputType.multiline,
+                            // maxLines: 3,
+                            maxLines: null,
+                            onChanged: (value) {
+                              setState(() {
+                                deskripsi = value;
+                              });
+                            },
+                            decoration: InputDecoration(
+                                // labelText: 'Keterangan Kerja',
+                                contentPadding: EdgeInsets.all(15.0),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                          ),
+                          SizedBox(height: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  AppButton(
+                                    onPressed: chooseFile,
+                                    text: filePath == null
+                                        ? 'Pilih Berkas'
+                                        : 'Ubah Berkas',
+                                    disableTouchWhenLoading: true,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                    child: Text(
+                                      filePath != null
+                                          ? filePath.split("/")?.last
+                                          : 'Tidak ada berkas yang dipilih',
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 12),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                Application.remoteConfig.application.upload.max,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 12),
+                              ),
+                              Text(
+                                Application
+                                    .remoteConfig.application.upload.mime,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 12),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 36.0,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ]),
+        ));
   }
 
   void showInSnackBar(String message) {
@@ -649,7 +654,6 @@ class PresensiState extends State<Presensi> {
     final String dirPath = '${extDir.path}/Pictures/flutter_test';
     await Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.jpg';
-    print(controller.value);
 
     if (controller.value.isTakingPicture) {
       return null;
@@ -693,6 +697,13 @@ class PresensiState extends State<Presensi> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
+          buttonTake(
+              icon: Icons.location_on,
+              size: 50,
+              background: false,
+              onTap: () {
+                // onNewCameraSelected(cameras[0]);
+              }),
           showCamera ? cameraTogglesRowWidget() : Container(),
         ],
       ),

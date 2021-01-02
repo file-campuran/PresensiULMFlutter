@@ -28,6 +28,7 @@ class Routes {
   static const String fontSetting = "/fontSetting";
   static const String chooseLocation = "/chooseLocation";
   static const String faq = "/faq";
+  static const String privacyPolicy = "/privacy_policy";
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -35,6 +36,13 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) {
             return SignIn();
+          },
+        );
+
+      case privacyPolicy:
+        return MaterialPageRoute(
+          builder: (context) {
+            return PrivacyPolicy();
           },
         );
 

@@ -35,7 +35,44 @@ class _LoginState extends State<Login> {
 
   ///On navigate forgot password
   void _forgotPassword() {
-    Navigator.pushNamed(context, Routes.forgotPassword);
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(Translate.of(context).translate('forgot_password')),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Anda lupa password login ?',
+                    style: Theme.of(context).textTheme.bodyText1),
+                Column(
+                  children: [
+                    Text('', style: Theme.of(context).textTheme.bodyText1),
+                    Text(
+                      '• Operator Fakultas, jika anda seorang Dosen.',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Text(
+                      '• Admin Tenaga Kependidikan (Subbag Tenaga Kependidikan kepegawaian rektorat), jika anda seorang Tenaga Kependidikan.',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   ///On navigate sign up
@@ -103,7 +140,7 @@ class _LoginState extends State<Login> {
             child: Column(
               children: <Widget>[
                 AppTextInput(
-                  hintText: Translate.of(context).translate('account'),
+                  hintText: 'NIP / NIPK',
                   errorText: _validID != null
                       ? Translate.of(context).translate(_validID)
                       : null,
@@ -191,12 +228,6 @@ class _LoginState extends State<Login> {
                         Translate.of(context).translate('forgot_password'),
                       ),
                     ),
-                    FlatButton(
-                      onPressed: _signUp,
-                      child: Text(
-                        Translate.of(context).translate('sign_up'),
-                      ),
-                    )
                   ],
                 ),
               ],

@@ -18,3 +18,4 @@ export 'model_config.dart' hide Application, Presensi, Upload, Update;
 export 'model_api.dart';
 export 'model_token.dart';
 export 'model_presensi.dart';
+export 'model_jadwal.dart';

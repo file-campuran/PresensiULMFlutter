@@ -14,6 +14,10 @@ class UtilOther {
     FocusScope.of(context).requestFocus(new FocusNode());
   }
 
+  static String capitalize(String str) {
+    return "${str[0].toUpperCase()}${str.substring(1)}";
+  }
+
   ///Singleton factory
   static final UtilOther _instance = UtilOther._internal();
 

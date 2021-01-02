@@ -1,27 +1,32 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:absen_online/models/model.dart';
+import 'package:absen_online/utils/utils.dart';
+
+const String ErrorInternalTitle = 'Error Internal Server';
+const String ErrorApplicationTitle = 'Application Error';
+const String ErrorFormat = 'Format Exception';
+const String ErrorHttp = 'Network Error';
+const String Error404 = 'Page Not Found';
+const String Error500 = 'Internal Server Error';
+const String Error401 = 'Redirect';
+const String ErrorSocket = 'Can\'t connect to server\n';
+
+const String Warning = 'assets/svg/warning.svg';
 
 class MyException {
   static ApiModel getException(DioError e) {
-    // switch (e.type) {
-    //   case DioErrorType.RESPONSE:
-    //     return e.response?.data['message'] ?? 'Unknown error';
-
-    //   case DioErrorType.SEND_TIMEOUT:
-    //   case DioErrorType.RECEIVE_TIMEOUT:
-    //     return "request_time_out";
-
-    //   default:
-    // }
-
+    UtilLogger.log('EXCEPTION ERROR', e.error.runtimeType);
     switch (e.error.runtimeType) {
       case SocketException:
         {
           return ApiModel.fromJson({
             'code': 500,
-            'message': 'Dictionary.socketException',
-            "image": "assets/images/undraw/warning.svg"
+            "message": <String, dynamic>{
+              'title': ErrorApplicationTitle,
+              'content': ErrorSocket + e.message,
+              "image": Warning
+            },
           });
         }
         break;
@@ -30,7 +35,11 @@ class MyException {
         {
           return ApiModel.fromJson({
             'code': 500,
-            'message': 'Dictionary.formatException',
+            "message": <String, dynamic>{
+              'title': ErrorApplicationTitle,
+              'content': ErrorFormat,
+              "image": Warning
+            },
           });
         }
         break;
@@ -39,8 +48,11 @@ class MyException {
         {
           return ApiModel.fromJson({
             'code': 500,
-            'message': 'Dictionary.httpException',
-            "image": "assets/images/undraw/warning.svg"
+            "message": <String, dynamic>{
+              'title': ErrorApplicationTitle,
+              'content': ErrorHttp,
+              "image": Warning
+            },
           });
         }
         break;
@@ -50,40 +62,56 @@ class MyException {
           if (e.response == null) {
             return ApiModel.fromJson({
               'code': 500,
-              'message': e.message.toString(),
-              "image": "assets/images/undraw/warning.svg"
+              "message": <String, dynamic>{
+                'title': ErrorInternalTitle,
+                'content': e.message.toString(),
+                "image": Warning
+              },
             });
           } else if (e.response.statusCode == 500) {
             return ApiModel.fromJson({
               'code': 500,
-              "message": "Dictionary.errorInternal",
-              "image": "assets/images/undraw/warning.svg"
+              "message": <String, dynamic>{
+                'title': ErrorInternalTitle,
+                'content': e.response.data['message'],
+                "image": Warning
+              },
             });
           } else if (e.response.statusCode == 401) {
             return ApiModel.fromJson({
               'code': 401,
-              "message": "${e.response.data['error']}",
-              "image": "assets/images/undraw/dream.svg"
+              "message": <String, dynamic>{
+                'title': ErrorInternalTitle,
+                'content': Error401,
+                "image": Warning
+              },
             });
           } else if (e.response.statusCode == 404) {
             return ApiModel.fromJson({
               'code': 404,
-              "message": "Dictionary.errorNotFound",
-              "image": "assets/images/undraw/dream.svg"
+              "message": <String, dynamic>{
+                'title': ErrorInternalTitle,
+                'content': Error404,
+                "image": Warning
+              },
             });
-          }
-
-          if (e.response != null) {
+          } else if (e.response != null) {
             return ApiModel.fromJson({
               'code': 500,
-              "message": e.response.data['error'],
-              "image": "assets/images/undraw/dream.svg"
+              "message": <String, dynamic>{
+                'title': ErrorInternalTitle,
+                'content': e.response.data['error'],
+                "image": Warning
+              },
             });
           } else {
             return ApiModel.fromJson({
               'code': 500,
-              "message": e.message.toString(),
-              "image": "assets/images/undraw/dream.svg"
+              "message": <String, dynamic>{
+                'title': ErrorInternalTitle,
+                'content': e.message.toString(),
+                "image": Warning
+              },
             });
           }
         }

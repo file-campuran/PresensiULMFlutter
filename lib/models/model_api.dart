@@ -14,7 +14,7 @@ class ApiModel {
   });
 
   CODE code;
-  String message;
+  dynamic message;
   dynamic data;
 
   factory ApiModel.fromJson(Map<String, dynamic> json) => ApiModel(

@@ -18,7 +18,7 @@ String dioErrorHandle(DioError error) {
 
 class HTTPManager {
   BaseOptions baseOptions = BaseOptions(
-    baseUrl: "http://www.listar.passionui.com/index.php/wp-json",
+    baseUrl: "https://simari.ulm.ac.id/",
     connectTimeout: 30000,
     receiveTimeout: 30000,
     headers: {},

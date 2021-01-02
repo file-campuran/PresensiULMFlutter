@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:absen_online/utils/utils.dart';
+
 PresensiModel presensiModelFromJson(String str) =>
     PresensiModel.fromJson(json.decode(str));
 
@@ -30,6 +32,8 @@ class PresensiModel {
     this.id,
     this.user,
     this.tanggal,
+    this.tanggalManusia,
+    this.jamPresensi,
     this.status,
     this.lokasi,
     this.latitude,
@@ -49,6 +53,8 @@ class PresensiModel {
   String id;
   String user;
   DateTime tanggal;
+  String tanggalManusia;
+  String jamPresensi;
   String status;
   String lokasi;
   double latitude;
@@ -64,26 +70,39 @@ class PresensiModel {
   DateTime createAt;
   DateTime updateAt;
 
-  factory PresensiModel.fromJson(Map<String, dynamic> json) => PresensiModel(
-        id: json["id"],
-        user: json["user"],
-        tanggal: DateTime.parse(json["tanggal"]),
-        status: json["status"],
-        lokasi: json["lokasi"],
-        latitude: double.parse(json["latitude"]),
-        longitude: double.parse(json["longitude"]),
-        fileGambar:
-            'https://presensi.ulm.ac.id/pwa/getImage/${json["fileGambar"]}',
-        fileBerkas: json["fileBerkas"],
-        deskripsiKinerja: json["deskripsiKinerja"],
-        deviceIsIos: json["deviceIsIos"],
-        deviceIsRoot: json["deviceIsRoot"],
-        deviceIsFakeGps: json["deviceIsFakeGps"],
-        isMudik: json["isMudik"],
-        deviceInfo: json["deviceInfo"],
-        createAt: DateTime.parse(json["createAt"]),
-        updateAt: DateTime.parse(json["updateAt"]),
-      );
+  factory PresensiModel.fromJson(Map<String, dynamic> json) {
+    return PresensiModel(
+      id: json["id"] ?? '',
+      user: json["user"] ?? '',
+      tanggal: json["tanggal"] != null
+          ? DateTime.parse(json["tanggal"])
+          : DateTime.now(),
+      tanggalManusia: unixTimeStampToDateDocs(
+          DateTime.parse(json["tanggal"]).millisecondsSinceEpoch),
+      jamPresensi: unixTimeStampToTime(
+          DateTime.parse(json["tanggal"]).millisecondsSinceEpoch),
+      status: json["status"] != null
+          ? 'Presensi ${UtilOther.capitalize(json["status"])}'
+          : '',
+      lokasi: json["lokasi"] ?? '',
+      latitude: json["latitude"] != null ? double.parse(json["latitude"]) : 0,
+      longitude: json["latitude"] != null ? double.parse(json["longitude"]) : 0,
+      fileGambar:
+          'https://presensi.ulm.ac.id/pwa/getImage/${json["fileGambar"]}',
+      fileBerkas: json["fileBerkas"] != null
+          ? 'https://presensi.ulm.ac.id/pwa/getBerkas/${json["fileBerkas"]}'
+          : null,
+      deskripsiKinerja:
+          json["deskripsiKinerja"] == 'null' ? '' : json["deskripsiKinerja"],
+      deviceIsIos: json["deviceIsIos"] ?? '',
+      deviceIsRoot: json["deviceIsRoot"] ?? '',
+      deviceIsFakeGps: json["deviceIsFakeGps"] ?? '',
+      isMudik: json["isMudik"] ?? '',
+      deviceInfo: json["deviceInfo"] ?? '',
+      // createAt: DateTime.parse(json["createAt"]),
+      // updateAt: DateTime.parse(json["updateAt"]),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,

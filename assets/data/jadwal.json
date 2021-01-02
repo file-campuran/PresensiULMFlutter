@@ -1,0 +1,49 @@
+{
+    "code": 200,
+    "message": null,
+    "data": {
+        "rows": [{
+                "ruleId": "2",
+                "ruleRole": "tenaga_kependidikan",
+                "ruleStatus": "Pagi",
+                "ruleStartTime": "07:30:00",
+                "ruleEndTime": "09:00:00",
+                "ruleCreateAt": "2020-05-01 18:58:20",
+                "ruleUpdateAt": "2020-05-31 21:16:22",
+                "ruleIsUploadFile": "0",
+                "ruleIsSifatUploadFile": "0",
+                "presensi": {
+                    "id": "181",
+                    "user": "19920111201601113153",
+                    "tanggal": "2020-12-31 22:41:09",
+                    "status": "pagi",
+                    "lokasi": "BANJARMASIN UTARA",
+                    "latitude": "-3.2975496",
+                    "longitude": "114.585356",
+                    "fileGambar": "fb7f100485d57c52e7d10c71fd0e8c9e.jpg",
+                    "fileBerkas": "2428dd891f8cacfb90bd656f088ca5a2.jpg",
+                    "deskripsiKinerja": "Coba",
+                    "deviceIsIos": null,
+                    "deviceIsRoot": "0",
+                    "deviceIsFakeGps": "0",
+                    "isMudik": "0",
+                    "deviceInfo": null,
+                    "createAt": "2020-05-18 11:03:07",
+                    "updateAt": "2020-12-31 22:41:10"
+                }
+            },
+            {
+                "ruleId": "3",
+                "ruleRole": "tenaga_kependidikan",
+                "ruleStatus": "Sore",
+                "ruleStartTime": "16:30:00",
+                "ruleEndTime": "20:00:00",
+                "ruleCreateAt": "2020-05-01 18:58:20",
+                "ruleUpdateAt": "2020-06-10 14:59:03",
+                "ruleIsUploadFile": "1",
+                "ruleIsSifatUploadFile": "1",
+                "presensi": false
+            }
+        ]
+    }
+}

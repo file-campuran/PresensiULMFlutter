@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:absen_online/api/api.dart';
-import 'package:absen_online/api/siapps.dart';
+import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/models/screen_models/screen_models.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:absen_online/components/OnBoarding.dart';
 
 enum PageType { map, list }
 
@@ -40,6 +41,9 @@ class _RiwayatState extends State<Riwayat> {
   SortModel _currentSort = AppSort.defaultSort;
   List<SortModel> _listSort = AppSort.listSortDefault;
 
+  Map<String, dynamic> _errorData;
+  bool _btnLoading = false;
+
   @override
   void initState() {
     _loadData();
@@ -48,10 +52,18 @@ class _RiwayatState extends State<Riwayat> {
 
   ///On Fetch API
   Future<void> _loadData() async {
-    final getPresensi = await SiappsRepository().getPresensi();
+    setState(() {
+      _presensiList = null;
+      _btnLoading = true;
+    });
+    final getPresensi = await PresensiRepository().getPresensi();
+    setState(() {
+      _btnLoading = false;
+    });
 
     if (getPresensi.code == CODE.SUCCESS) {
       final listProduct = PresensiListModel.fromJson(getPresensi.data);
+      print(getPresensi.data.runtimeType);
 
       ///Setup list marker map from list
       listProduct.list.forEach((item) {
@@ -68,6 +80,7 @@ class _RiwayatState extends State<Riwayat> {
       });
 
       setState(() {
+        _errorData = null;
         _presensiList = listProduct;
         _initPosition = CameraPosition(
           target: LatLng(
@@ -76,6 +89,10 @@ class _RiwayatState extends State<Riwayat> {
           ),
           zoom: 14.4746,
         );
+      });
+    } else {
+      setState(() {
+        _errorData = getPresensi.message;
       });
     }
   }
@@ -88,8 +105,23 @@ class _RiwayatState extends State<Riwayat> {
 
   ///On Refresh List
   Future<void> _onRefresh() async {
-    await Future.delayed(Duration(seconds: 1));
+    // await Future.delayed(Duration(seconds: 1));
+    await _loadData();
     _controller.refreshCompleted();
+  }
+
+  ///Export Icon for Mode View
+  IconData _exportIconView() {
+    switch (_modeView) {
+      case PresensiViewType.list:
+        return Icons.view_list;
+      case PresensiViewType.gird:
+        return Icons.view_quilt;
+      case PresensiViewType.block:
+        return Icons.view_array;
+      default:
+        return Icons.help;
+    }
   }
 
   ///On Change Sort
@@ -207,25 +239,6 @@ class _RiwayatState extends State<Riwayat> {
     Navigator.pushNamed(context, Routes.productDetail, arguments: item);
   }
 
-  ///On search
-  void _onSearch() {
-    Navigator.pushNamed(context, Routes.searchHistory);
-  }
-
-  ///Export Icon for Mode View
-  IconData _exportIconView() {
-    switch (_modeView) {
-      case PresensiViewType.list:
-        return Icons.view_list;
-      case PresensiViewType.gird:
-        return Icons.view_quilt;
-      case PresensiViewType.block:
-        return Icons.view_array;
-      default:
-        return Icons.help;
-    }
-  }
-
   ///_build Item Loading
   Widget _buildItemLoading(PresensiViewType type) {
     switch (type) {
@@ -292,6 +305,21 @@ class _RiwayatState extends State<Riwayat> {
 
   ///Widget build Content
   Widget _buildList() {
+    if (_errorData != null) {
+      return Wrap(
+          runSpacing: 15,
+          alignment: WrapAlignment.spaceBetween,
+          children: [
+            Error(
+              title: _errorData['title'].toString(),
+              message: _errorData['content'].toString(),
+              image: _errorData['image'],
+              onPress: _loadData,
+              btnRefreshLoading: _btnLoading,
+            )
+          ]);
+    }
+
     if (_presensiList?.list == null) {
       ///Build Loading
       return Wrap(
@@ -318,7 +346,7 @@ class _RiwayatState extends State<Riwayat> {
     if (_pageType == PageType.list) {
       return SafeArea(
         child: SmartRefresher(
-          enablePullDown: false,
+          enablePullDown: true,
           enablePullUp: false,
           onRefresh: _onRefresh,
           onLoading: _onLoading,

@@ -26,7 +26,7 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
       return super.onResponse(response);
     }
 
-    Application.preferences = await SharedPreferences.getInstance();
+    // Application.preferences = await SharedPreferences.getInstance();
     UtilPreferences.setToken(
       accessToken: newAccessToken,
     );
