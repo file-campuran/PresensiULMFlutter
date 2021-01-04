@@ -28,7 +28,9 @@ class Routes {
   static const String fontSetting = "/fontSetting";
   static const String chooseLocation = "/chooseLocation";
   static const String faq = "/faq";
-  static const String privacyPolicy = "/privacy_policy";
+  static const String privacyPolicy = "/privacyPolicy";
+  static const String panduan = "/panduan";
+  static const String riwayatDetail = "/riwayatDetail";
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -46,12 +48,22 @@ class Routes {
           },
         );
 
-      case signUp:
-      // return MaterialPageRoute(
-      //   builder: (context) {
-      //     // return SignUp();
-      //   },
-      // );
+      case panduan:
+        return MaterialPageRoute(
+          builder: (context) {
+            return Panduan();
+          },
+        );
+
+      case riwayatDetail:
+        final args = settings.arguments;
+        return MaterialPageRoute(
+          builder: (context) {
+            return RiwayatDetail(
+              item: args,
+            );
+          },
+        );
 
       case forgotPassword:
         return MaterialPageRoute(

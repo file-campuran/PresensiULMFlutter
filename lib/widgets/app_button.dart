@@ -30,22 +30,25 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      shape: shape,
-      onPressed: disableTouchWhenLoading && loading ? null : onPressed,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            text,
-            style: Theme.of(context)
-                .textTheme
-                .button
-                .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
-          ),
-          _buildLoading()
-        ],
+    return SizedBox(
+      height: 35,
+      child: RaisedButton(
+        shape: shape,
+        onPressed: disableTouchWhenLoading && loading ? null : onPressed,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              text,
+              style: Theme.of(context).textTheme.button.copyWith(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600),
+            ),
+            _buildLoading()
+          ],
+        ),
       ),
     );
   }

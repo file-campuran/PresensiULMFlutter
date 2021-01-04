@@ -6,6 +6,7 @@ import 'package:absen_online/utils/language.dart';
 import 'package:absen_online/utils/other.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
+import 'package:absen_online/components/ColorLoader.dart';
 import 'package:absen_online/components/Expandable.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_html/flutter_html.dart';
@@ -102,7 +103,7 @@ class _FaqState extends State<Faq> {
               stream: query.snapshots(),
               builder: (context, stream) {
                 if (stream.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: ColorLoader());
                 }
 
                 if (stream.hasError) {

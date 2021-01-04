@@ -42,6 +42,26 @@ class UtilValidator {
         }
         return null;
 
+      case Type.phone:
+
+        ///Empty
+        if (!allowEmpty && data.isEmpty) {
+          return error_empty;
+        }
+
+        ///Length
+        if (min != null ||
+            max != null && (data.length < min || data.length > max)) {
+          return '$error_range ($min-$max)';
+        }
+
+        ///More pattern
+        final Pattern _emailPattern = r"^[0-9]*$";
+        if (!RegExp(_emailPattern).hasMatch(data)) {
+          return error_phone;
+        }
+        return null;
+
       default:
         if (!allowEmpty && data.isEmpty) {
           return error_empty;

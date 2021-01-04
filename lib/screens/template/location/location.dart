@@ -59,7 +59,7 @@ class _LocationState extends State<Location> {
         child: GoogleMap(
           initialCameraPosition: _initPosition,
           markers: Set<Marker>.of(_markers.values),
-          myLocationEnabled: true,
+          myLocationEnabled: false,
           myLocationButtonEnabled: true,
         ),
       ),

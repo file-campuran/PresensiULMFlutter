@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart' as model;
@@ -28,7 +27,8 @@ class _EditProfileState extends State<EditProfile> {
   bool _loading = false;
   String _validNoPonsel;
   String _validAlamat;
-  String _golonganDarah;
+  String _validGolDar;
+  String _golonganDarah = '';
 
   List<String> _listGolDarah = [
     'A',
@@ -46,22 +46,31 @@ class _EditProfileState extends State<EditProfile> {
 
   ///On update image
   Future<void> _update() async {
+    print('UPDATE');
     UtilOther.hiddenKeyboard(context);
     setState(() {
       _validNoPonsel = UtilValidator.validate(
         data: _nomorPonsel.text,
+        type: Type.phone,
       );
       _validAlamat = UtilValidator.validate(
         data: _textAlamatController.text,
       );
+      _validGolDar = UtilValidator.validate(
+        data: _golonganDarah,
+      );
     });
+
     if (_validNoPonsel == null &&
         _validAlamat == null &&
-        _golonganDarah == null) {
+        _validGolDar == null) {
       setState(() {
         _loading = true;
       });
       final apiModel = await PresensiRepository().setBiodata();
+      setState(() {
+        _loading = false;
+      });
       if (apiModel.code == model.CODE.SUCCESS) {
         Navigator.pop(context);
       } else {
@@ -181,6 +190,7 @@ class _EditProfileState extends State<EditProfile> {
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
                   ),
+
                   Wrap(
                     spacing: 10,
                     runSpacing: 10,
@@ -200,6 +210,15 @@ class _EditProfileState extends State<EditProfile> {
                       );
                     }).toList(),
                   ),
+                  if (_validGolDar != null) ...[
+                    Container(
+                      padding: EdgeInsets.only(top: 2, left: 10),
+                      child: Text(
+                        Translate.of(context).translate(_validGolDar),
+                        style: TextStyle(fontSize: 12, color: Colors.red),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

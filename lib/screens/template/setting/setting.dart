@@ -158,17 +158,6 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              title: Translate.of(context).translate('notification'),
-              trailing: Switch(
-                value: _receiveNotification,
-                onChanged: (value) {
-                  setState(() {
-                    _receiveNotification = value;
-                  });
-                },
-              ),
-            ),
-            AppListTitle(
               title: Translate.of(context).translate('theme'),
               onPressed: () {
                 _onNavigate(Routes.themeSetting);

@@ -3,14 +3,14 @@ import 'package:dio/dio.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
 
-const String ErrorInternalTitle = 'Error Internal Server';
-const String ErrorApplicationTitle = 'Application Error';
-const String ErrorFormat = 'Format Exception';
-const String ErrorHttp = 'Network Error';
-const String Error404 = 'Page Not Found';
-const String Error500 = 'Internal Server Error';
-const String Error401 = 'Redirect';
-const String ErrorSocket = 'Can\'t connect to server\n';
+const String ErrorInternalTitle = 'error_internal_server';
+const String ErrorApplicationTitle = 'application_error';
+const String ErrorFormat = 'format_exception';
+const String ErrorHttp = 'network_error';
+const String Error404 = 'page_not_found';
+const String Error500 = 'was_error_the_server';
+const String Error401 = 'redirect';
+const String ErrorSocket = 'cant_connect_server';
 
 const String Warning = 'assets/svg/warning.svg';
 
@@ -24,7 +24,7 @@ class MyException {
             'code': 500,
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
-              'content': ErrorSocket + e.message,
+              'content': ErrorSocket,
               "image": Warning
             },
           });

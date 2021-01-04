@@ -135,24 +135,20 @@ class AppUserInfo extends StatelessWidget {
                     height: 60,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage(user.image),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
                       color: Theme.of(context).primaryColor,
                     ),
-                    child: Text(
-                      "${user.rate}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
-                      ),
+                    child: Center(
+                        child: Text(user.name[0],
+                            style:
+                                TextStyle(fontSize: 20, color: Colors.white))),
+                  ),
+                  Container(
+                    width: 13,
+                    height: 13,
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green,
                     ),
                   )
                 ],
@@ -194,14 +190,11 @@ class AppUserInfo extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage(
-                      user.image,
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).primaryColor),
+                child: Center(
+                    child: Text(user.name[0],
+                        style: TextStyle(fontSize: 20, color: Colors.white))),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),

@@ -21,16 +21,24 @@ class PresensiRepository {
 
   Future<ApiModel> getPresensi() async {
     return await Consumer()
-        .where({'user': '19980513201704213173'})
-        .orderBy({'tanggal': 'DESC'})
+        .where({'user': '198112022014091002'})
+        .orderBy({'absenTanggal': 'DESC'})
         .limit(10)
         .execute(url: '/absen');
+  }
+
+  Future<ApiModel> setPresensi(Map<String, dynamic> formDatas) async {
+    FormData formData = new FormData.fromMap(formDatas);
+    print(formDatas);
+
+    return await Consumer()
+        .execute(url: '/absen', formData: formData, method: MethodRequest.POST);
   }
 
   Future<ApiModel> getJadwal() async {
     return await Consumer().where({
       'role': 'tenaga_kependidikan',
-      'user =': '19980513201704213173'
+      'user =': '198112022014091002'
     }).execute(url: '/absen/jadwal_presensi');
   }
 
@@ -51,6 +59,10 @@ class PresensiRepository {
   static Future<String> getPrivacyPolicy() async {
     final result = await httpManager.get(url: '/privacy_policy_presensi.html');
     return result;
+  }
+
+  static String getPanduanUrl() {
+    return 'https://cdn01.ovo.id/homepage/public/assets/webview/panduan_ovo.html';
   }
 
   String getToken() {

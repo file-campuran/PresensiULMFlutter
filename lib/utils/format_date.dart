@@ -71,8 +71,11 @@ String unixTimeStampToTimeAgo(int millisecond) {
 }
 
 String sisaWaktu(String start, String end) {
-  var dateString = (DateTime.parse('2021-01-01 ' + end));
-  Duration diff = dateString.difference(DateTime.now());
+  final DateTime now = DateTime.now();
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+  final String formatted = formatter.format(now);
+  var dateString = (DateTime.parse(formatted + ' ' + end));
+  Duration diff = dateString.difference(now);
 
   if (diff.inDays > 0) {
     return "${diff.inDays} hari lagi";

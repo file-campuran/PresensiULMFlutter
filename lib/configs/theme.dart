@@ -13,10 +13,19 @@ class AppTheme {
   static Color kashmirColor = Color.fromRGBO(93, 109, 126, 1);
 
   ///Default font
-  static String currentFont = "Raleway";
+  static String currentFont = "ProductSans";
 
   ///List Font support
-  static List<String> fontSupport = ["Raleway", "Roboto", "Merriweather"];
+  static List<String> fontSupport = [
+    "ProductSans",
+    "Raleway",
+    "Roboto",
+    "Merriweather",
+    "SourceSansPro",
+    "Intro",
+    "Roboto",
+    "Lato",
+  ];
 
   ///Default Theme
   static ThemeModel currentTheme = ThemeModel.fromJson({
@@ -57,6 +66,12 @@ class AppTheme {
       "color": Color(0xff93b7b0),
       "light": "greenLight",
       "dark": "greenDark",
+    },
+    {
+      "name": "yellow",
+      "color": Color(0xfff6bb41),
+      "light": "pastelOrangeLight",
+      "dark": "pastelOrangeDark",
     },
   ].map((item) => ThemeModel.fromJson(item)).toList();
 

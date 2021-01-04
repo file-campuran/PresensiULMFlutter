@@ -1,3 +1,4 @@
+import 'package:absen_online/utils/translate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -156,7 +157,7 @@ class BlankPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 25, right: 25),
             child: Text(
-              title,
+              Translate.of(context).translate(title),
               style: Theme.of(context).textTheme.caption.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 20.5,
@@ -170,7 +171,7 @@ class BlankPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 25, right: 25),
             child: Text(
-              message,
+              Translate.of(context).translate(message),
               style: Theme.of(context).textTheme.caption,
               textAlign: TextAlign.center,
             ),

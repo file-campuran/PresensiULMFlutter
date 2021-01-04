@@ -15,6 +15,7 @@ import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 public final class GeneratedPluginRegistrant {
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
     ShimPluginRegistry shimPluginRegistry = new ShimPluginRegistry(flutterEngine);
+    flutterEngine.getPlugins().add(new io.flutter.plugins.androidintent.AndroidIntentPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.camera.CameraPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestorePlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.deviceinfo.DeviceInfoPlugin());
@@ -38,5 +39,6 @@ public final class GeneratedPluginRegistrant {
     flutterEngine.getPlugins().add(new com.tekartik.sqflite.SqflitePlugin());
       com.anish.trust_fall.TrustFallPlugin.registerWith(shimPluginRegistry.registrarFor("com.anish.trust_fall.TrustFallPlugin"));
     flutterEngine.getPlugins().add(new io.flutter.plugins.urllauncher.UrlLauncherPlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.webviewflutter.WebViewFlutterPlugin());
   }
 }

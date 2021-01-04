@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:absen_online/components/MyButton.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
@@ -18,6 +19,10 @@ import 'package:image_editor/image_editor.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:device_info/device_info.dart';
 import 'package:trust_fall/trust_fall.dart';
+import 'package:absen_online/api/presensi.dart';
+import 'package:absen_online/models/model.dart';
+import 'package:absen_online/components/ColorLoader.dart';
+import 'package:absen_online/components/FacePainter.dart';
 
 import 'dart:ui' as ui;
 
@@ -49,8 +54,8 @@ class PresensiState extends State<Presensi> {
 
   bool isSendPresensi = false;
 
-  double _panelHeightOpen;
-  double _panelHeightClosed = 95.0;
+  double _bottomPanelSliderHeightOpen;
+  double _bottomPanelSliderHeightClosed = 95.0;
 
   CameraController controller;
   bool isReady = false;
@@ -61,12 +66,12 @@ class PresensiState extends State<Presensi> {
   String imagePath;
   String filePath;
   String deskripsi;
-  bool isRoot = false, isFakeGps, isIos;
+  bool isRoot = false, isFakeGps = false, isIos = false;
   bool isRefreshLoading = false;
   bool isRealDevice = true;
 
   Map<String, dynamic> deviceInfo = Map();
-  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
   bool cameraInitializated = false;
   bool pictureTaked = false;
@@ -74,6 +79,7 @@ class PresensiState extends State<Presensi> {
   Size imageSize;
   Face faceDetected;
 
+  LocationError errorLocation = new LocationError();
   // @override
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
@@ -82,6 +88,7 @@ class PresensiState extends State<Presensi> {
   @override
   void dispose() {
     controller.dispose();
+    // myLocation.closeStream();
     super.dispose();
   }
 
@@ -90,7 +97,7 @@ class PresensiState extends State<Presensi> {
     super.initState();
 
     setupCameras();
-    getLocation();
+    _getLocation();
     initPlatformState();
     initPresensi();
   }
@@ -114,16 +121,41 @@ class PresensiState extends State<Presensi> {
     });
   }
 
-  void getLocation() {
-    MyLocation()
-      ..getLoacation().then((position) => setState(() {
-            latitude = position.latitude;
-            longitude = position.longitude;
-            isFakeGps = position.mocked;
+  final myLocation = MyLocation();
+  void _getLocation() async {
+    setState(() {
+      errorLocation.message = '';
+      errorLocation.status = false;
+    });
 
-            print('LATITUDE');
-            print(latitude);
-          }));
+    final isEnabled = await myLocation.gpsServiceEnable();
+    if (isEnabled) {
+      UtilLogger.log('LOCATION', 'SERVICE LOCATION IS ENABLE');
+    } else {
+      setState(() {
+        errorLocation.message = Translate.of(context).translate('ask_location');
+        errorLocation.status = true;
+      });
+
+      UtilLogger.log('LOCATION', 'SERVICE LOCATION IS DISABLED');
+    }
+
+    final position = await myLocation.getLoacation();
+    UtilLogger.log('LOCATION', 'POSITION INITIALIZE');
+    if (position != null) {
+      print(position.accuracy);
+      setState(() {
+        latitude = position.latitude;
+        longitude = position.longitude;
+        isFakeGps = position.mocked;
+      });
+    } else {
+      setState(() {
+        errorLocation.message =
+            Translate.of(context).translate('location_timeout');
+        errorLocation.status = true;
+      });
+    }
   }
 
   void initPresensi() {
@@ -139,28 +171,64 @@ class PresensiState extends State<Presensi> {
     dataPresensi['latitude'] = latitude;
     dataPresensi['longitude'] = longitude;
     dataPresensi['deskripsi'] = deskripsi;
-    dataPresensi['isRoot'] = isRoot;
-    dataPresensi['isFakeGps'] = isFakeGps;
-    dataPresensi['isIos'] = Platform.isIOS;
-    dataPresensi['isEmulator'] = !isRealDevice;
+    dataPresensi['deviceIsRoot'] = isRoot ? 1 : 0;
+    dataPresensi['deviceIsFakeGps'] = isFakeGps ? 1 : 0;
+    dataPresensi['deviceIsIos'] = Platform.isIOS ? 1 : 0;
+    // dataPresensi['isEmulator'] = !isRealDevice;
     dataPresensi['deviceInfo'] = jsonEncode(deviceInfo);
-    dataPresensi['face_data'] = null;
+    // dataPresensi['face_data'] = _faces;
 
-    dataPresensi['foto'] = await MultipartFile.fromFile(
+    dataPresensi['fileGambar'] = await MultipartFile.fromFile(
       imagePath,
-      filename: imagePath.split("/")?.last + '.jpg',
+      filename: imagePath.split("/").last + '.jpg',
     );
 
-    try {
-      dataPresensi['berkas'] = await MultipartFile.fromFile(
+    if (filePath != null) {
+      dataPresensi['fileBerkas'] = await MultipartFile.fromFile(
         filePath,
         filename: filePath.split("/")?.last,
       );
-    } catch (e) {}
+    }
 
-    setState(() {
-      isSendPresensi = true;
-    });
+    try {
+      setState(() {
+        isSendPresensi = true;
+      });
+      final response = await PresensiRepository().setPresensi(dataPresensi);
+
+      if (response.code == CODE.SUCCESS) {
+        print('SUCCESS');
+        print(response.data);
+      } else {
+        print('ERROR');
+        List<String> error = [];
+        response.message.forEach((k, v) => error.add('- $v'));
+        showDialog<void>(
+            context: context,
+            barrierDismissible: false, // user must tap button!
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('ERROR'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: error.map((e) => Text(e)).toList(),
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            });
+      }
+      setState(() {
+        isSendPresensi = false;
+      });
+    } catch (e) {}
   }
 
   chooseFile() async {
@@ -170,6 +238,144 @@ class PresensiState extends State<Presensi> {
         filePath = file.path;
       });
     } catch (e) {}
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildContent();
+  }
+
+  Widget _buildContent() {
+    _bottomPanelSliderHeightOpen = MediaQuery.of(context).size.height * .6;
+    _bottomPanelSliderHeightClosed = MediaQuery.of(context).size.height * .28;
+
+    return Theme(
+      data: Theme.of(context).copyWith(
+        brightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        // floatingActionButton: _buttonSendPresensi(),
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: <Widget>[
+              SlidingUpPanel(
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 3,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                ],
+                backdropEnabled: true,
+                maxHeight: _bottomPanelSliderHeightOpen,
+                minHeight: _bottomPanelSliderHeightClosed,
+                parallaxEnabled: false,
+                parallaxOffset: .5,
+                body: _panelBody(),
+                panelBuilder: (sc) => _bottomPanelSlider(sc),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18.0),
+                    topRight: Radius.circular(18.0)),
+              ),
+              // FAB
+              _buttonSendPresensi()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _panelBody() {
+    return Container(
+      child: Stack(
+        children: <Widget>[
+          // CAMERA PREVIEW
+          Container(
+            height: MediaQuery.of(context).size.height -
+                _bottomPanelSliderHeightClosed +
+                65,
+            child: showCamera ? cameraPreviewWidget() : imagePreviewWidget(),
+          ),
+          // BACKDROP
+          Positioned(
+            top: 0,
+            child: Container(
+              height: 90,
+              width: MediaQuery.of(context).size.width,
+              decoration: new BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[
+                    // Colors.black12,
+                    Colors.black45,
+                    Colors.black.withAlpha(0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // TOGGLE WIDGET
+          Positioned(
+            right: 0,
+            top: 30,
+            child: toggleWidget(),
+          ),
+          //BUTTON CAPTURE
+          Positioned(
+              width: MediaQuery.of(context).size.width,
+              bottom: _bottomPanelSliderHeightClosed + 80,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  showCamera
+                      ? buttonTake(
+                          icon: Icons.camera_enhance,
+                          onTap: () {
+                            print('CAPTURE');
+                            eventTakePicture();
+                          })
+                      : buttonTake(
+                          icon: Icons.refresh,
+                          onTap: () {
+                            print('RE CAPTURE');
+                            eventRecapture();
+                          }),
+                ],
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget _buttonSendPresensi() {
+    if (imagePath != null) {
+      return Positioned(
+        right: 20.0,
+        bottom: 20,
+        child: FloatingActionButton(
+          child: !isSendPresensi
+              ? Icon(Icons.save, color: Colors.white)
+              : CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                  valueColor: AlwaysStoppedAnimation(Colors.grey),
+                ),
+          onPressed: () {
+            if (!isSendPresensi) {
+              sendPresensi();
+            }
+          },
+          backgroundColor:
+              isSendPresensi ? Colors.grey : Theme.of(context).primaryColor,
+        ),
+      );
+    }
+
+    return Container();
   }
 
   Widget buttonTake(
@@ -189,180 +395,25 @@ class PresensiState extends State<Presensi> {
             ? BoxDecoration(
                 color: Color.fromRGBO(0, 0, 0, 0.3),
                 shape: BoxShape.circle,
-                /* boxShadow: [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.15),
-                blurRadius: 8.0,
-              )
-            ] */
               )
             : BoxDecoration(),
       ),
     );
   }
 
-  Widget BodyResponse() {
-    return mainPresensi();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BodyResponse();
-  }
-
-  Widget mainPresensi() {
-    _panelHeightOpen = MediaQuery.of(context).size.height * .6;
-    _panelHeightClosed = MediaQuery.of(context).size.height * .28;
-
-    return Theme(
-        data: Theme.of(context).copyWith(
-          brightness: Brightness.dark,
-        ),
-        child: Scaffold(
-          backgroundColor: Colors.indigo,
-          body: Scaffold(
-              body: GestureDetector(
-                  onTap: () {
-                    print('HIDE');
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: Stack(
-                    alignment: Alignment.topCenter,
-                    children: <Widget>[
-                      SlidingUpPanel(
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 3,
-                              color: Colors.grey,
-                            ),
-                          ],
-                          backdropEnabled: true,
-                          maxHeight: _panelHeightOpen,
-                          minHeight: _panelHeightClosed,
-                          parallaxEnabled: false,
-                          parallaxOffset: .5,
-                          body: Container(
-                            child: Stack(
-                              // fit: StackFit.expand,
-                              children: <Widget>[
-                                Container(
-                                  height: MediaQuery.of(context).size.height -
-                                      _panelHeightClosed +
-                                      65,
-                                  child: showCamera
-                                      ? cameraPreviewWidget()
-                                      : imagePreviewWidget(),
-                                ),
-                                Positioned(
-                                  top: 0,
-                                  child: Container(
-                                    height: 90,
-                                    width: MediaQuery.of(context).size.width,
-                                    decoration: new BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: <Color>[
-                                          // Colors.black12,
-                                          Colors.black45,
-                                          Colors.black.withAlpha(0),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 0,
-                                  top: 30,
-                                  child: toggleWidget(),
-                                ),
-                                // Positioned(
-                                //   top: 20,
-                                //   child: CustomAppBarWidget(),
-                                // ),
-                                Positioned(
-                                    width: MediaQuery.of(context).size.width,
-                                    bottom: _panelHeightClosed + 80,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        showCamera
-                                            ? buttonTake(
-                                                icon: Icons.camera_enhance,
-                                                onTap: () {
-                                                  // _cameraService.dispose();
-                                                  // _cameraService.startService(
-                                                  //     CameraLensDirection.back);
-                                                  // _cameraService.toggleCamera();
-
-                                                  print('CAPTURE');
-                                                  onTakePictureButtonPressed();
-                                                })
-                                            : buttonTake(
-                                                icon: Icons.refresh,
-                                                onTap: () {
-                                                  print('RE CAPTURE');
-                                                  editCaptureControlRowWidget();
-                                                }),
-                                      ],
-                                    )),
-                              ],
-                            ),
-                          ),
-                          panelBuilder: (sc) => _panel(sc),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(18.0),
-                              topRight: Radius.circular(18.0)),
-                          // onPanelSlide: (double pos) => setState(() {
-                          //   _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) +
-                          //       _initFabHeight;
-                          // }),
-                          onPanelSlide: (double pos) {
-                            // print(pos);
-                          }),
-
-                      // the fab
-                      imagePath != null
-                          ? Positioned(
-                              right: 20.0,
-                              bottom: 20,
-                              child: FloatingActionButton(
-                                child: !isSendPresensi
-                                    ? Icon(Icons.fingerprint,
-                                        color: Colors.white)
-                                    : CircularProgressIndicator(
-                                        backgroundColor: Colors.white,
-                                        valueColor:
-                                            AlwaysStoppedAnimation(Colors.grey),
-                                      ),
-                                onPressed: () {
-                                  if (!isSendPresensi) {
-                                    sendPresensi();
-                                  }
-                                },
-                                backgroundColor: isSendPresensi
-                                    ? Colors.grey
-                                    : Theme.of(context).primaryColor,
-                              ),
-                            )
-                          : Container(),
-                    ],
-                  ))),
-        ));
-  }
-
-  Widget _panel(ScrollController sc) {
+  Widget _bottomPanelSlider(ScrollController sc) {
     return MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: Container(
-          decoration: new BoxDecoration(
-              color: Theme.of(context).cardColor,
-              borderRadius: new BorderRadius.only(
-                  topLeft: const Radius.circular(18.0),
-                  topRight: const Radius.circular(18.0))),
-          child: Column(children: <Widget>[
+      context: context,
+      removeTop: true,
+      child: Container(
+        decoration: new BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(18.0),
+              topRight: const Radius.circular(18.0)),
+        ),
+        child: Column(
+          children: <Widget>[
             Container(
               child: Column(
                 children: <Widget>[
@@ -409,7 +460,7 @@ class PresensiState extends State<Presensi> {
                             width: 10.0,
                           ),
                           Text(
-                            "Presensi",
+                            Translate.of(context).translate('presence'),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24.0,
@@ -422,78 +473,7 @@ class PresensiState extends State<Presensi> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Keterangan Kinerja",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                              )),
-                          SizedBox(height: 4),
-                          TextFormField(
-                            keyboardType: TextInputType.multiline,
-                            // maxLines: 3,
-                            maxLines: null,
-                            onChanged: (value) {
-                              setState(() {
-                                deskripsi = value;
-                              });
-                            },
-                            decoration: InputDecoration(
-                                // labelText: 'Keterangan Kerja',
-                                contentPadding: EdgeInsets.all(15.0),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                          ),
-                          SizedBox(height: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  AppButton(
-                                    onPressed: chooseFile,
-                                    text: filePath == null
-                                        ? 'Pilih Berkas'
-                                        : 'Ubah Berkas',
-                                    disableTouchWhenLoading: true,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.5,
-                                    child: Text(
-                                      filePath != null
-                                          ? filePath.split("/")?.last
-                                          : 'Tidak ada berkas yang dipilih',
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 12),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                Application.remoteConfig.application.upload.max,
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
-                              ),
-                              Text(
-                                Application
-                                    .remoteConfig.application.upload.mime,
-                                style:
-                                    TextStyle(color: Colors.grey, fontSize: 12),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
+                    _bottomPanelSliderContent(),
                     SizedBox(
                       height: 36.0,
                     ),
@@ -501,8 +481,101 @@ class PresensiState extends State<Presensi> {
                 ),
               ),
             )
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _bottomPanelSliderContent() {
+    if (latitude != null) {
+      return Container(
+        padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(Translate.of(context).translate('performance_description'),
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                )),
+            SizedBox(height: 4),
+            TextFormField(
+              keyboardType: TextInputType.multiline,
+              // maxLines: 3,
+              maxLines: null,
+              onChanged: (value) {
+                setState(() {
+                  deskripsi = value;
+                });
+              },
+              decoration: InputDecoration(
+                  // labelText: 'Keterangan Kerja',
+                  contentPadding: EdgeInsets.all(15.0),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10))),
+            ),
+            SizedBox(height: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    AppButton(
+                      onPressed: chooseFile,
+                      text: filePath == null
+                          ? Translate.of(context).translate('choose_file')
+                          : Translate.of(context).translate('change_file'),
+                      disableTouchWhenLoading: true,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: Text(
+                        filePath != null
+                            ? filePath.split("/")?.last
+                            : Translate.of(context)
+                                .translate('choose_file_empty'),
+                        softWrap: true,
+                        style: TextStyle(color: Colors.grey, fontSize: 12),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 10),
+                Text(
+                  Application.remoteConfig.application.upload.max,
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                Text(
+                  Application.remoteConfig.application.upload.mime,
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
+    } else {
+      return Column(children: [
+        if (errorLocation.status) ...[
+          Text(errorLocation.message),
+          SizedBox(
+            height: 10,
+          ),
+          MyButton(
+            loading: false,
+            text: 'Reload',
+            icon: Icons.refresh,
+            onPress: _getLocation,
+          ),
+        ] else ...[
+          ColorLoader(),
+          Text(Translate.of(context).translate('get_location')),
+        ]
+      ]);
+    }
   }
 
   void showInSnackBar(String message) {
@@ -510,24 +583,30 @@ class PresensiState extends State<Presensi> {
   }
 
   Widget imagePreviewWidget() {
-    return Container(
-      child: imagePath == null
-          ? null
-          : FittedBox(
-              fit: BoxFit.cover,
-              child: SizedBox(
-                width: _image.width.toDouble() - 30,
-                height: _image.height.toDouble() - 30,
-                child: CustomPaint(
-                  painter: FacePainter(_image, _faces),
-                ),
-              ),
-            ),
+    // return Image.asset(imagePath);
+    return AspectRatio(
+      aspectRatio: 3 / 1,
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: _image.width.toDouble(),
+          height: _image.height.toDouble(),
+          child: CustomPaint(
+            painter: FacePainter(_image, _faces),
+          ),
+        ),
+      ),
     );
-    //       Image.file(File(imagePath),
-    // fit: BoxFit.cover,
-    // width: double.infinity,
-    // height: double.infinity));
+  }
+
+  Widget cameraPreviewWidget() {
+    if (!isReady || !controller.value.isInitialized) {
+      return Center(
+        child: ColorLoader(),
+      );
+    }
+
+    return AspectRatio(aspectRatio: 3 / 1, child: CameraPreview(controller));
   }
 
   Widget dragIcon() {
@@ -547,15 +626,20 @@ class PresensiState extends State<Presensi> {
     );
   }
 
+  CameraDescription cameraDescription(CameraLensDirection lensDirection) {
+    return cameras.firstWhere(
+      (CameraDescription camera) => camera.lensDirection == lensDirection,
+    );
+  }
+
   //FUNCTION CAMERA
   Future<void> setupCameras() async {
     try {
       cameras = await availableCameras();
-      controller = new CameraController(cameras[1], ResolutionPreset.high,
+      controller = new CameraController(
+          cameraDescription(CameraLensDirection.front), ResolutionPreset.high,
           enableAudio: true);
       await controller.initialize();
-
-      getLocation();
     } on CameraException catch (_) {
       setState(() {
         isReady = false;
@@ -575,16 +659,18 @@ class PresensiState extends State<Presensi> {
           icon: const Icon(Icons.camera_alt),
           color: Colors.blue,
           onPressed: controller != null && controller.value.isInitialized
-              ? onTakePictureButtonPressed
+              ? eventTakePicture
               : null,
         ),
       ],
     );
   }
 
-  void onTakePictureButtonPressed() async {
+  void eventTakePicture() async {
+    UtilLogger.log('INIT TAKE PICTURE', DateTime.now().toString());
     String filePath = await takePicture();
-    // takePicture().then((String filePath) {
+    UtilLogger.log('COMPLETE TAKE PICTURE', DateTime.now().toString());
+    UtilLogger.log('TAKE PICTURE PATH', filePath);
     if (mounted) {
       if (controller.description.lensDirection == CameraLensDirection.front) {
         flipImage(filePath);
@@ -594,55 +680,45 @@ class PresensiState extends State<Presensi> {
         detectedImage(file);
       }
     }
-    // });
   }
 
   Future flipImage(String filePath) async {
-    print('controller');
-    print(controller.description.lensDirection);
+    UtilLogger.log('START FLIP PICTURE', DateTime.now().toString());
+
     final editorOption = ImageEditorOption();
     editorOption.addOption(FlipOption(horizontal: true));
-    // editorOption.addOption(ClipOption());
     editorOption.outputFormat = OutputFormat.jpeg(88);
 
     File file = new File(filePath);
-    var image = await ImageEditor.editFileImageAndGetFile(
+    File flipImage = await ImageEditor.editFileImageAndGetFile(
         file: file, imageEditorOption: editorOption);
+    file.delete();
 
-    if (image != null) {
-      detectedImage(image);
-    }
+    UtilLogger.log('COMPLETE FLIP PICTURE', DateTime.now().toString());
+    detectedImage(flipImage);
   }
 
-  String user;
-  Future detectedImage(File file) async {
-    final images = FirebaseVisionImage.fromFile(file);
-
+  Future detectedImage(File fileRaw) async {
+    UtilLogger.log('START DETECT FACE IMAGE', DateTime.now());
+    final visionImage = FirebaseVisionImage.fromFile(fileRaw);
     final faceDetector = FirebaseVision.instance.faceDetector();
-    List<Face> faces = await faceDetector.processImage(images);
+    List<Face> faces = await faceDetector.processImage(visionImage);
 
-    final data = await file.readAsBytes();
-    await decodeImageFromList(data).then(
-      (value) => setState(() {
-        imagePath = file.path;
-        showCamera = false;
+    final dataFaceFirebase = await fileRaw.readAsBytes();
+    final decodeImage = await decodeImageFromList(dataFaceFirebase);
 
-        _faces = faces;
-        _image = value;
-      }),
-    );
+    UtilLogger.log('END DETECT FACE IMAGE', DateTime.now().toString());
+    setState(() {
+      imagePath = fileRaw.path;
+      showCamera = false;
+
+      _faces = faces;
+      _image = decodeImage;
+    });
   }
 
   ui.Image _image;
   List<Face> _faces;
-
-  Widget cameraPreviewWidget() {
-    if (!isReady || !controller.value.isInitialized) {
-      return Text('Tidak Ready');
-    }
-
-    return AspectRatio(aspectRatio: 3 / 1, child: CameraPreview(controller));
-  }
 
   String timestamp() => DateTime.now().millisecondsSinceEpoch.toString();
 
@@ -651,7 +727,7 @@ class PresensiState extends State<Presensi> {
       return null;
     }
     final Directory extDir = await getApplicationDocumentsDirectory();
-    final String dirPath = '${extDir.path}/Pictures/flutter_test';
+    final String dirPath = '${extDir.path}/Pictures/presensi';
     await Directory(dirPath).create(recursive: true);
     final String filePath = '$dirPath/${timestamp()}.jpg';
 
@@ -661,7 +737,7 @@ class PresensiState extends State<Presensi> {
 
     try {
       await controller.takePicture(filePath);
-    } on CameraException catch (e) {
+    } on CameraException catch (_) {
       return null;
     }
     return filePath;
@@ -683,7 +759,7 @@ class PresensiState extends State<Presensi> {
     try {
       await controller.initialize();
     } on CameraException catch (e) {
-      showInSnackBar('Camera error ${e}');
+      showInSnackBar('Camera error $e');
     }
 
     if (mounted) {
@@ -697,14 +773,17 @@ class PresensiState extends State<Presensi> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          buttonTake(
-              icon: Icons.location_on,
-              size: 50,
-              background: false,
-              onTap: () {
-                // onNewCameraSelected(cameras[0]);
-              }),
           showCamera ? cameraTogglesRowWidget() : Container(),
+          if (latitude != null) ...[
+            buttonTake(
+                icon: Icons.map,
+                size: 50,
+                background: false,
+                onTap: () {
+                  Navigator.of(context).pushNamed(Routes.location,
+                      arguments: LocationModel(1, '', latitude, longitude));
+                }),
+          ],
         ],
       ),
     );
@@ -718,23 +797,26 @@ class PresensiState extends State<Presensi> {
               size: 50,
               background: false,
               onTap: () {
-                onNewCameraSelected(cameras[0]);
+                onNewCameraSelected(
+                    cameraDescription(CameraLensDirection.back));
               })
           : buttonTake(
               icon: Icons.camera_front,
               size: 50,
               background: false,
               onTap: () {
-                onNewCameraSelected(cameras[1]);
+                onNewCameraSelected(
+                    cameraDescription(CameraLensDirection.front));
               });
     }
 
     return Container();
   }
 
-  void editCaptureControlRowWidget() {
+  void eventRecapture() {
+    File _tempFile = File(imagePath);
+    _tempFile.delete();
     setState(() {
-      user = '';
       showCamera = true;
       imagePath = null;
     });
@@ -768,8 +850,8 @@ class PresensiState extends State<Presensi> {
       'type': build.type,
       'isPhysicalDevice': build.isPhysicalDevice,
       'androidId': build.androidId,
-      // 'app_version': Dictionary.version,
-      // 'systemFeatures': build.systemFeatures,
+      'app_version': Application.version,
+      'systemFeatures': build.systemFeatures,
     };
   }
 
@@ -790,41 +872,11 @@ class PresensiState extends State<Presensi> {
       // 'app_version': Dictionary.version,
     };
   }
-
-  //END FUNCTION
 }
 
-class FacePainter extends CustomPainter {
-  final ui.Image image;
-  final List<Face> faces;
-  final List<Rect> rects = [];
+class LocationError {
+  bool status = false;
+  String message = '';
 
-  FacePainter(this.image, this.faces) {
-    for (var i = 0; i < faces.length; i++) {
-      rects.add(faces[i].boundingBox);
-    }
-  }
-
-  @override
-  void paint(ui.Canvas canvas, ui.Size size) {
-    final Paint paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
-      ..color = Colors.white;
-
-    final Paint me = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0
-      ..color = Colors.orange;
-
-    canvas.drawImage(image, Offset.zero, Paint());
-    for (var i = 0; i < faces.length; i++) {
-      canvas.drawRect(rects[i], i == 0 ? me : paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(FacePainter oldDelegate) {
-    return image != oldDelegate.image || faces != oldDelegate.faces;
-  }
+  LocationError({this.status, this.message});
 }

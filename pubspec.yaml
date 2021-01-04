@@ -38,13 +38,11 @@ dependencies:
   lottie: ^0.4.1
   flutter_svg: ^0.18.0
   geolocator: ^5.3.1
-  # timelines: ^0.0.2+1
   flutter_html: ^0.11.1
   url_launcher: ^5.4.2
-  # timeline_tile: ^1.0.0
-  # flutter_inappwebview: ^2.1.0+1
+  webview_flutter: ^0.3.19+9
+  android_intent: ^0.3.6+12
   # google_fonts: ^1.1.0
-  # flutter_highlight: ^0.6.0
 
   # FIREBASE
   cloud_firestore: ^0.14.4
@@ -112,5 +110,24 @@ flutter:
         - asset: assets/fonts/Merriweather-Light.ttf
         - asset: assets/fonts/Merriweather-LightItalic.ttf
         - asset: assets/fonts/Merriweather-Regular.ttf
+    - family: ProductSans
+      fonts:
+        - asset: assets/fonts/product-sans/Product-Sans-Regular.ttf
+
+    - family: SourceSansPro
+      fonts:
+        - asset: assets/fonts/source-sans-pro/SourceSansPro-Regular.ttf
+
+    - family: Intro
+      fonts:
+        - asset: assets/fonts/intro/Intro.otf
+
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/roboto/Roboto-Regular.ttf
+
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/lato/Lato-Regular.ttf
   uses-material-design: true
 

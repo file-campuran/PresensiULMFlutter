@@ -29,7 +29,7 @@ class Consumer {
   Consumer._internal();
 
   final String appId = 'PresensiULM';
-  final String baseUrl = 'http://192.168.147.2/PTIK/api-siapps/public/api';
+  final String baseUrl = 'http://10.72.2.20/PTIK/api-siapps/public/api';
   final String apiKey = '605dafe39ee0780e8cf2c829434eeae8';
   final int timeout = 10; //Seconds
 
@@ -71,6 +71,8 @@ class Consumer {
 
       Response<Map<String, dynamic>> res =
           await dio.request(urlRequest, data: formData);
+
+      this._cleanFillter();
 
       return ApiModel.fromJson(res.data);
     } on DioError catch (e) {
@@ -119,6 +121,13 @@ class Consumer {
     }
   }
 
+  _cleanFillter() {
+    this.fillters = {};
+    this.orders = {};
+    this.limits = null;
+    return this;
+  }
+
   /* 
    * Generate Query API
    */
@@ -127,7 +136,7 @@ class Consumer {
     String _tempFillter = '';
 
     orders?.forEach((key, value) {
-      _tempOrder += '&$key=$value';
+      _tempOrder += '&$key[sort]=$value';
     });
 
     fillters?.forEach((key, value) {

@@ -36,19 +36,21 @@ class _BerandaState extends State<Beranda> {
       _btnLoading = true;
     });
     final ApiModel result = await PresensiRepository().getJadwal();
-    setState(() {
-      _btnLoading = false;
-    });
-    if (result.code == CODE.SUCCESS) {
+    if (this.mounted) {
       setState(() {
-        _errorData = null;
-        _infoData = result.message;
-        _jadwalData = JadwalListModel.fromJson(result.data);
+        _btnLoading = false;
       });
-    } else {
-      setState(() {
-        _errorData = result.message;
-      });
+      if (result.code == CODE.SUCCESS) {
+        setState(() {
+          _errorData = null;
+          _infoData = result.message;
+          _jadwalData = JadwalListModel.fromJson(result.data);
+        });
+      } else {
+        setState(() {
+          _errorData = result.message;
+        });
+      }
     }
   }
 
@@ -101,6 +103,10 @@ class _BerandaState extends State<Beranda> {
                   ? AppPresensiItem(
                       item: item.presensi,
                       type: PresensiViewType.list,
+                      onPressed: (presensiModel) {
+                        Navigator.pushNamed(context, Routes.riwayatDetail,
+                            arguments: presensiModel);
+                      },
                     )
                   : null,
             ),

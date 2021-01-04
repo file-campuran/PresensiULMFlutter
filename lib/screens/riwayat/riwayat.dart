@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:absen_online/api/api.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/models/screen_models/screen_models.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -18,7 +16,7 @@ enum PageType { map, list }
 class Riwayat extends StatefulWidget {
   final String title;
 
-  Riwayat({Key key, this.title = 'Riwayat Presensi'}) : super(key: key);
+  Riwayat({Key key, this.title = ''}) : super(key: key);
 
   @override
   _RiwayatState createState() {
@@ -57,43 +55,49 @@ class _RiwayatState extends State<Riwayat> {
       _btnLoading = true;
     });
     final getPresensi = await PresensiRepository().getPresensi();
-    setState(() {
-      _btnLoading = false;
-    });
 
-    if (getPresensi.code == CODE.SUCCESS) {
-      final listProduct = PresensiListModel.fromJson(getPresensi.data);
-      print(getPresensi.data.runtimeType);
-
-      ///Setup list marker map from list
-      listProduct.list.forEach((item) {
-        final markerId = MarkerId(item.id.toString());
-        final marker = Marker(
-          markerId: markerId,
-          position: LatLng(item.latitude, item.longitude),
-          infoWindow: InfoWindow(title: item.status),
-          onTap: () {
-            _onSelectLocation(item);
-          },
-        );
-        _markers[markerId] = marker;
-      });
-
+    if (this.mounted) {
       setState(() {
-        _errorData = null;
-        _presensiList = listProduct;
-        _initPosition = CameraPosition(
-          target: LatLng(
-            listProduct.list[0].latitude,
-            listProduct.list[0].longitude,
-          ),
-          zoom: 14.4746,
-        );
+        _btnLoading = false;
       });
-    } else {
-      setState(() {
-        _errorData = getPresensi.message;
-      });
+
+      if (getPresensi.code == CODE.SUCCESS) {
+        final listProduct = PresensiListModel.fromJson(getPresensi.data);
+        print(getPresensi.data.runtimeType);
+
+        ///Setup list marker map from list
+        listProduct.list.forEach((item) {
+          imageModel
+              .add(ImageModel.fromJson({"id": 1, "image": item.fileGambar}));
+
+          final markerId = MarkerId(item.id.toString());
+          final marker = Marker(
+            markerId: markerId,
+            position: LatLng(item.latitude, item.longitude),
+            infoWindow: InfoWindow(title: item.status),
+            onTap: () {
+              _onSelectLocation(item);
+            },
+          );
+          _markers[markerId] = marker;
+        });
+
+        setState(() {
+          _errorData = null;
+          _presensiList = listProduct;
+          _initPosition = CameraPosition(
+            target: LatLng(
+              listProduct.list[0].latitude,
+              listProduct.list[0].longitude,
+            ),
+            zoom: 14.4746,
+          );
+        });
+      } else {
+        setState(() {
+          _errorData = getPresensi.message;
+        });
+      }
     }
   }
 
@@ -105,7 +109,6 @@ class _RiwayatState extends State<Riwayat> {
 
   ///On Refresh List
   Future<void> _onRefresh() async {
-    // await Future.delayed(Duration(seconds: 1));
     await _loadData();
     _controller.refreshCompleted();
   }
@@ -122,25 +125,6 @@ class _RiwayatState extends State<Riwayat> {
       default:
         return Icons.help;
     }
-  }
-
-  ///On Change Sort
-  void _onChangeSort() {
-    showModalBottomSheet<void>(
-      backgroundColor: Colors.transparent,
-      context: context,
-      builder: (BuildContext context) {
-        return AppModelBottomSheet(
-          selected: _currentSort,
-          option: _listSort,
-          onChange: (item) {
-            setState(() {
-              _currentSort = item;
-            });
-          },
-        );
-      },
-    );
   }
 
   ///On Change View
@@ -161,11 +145,6 @@ class _RiwayatState extends State<Riwayat> {
     setState(() {
       _modeView = _modeView;
     });
-  }
-
-  ///On change filter
-  void _onChangeFilter() {
-    Navigator.pushNamed(context, Routes.filter);
   }
 
   ///On change page
@@ -232,11 +211,11 @@ class _RiwayatState extends State<Riwayat> {
   }
 
   ///On navigate product detail
-  void _onProductDetail(PresensiModel item) {
+  void _onPresensiDetail(PresensiModel item) {
     // String route = item.type == ProductType.place
     //     ? Routes.productDetail
     //     : Routes.productDetailTab;
-    Navigator.pushNamed(context, Routes.productDetail, arguments: item);
+    Navigator.pushNamed(context, Routes.riwayatDetail, arguments: item);
   }
 
   ///_build Item Loading
@@ -277,7 +256,7 @@ class _RiwayatState extends State<Riwayat> {
           child: Container(
             padding: EdgeInsets.only(left: 15),
             child: AppPresensiItem(
-              onPressed: _onProductDetail,
+              onPressed: _onPresensiDetail,
               item: item,
               type: _modeView,
             ),
@@ -288,7 +267,7 @@ class _RiwayatState extends State<Riwayat> {
         return Container(
           padding: EdgeInsets.only(left: 15),
           child: AppPresensiItem(
-            onPressed: _onProductDetail,
+            onPressed: _onPresensiDetail,
             item: item,
             type: _modeView,
           ),
@@ -296,28 +275,35 @@ class _RiwayatState extends State<Riwayat> {
 
       default:
         return AppPresensiItem(
-          onPressed: _onProductDetail,
+          onPressed: _onPresensiDetail,
           item: item,
           type: _modeView,
         );
     }
   }
 
+  List<ImageModel> imageModel = [];
+
+  ///On navigate gallery
+  void _onPhotoPreview() {
+    Navigator.pushNamed(
+      context,
+      Routes.gallery,
+      arguments: imageModel,
+    );
+  }
+
   ///Widget build Content
   Widget _buildList() {
     if (_errorData != null) {
-      return Wrap(
-          runSpacing: 15,
-          alignment: WrapAlignment.spaceBetween,
-          children: [
-            Error(
-              title: _errorData['title'].toString(),
-              message: _errorData['content'].toString(),
-              image: _errorData['image'],
-              onPress: _loadData,
-              btnRefreshLoading: _btnLoading,
-            )
-          ]);
+      return Center(
+          child: Error(
+        title: _errorData['title'].toString(),
+        message: _errorData['content'].toString(),
+        image: _errorData['image'],
+        onPress: _loadData,
+        btnRefreshLoading: _btnLoading,
+      ));
     }
 
     if (_presensiList?.list == null) {
@@ -417,50 +403,7 @@ class _RiwayatState extends State<Riwayat> {
                         Container(
                           width: 36,
                           height: 35,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).primaryColor,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Theme.of(context).dividerColor,
-                                blurRadius: 5,
-                                spreadRadius: 1.0,
-                                offset: Offset(1.5, 1.5),
-                              )
-                            ],
-                          ),
-                          child: Icon(
-                            Icons.directions,
-                            color: Colors.white,
-                          ),
                         ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            margin: EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                            ),
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Theme.of(context).primaryColor,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Theme.of(context).dividerColor,
-                                  blurRadius: 5,
-                                  spreadRadius: 1.0,
-                                  offset: Offset(1.5, 1.5),
-                                )
-                              ],
-                            ),
-                            child: Icon(
-                              Icons.location_on,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
                       ],
                     ),
                   ),
@@ -489,7 +432,7 @@ class _RiwayatState extends State<Riwayat> {
                               ],
                             ),
                             child: AppPresensiItem(
-                              // onPressed: _onProductDetail,
+                              onPressed: _onPresensiDetail,
                               item: item,
                               type: PresensiViewType.list,
                             ),
@@ -520,9 +463,16 @@ class _RiwayatState extends State<Riwayat> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          widget.title,
+          Translate.of(context).translate('attendance_history'),
         ),
         actions: <Widget>[
+          Visibility(
+            visible: _presensiList?.list?.length != null,
+            child: IconButton(
+              icon: Icon(Icons.photo_library),
+              onPressed: _onPhotoPreview,
+            ),
+          )
           // IconButton(
           //   icon: Icon(Icons.search),
           //   onPressed: _onSearch,
@@ -588,7 +538,7 @@ class _RiwayatState extends State<Riwayat> {
                         ),
                       ),
                       Text(
-                        'Ubah Tampilan',
+                        Translate.of(context).translate('change_view'),
                         style: Theme.of(context).textTheme.subtitle2,
                       )
                     ],
@@ -609,7 +559,9 @@ class _RiwayatState extends State<Riwayat> {
                       Padding(
                         padding: EdgeInsets.only(right: 20, left: 20),
                         child: Text(
-                          _pageType == PageType.map ? 'List' : 'Peta',
+                          _pageType == PageType.map
+                              ? Translate.of(context).translate('list')
+                              : Translate.of(context).translate('map'),
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                       )

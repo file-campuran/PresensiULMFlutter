@@ -22,9 +22,28 @@ class MyLocation {
     try {
       currentLocation = await geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
+
+      // if (currentLocation.accuracy > 2500) {
+      //   // _locationController.sink.add(currentLocation);
+      //   print(currentLocation.accuracy);
+      //   return this.getLoacation();
+      // }
+      // _locationController.sink.add(await getLoacation());
     } catch (e) {
       currentLocation = null;
     }
     return currentLocation;
+  }
+
+  Future<bool> gpsServiceEnable() async {
+    if (await Geolocator().isLocationServiceEnabled()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void closeStream() {
+    _locationController.sink.close();
   }
 }

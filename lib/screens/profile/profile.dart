@@ -58,15 +58,7 @@ class _ProfileState extends State<Profile> {
     return AppUserInfo(
       user: _profilePage?.user,
       onPressed: () {},
-      type: AppUserType.information,
-    );
-  }
-
-  ///Build value
-  Widget _buildValue() {
-    return AppProfilePerformance(
-      data: _profilePage?.value,
-      onPressed: (item) {},
+      type: AppUserType.basic,
     );
   }
 
@@ -98,7 +90,6 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                       children: <Widget>[
                         _buildProfile(),
-                        _buildValue(),
                       ],
                     ),
                   ),
@@ -122,9 +113,11 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                         AppListTitle(
-                          title: Translate.of(context).translate('contact_us'),
+                          title: Translate.of(context).translate(
+                            'guide',
+                          ),
                           onPressed: () {
-                            _onNavigate(Routes.contactUs);
+                            _onNavigate(Routes.panduan);
                           },
                           trailing: RotatedBox(
                             quarterTurns: UtilLanguage.isRTL() ? 2 : 0,

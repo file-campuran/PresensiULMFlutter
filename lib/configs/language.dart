@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppLanguage {
   ///Default Language
-  static Locale defaultLanguage = Locale("en");
+  static Locale defaultLanguage = Locale("id");
 
   ///List Language support in Application
   static List<Locale> supportLanguage = [

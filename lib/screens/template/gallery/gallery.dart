@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Gallery extends StatefulWidget {
   final List<ImageModel> photo;
@@ -64,9 +65,9 @@ class _GalleryState extends State<Gallery> {
                     onTap: () {
                       _onPreviewPhoto(index);
                     },
-                    child: Image.asset(
-                      widget.photo[index].image,
-                      fit: BoxFit.contain,
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: widget.photo[index].image,
                     ),
                   );
                 },
@@ -83,7 +84,7 @@ class _GalleryState extends State<Gallery> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    "Standard Double Room",
+                    "",
                     style: Theme.of(context)
                         .textTheme
                         .subtitle2
@@ -125,7 +126,7 @@ class _GalleryState extends State<Gallery> {
                           Radius.circular(8),
                         ),
                         image: DecorationImage(
-                          image: AssetImage(item.image),
+                          image: new CachedNetworkImageProvider(item.image),
                           fit: BoxFit.cover,
                         ),
                       ),

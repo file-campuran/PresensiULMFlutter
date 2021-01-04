@@ -3,6 +3,7 @@ import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PhotoPreview extends StatefulWidget {
   PhotoPreview({
@@ -40,7 +41,7 @@ class _PhotoPreviewState extends State<PhotoPreview> {
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final ImageModel item = widget.galleryList[index];
     return PhotoViewGalleryPageOptions(
-      imageProvider: AssetImage(item.image),
+      imageProvider: new CachedNetworkImageProvider(item.image),
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained,
       maxScale: PhotoViewComputedScale.covered * 1.1,
