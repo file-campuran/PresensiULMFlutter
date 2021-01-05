@@ -30,7 +30,7 @@ class _WebViewExampleState extends State<Panduan> {
   final Completer<WebViewController> _controller =
       Completer<WebViewController>();
 
-  bool isLoading = false;
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,7 @@ class _WebViewExampleState extends State<Panduan> {
       onTap: () => Navigator.pop(context),
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
             Translate.of(context).translate(
               'guide',
@@ -51,41 +52,48 @@ class _WebViewExampleState extends State<Panduan> {
           //   return Center(child: ColorLoader());
           // }
 
-          return WebView(
-            onPageStarted: (String tes) {
-              // setState(() {
-              //   isLoading = true;
-              // });
-            },
-            initialUrl: PresensiRepository.getPanduanUrl(),
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController webViewController) {
-              _controller.complete(webViewController);
-            },
-            javascriptChannels: <JavascriptChannel>[
-              _toasterJavascriptChannel(context),
-            ].toSet(),
-            navigationDelegate: (NavigationRequest request) {
-              // if (request.url.startsWith('https://www.youtube.com/')) {
-              //   print('blocking navigation to $request}');
-              //   return NavigationDecision.prevent;
-              // }
-              // if (request.url.startsWith('https://flutter.dev/docs')) {
-              //   print('blocking navigation to $request}');
-              //   return NavigationDecision.prevent;
-              // }
-              setState(() {
-                isLoading = true;
-              });
-              print('allowing navigation to $request');
-              return NavigationDecision.navigate;
-            },
-            onPageFinished: (String url) {
-              print('Page finished loading: $url');
-              setState(() {
-                isLoading = false;
-              });
-            },
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Visibility(
+              //   visible: isLoading,
+              //   child: Center(child: ColorLoader()),
+              // ),
+              Visibility(
+                visible: true,
+                child: Expanded(
+                  child: WebView(
+                    onPageStarted: (String tes) {
+                      // setState(() {
+                      //   isLoading = true;
+                      // });
+                    },
+                    initialUrl: PresensiRepository.GUIDE,
+                    javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (WebViewController webViewController) {
+                      _controller.complete(webViewController);
+                    },
+                    javascriptChannels: <JavascriptChannel>[
+                      _toasterJavascriptChannel(context),
+                    ].toSet(),
+                    navigationDelegate: (NavigationRequest request) {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      print('allowing navigation to $request');
+                      return NavigationDecision.navigate;
+                    },
+                    onPageFinished: (String url) {
+                      print('Page finished loading: $url');
+                      setState(() {
+                        isLoading = false;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
           );
         }),
       ),

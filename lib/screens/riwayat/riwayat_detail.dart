@@ -37,9 +37,19 @@ class _RiwayatDetailState extends State<RiwayatDetail> {
 
   ///Build banner UI
   Widget _buildBanner() {
-    return CachedNetworkImage(
-      fit: BoxFit.cover,
-      imageUrl: widget.item.fileGambar,
+    List<ImageModel> image = [ImageModel(0, widget.item.fileGambar)];
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          Routes.photoPreview,
+          arguments: {"photo": image, "index": 0},
+        );
+      },
+      child: CachedNetworkImage(
+        fit: BoxFit.cover,
+        imageUrl: widget.item.fileGambar,
+      ),
     );
   }
 

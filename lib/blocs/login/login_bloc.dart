@@ -25,8 +25,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       ///Notify loading to UI
       yield LoginLoading();
 
-      // await Future.delayed(Duration(seconds: 1));
-
       ///Fetch API
       final ApiModel result = await Consumer().auth(
         username: event.username,
@@ -40,24 +38,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         UtilLogger.log(
             "PARSE JWT", parseJwt(result.data[Preferences.refreshToken]));
         final UserModel user = UserModel.fromJson({
-          "id": 0,
-          "full_name": parse.user.namaFakultas,
-          "nickname": parse.user.namaFakultas,
-          "photo": "Unknown",
-          "url": "Unknown",
-          "level": parse.user.namaFakultas,
-          "description": parse.user.namaFakultas,
-          "tag": parse.user.namaFakultas,
-          "rate": 0.0,
-          "token": "Unknown",
+          'nip': parse.user.username,
+          'name': parse.user.username,
+          'role': 'tenaga_kependidikan',
+          // 'alamat': '',
+          // 'noHp': '',
+          // 'golDarah': '',
         });
 
         UtilPreferences.setString(
             Preferences.refreshToken, result.data[Preferences.refreshToken]);
         UtilPreferences.setString(
             Preferences.accessToken, result.data[Preferences.accessToken]);
-        UtilPreferences.setString('user', user.toString());
-        UtilLogger.log('USER', user.toString());
+        UtilPreferences.setString(Preferences.user, user.toString());
 
         try {
           ///Begin start AuthBloc Event AuthenticationSave
@@ -71,7 +64,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       } else {
         ///Notify loading to UI
-        yield LoginFail(result.message);
+        yield LoginFail(result.message is String
+            ? result.message
+            : result.message['content']);
       }
     }
 

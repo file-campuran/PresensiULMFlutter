@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/components/TextList.dart';
 import 'package:absen_online/widgets/widget.dart';
 
 class Login extends StatefulWidget {
@@ -44,21 +45,9 @@ class _LoginState extends State<Login> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Anda lupa password login ?',
-                    style: Theme.of(context).textTheme.bodyText1),
-                Column(
-                  children: [
-                    Text('', style: Theme.of(context).textTheme.bodyText1),
-                    Text(
-                      '• Operator Fakultas, jika anda seorang Dosen.',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    Text(
-                      '• Admin Tenaga Kependidikan (Subbag Tenaga Kependidikan kepegawaian rektorat), jika anda seorang Tenaga Kependidikan.',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ],
-                ),
+                TextList('Operator Fakultas, jika anda seorang Dosen.'),
+                TextList(
+                    'Admin Tenaga Kependidikan (Subbag Tenaga Kependidikan kepegawaian rektorat), jika anda seorang Tenaga Kependidikan.'),
               ],
             ),
           ),
@@ -102,7 +91,7 @@ class _LoginState extends State<Login> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Login'),
+          title: Text('Info'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[

@@ -33,8 +33,12 @@ class TimmerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
         margin: const EdgeInsets.only(top: 7, bottom: 7),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
           children: <Widget>[
             Padding(

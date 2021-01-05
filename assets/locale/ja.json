@@ -62,7 +62,7 @@
     "phone_number": "電話番号",
     "blood_type": "血液型",
     "history": "歴史",
-    "privacy_policy": "個人情報保護方針",
+    "privacy_policy": "기간 및 조건",
     "presence": "出席",
     "attendance_schedule": "出席スケジュール",
     "attendance_history": "出席履歴",
@@ -86,5 +86,13 @@
     "page_not_found": "ページが見つかりません",
     "was_error_the_server": "サーバーでエラーが発生しました",
     "redirect": "リダイレクトされたページ",
-    "cant_connect_server": "サーバーに接続されていません"
+    "cant_connect_server": "サーバーに接続されていません",
+    "slide1_title": "ULMプレゼンス",
+    "slide1_content": "教育者および教育スタッフ（講師）が使用",
+    "slide2_title": "人員配置",
+    "slide2_content": "出席データはULMスタッフ部門によって管理されます",
+    "slide3_title": "使用する",
+    "slide3_content": "インターネットに接続されたカメラとGPSを使用して、スマートフォンを使用してどこでもプレゼンスを実行します",
+    "ask_quit": "アプリケーションを終了するには、ダブルタップします。",
+    "privacy_policy_title": "私たちはあなたのデータを保護し、あなたが他の誰かにあなたのアカウントを与えない限り、決してアクセスされることはありません。"
 }

@@ -1,14 +1,8 @@
-export 'template/about_us/about_us.dart';
 export 'template/category/category.dart';
 export 'template/change_password/change_password.dart';
-export 'template/chat/chat.dart';
 export 'template/choose_location/choose_location.dart';
-export 'template/contact_us/contact_us.dart';
-// export 'template/edit_profile/edit_profile.dart';
-export 'template/feedback/feedback.dart';
 export 'template/filter/filter.dart';
 export 'template/font_setting/font_setting.dart';
-export 'template/forgot_password/forgot_password.dart';
 export 'template/gallery/gallery.dart';
 export 'template/home/home.dart';
 export 'template/intro_preview/intro_preview.dart';
@@ -20,12 +14,10 @@ export 'template/notification/notification.dart';
 export 'template/photo_preview/photo_preview.dart';
 export 'template/product_detail/product_detail.dart';
 export 'template/product_detail_tab/product_detail_tab.dart';
-// export 'template/profile/profile.dart';
 export 'template/review/review.dart';
 export 'template/search_history/search_history.dart';
 export 'template/setting/setting.dart';
 export 'template/signin/signin.dart';
-// export 'template/signup/signup.dart';
 export 'template/wishlist/wishlist.dart';
 
 export 'profile/edit_profile.dart';

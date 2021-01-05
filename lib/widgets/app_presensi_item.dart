@@ -237,53 +237,50 @@ class AppPresensiItem extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Icon(
-                              true ? Icons.favorite : Icons.favorite_border,
-                              color: Colors.white,
-                            ),
-                          )
+                          Visibility(
+                              visible: item.fileBerkas != null,
+                              child: InkWell(
+                                child: Icon(
+                                  Icons.file_download,
+                                  color: Theme.of(context).buttonColor,
+                                ),
+                                onTap: () {
+                                  launchExternal(item.fileBerkas);
+                                },
+                              )),
                         ],
                       )
                     ],
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(top: 3)),
+                Padding(padding: EdgeInsets.only(top: 10)),
                 Text(
-                  '"item.subtitle"',
+                  item.tanggalManusia,
+                  maxLines: 1,
                   style: Theme.of(context)
                       .textTheme
                       .caption
                       .copyWith(fontWeight: FontWeight.w600),
                 ),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                Text(
-                  'item.status',
-                  maxLines: 1,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle2
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-                Padding(padding: EdgeInsets.only(top: 10)),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    AppTag(
-                      "ITEM",
-                      type: TagType.rateSmall,
+                    Icon(
+                      Icons.timer,
+                      size: 12,
+                      color: Theme.of(context).buttonColor,
                     ),
-                    Padding(padding: EdgeInsets.only(left: 5)),
-                    StarRating(
-                      rating: 1,
-                      size: 14,
-                      color: AppTheme.yellowColor,
-                      borderColor: AppTheme.yellowColor,
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 3, right: 3),
+                        child: Text(item.jamPresensi,
+                            maxLines: 1,
+                            style: Theme.of(context).textTheme.caption),
+                      ),
                     )
                   ],
                 ),
-                Padding(padding: EdgeInsets.only(top: 10)),
+                Padding(padding: EdgeInsets.only(top: 5)),
                 Text(
                   item.deskripsiKinerja,
                   maxLines: 1,
@@ -614,75 +611,20 @@ class AppPresensiItem extends StatelessWidget {
                                   type: TagType.status,
                                 )
                               : Container(),
-                          Icon(
-                            true ? Icons.favorite : Icons.favorite_border,
-                            color: Colors.white,
-                          )
+                          Visibility(
+                              visible: item.fileBerkas != null,
+                              child: InkWell(
+                                child: Icon(
+                                  Icons.file_download,
+                                  color: Theme.of(context).buttonColor,
+                                ),
+                                onTap: () {
+                                  launchExternal(item.fileBerkas);
+                                },
+                              )),
                         ],
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  AppTag(
-                                    "${1}",
-                                    type: TagType.rateSmall,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 5),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 3),
-                                          child: Text(
-                                            '1Text',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption
-                                                .copyWith(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                          ),
-                                        ),
-                                        StarRating(
-                                          rating: 1,
-                                          size: 14,
-                                          color: AppTheme.yellowColor,
-                                          borderColor: AppTheme.yellowColor,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 3),
-                                child: Text(
-                                  "1 reviews",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption
-                                      .copyWith(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),
@@ -696,37 +638,27 @@ class AppPresensiItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "item.subtitle",
-                      style: Theme.of(context)
-                          .textTheme
-                          .caption
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 5)),
-                    Text(
-                      item.status,
+                      item.tanggalManusia,
                       maxLines: 1,
                       style: Theme.of(context)
                           .textTheme
                           .subtitle2
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
-                    Padding(padding: EdgeInsets.only(top: 10)),
+                    Padding(padding: EdgeInsets.only(top: 5)),
                     Row(
                       children: <Widget>[
                         Icon(
-                          Icons.location_on,
+                          Icons.timer,
                           size: 12,
                           color: Theme.of(context).buttonColor,
                         ),
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.only(left: 3, right: 3),
-                            child: Text(
-                              "item.address",
-                              maxLines: 1,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
+                            child: Text(item.jamPresensi,
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.caption),
                           ),
                         )
                       ],
@@ -735,18 +667,32 @@ class AppPresensiItem extends StatelessWidget {
                     Row(
                       children: <Widget>[
                         Icon(
-                          Icons.phone,
+                          Icons.info,
                           size: 12,
                           color: Theme.of(context).buttonColor,
                         ),
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.only(left: 3, right: 3),
-                            child: Text(
-                              "item.phone",
-                              maxLines: 1,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
+                            child: Text("Deskripsi Kinerja",
+                                maxLines: 1,
+                                style: Theme.of(context).textTheme.caption),
+                          ),
+                        )
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 5)),
+                    Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 14,
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 3, right: 3),
+                            child: Text(item.deskripsiKinerja,
+                                maxLines: 3,
+                                style: Theme.of(context).textTheme.caption),
                           ),
                         )
                       ],

@@ -145,7 +145,7 @@ class AppCommentItem extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage(item.user.image),
+                    image: AssetImage('item.user.image'),
                     fit: BoxFit.cover,
                   ),
                 ),

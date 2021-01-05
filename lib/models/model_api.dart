@@ -4,7 +4,7 @@ ApiModel apiModelFromJson(String str) => ApiModel.fromJson(json.decode(str));
 
 String apiModelToJson(ApiModel data) => json.encode(data.toJson());
 
-enum CODE { SUCCESS, ERROR, NOT_FOUND }
+enum CODE { SUCCESS, ERROR, NOT_FOUND, VALIDATE }
 
 class ApiModel {
   ApiModel({
@@ -38,6 +38,8 @@ CODE _convertStatusCode(int code) {
       break;
     case 500:
       return CODE.ERROR;
+    case 400:
+      return CODE.VALIDATE;
       break;
     default:
       return CODE.NOT_FOUND;

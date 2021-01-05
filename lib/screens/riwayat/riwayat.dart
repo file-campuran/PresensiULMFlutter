@@ -36,8 +36,6 @@ class _RiwayatState extends State<Riwayat> {
   PageType _pageType = PageType.list;
   PresensiViewType _modeView = PresensiViewType.list;
   PresensiListModel _presensiList;
-  SortModel _currentSort = AppSort.defaultSort;
-  List<SortModel> _listSort = AppSort.listSortDefault;
 
   Map<String, dynamic> _errorData;
   bool _btnLoading = false;
@@ -84,6 +82,7 @@ class _RiwayatState extends State<Riwayat> {
 
         setState(() {
           _errorData = null;
+          _pageType = PageType.map;
           _presensiList = listProduct;
           _initPosition = CameraPosition(
             target: LatLng(
@@ -212,9 +211,6 @@ class _RiwayatState extends State<Riwayat> {
 
   ///On navigate product detail
   void _onPresensiDetail(PresensiModel item) {
-    // String route = item.type == ProductType.place
-    //     ? Routes.productDetail
-    //     : Routes.productDetailTab;
     Navigator.pushNamed(context, Routes.riwayatDetail, arguments: item);
   }
 

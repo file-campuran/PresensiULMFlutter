@@ -165,7 +165,7 @@ class _LoginState extends State<Login> {
                     return BlocListener<LoginBloc, LoginState>(
                       listener: (context, loginListener) {
                         if (loginListener is LoginFail) {
-                          _showMessage(loginListener.message);
+                          _showMessage(loginListener.message.toString());
                         }
                       },
                       child: AppButton(

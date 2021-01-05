@@ -153,32 +153,6 @@ class AppUserInfo extends StatelessWidget {
                   )
                 ],
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(user.name,
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.subtitle2),
-                      Padding(
-                        padding: EdgeInsets.only(top: 3, bottom: 3),
-                        child: Text(
-                          user.description,
-                          maxLines: 1,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ),
-                      Text(
-                        user.tag,
-                        maxLines: 1,
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
         );
@@ -209,7 +183,7 @@ class AppUserInfo extends StatelessWidget {
                           .copyWith(fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      user.description,
+                      user.nip,
                       style: Theme.of(context).textTheme.caption,
                     )
                   ],

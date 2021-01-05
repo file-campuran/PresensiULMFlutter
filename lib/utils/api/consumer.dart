@@ -29,7 +29,7 @@ class Consumer {
   Consumer._internal();
 
   final String appId = 'PresensiULM';
-  final String baseUrl = 'http://10.72.2.20/PTIK/api-siapps/public/api';
+  final String baseUrl = 'http://10.72.2.19/PTIK/api-siapps/public/api';
   final String apiKey = '605dafe39ee0780e8cf2c829434eeae8';
   final int timeout = 10; //Seconds
 
@@ -53,7 +53,7 @@ class Consumer {
         headers: {
           'AppId': appId,
           'X-ApiKey': apiKey,
-          'X-Token': UtilPreferences.getString('accessToken'),
+          'X-Token': UtilPreferences.getString(Preferences.accessToken),
         },
         baseUrl: baseUrl,
         method: this._convertMethod(method),
@@ -105,10 +105,8 @@ class Consumer {
    * Refresh token jika acces token expired
    */
   Future refreshToken() async {
-    Application.preferences = await SharedPreferences.getInstance();
-
     FormData formData = new FormData.fromMap({
-      "tokenRefresh": await UtilPreferences.getToken()['refreshToken'],
+      "tokenRefresh": UtilPreferences.getString(Preferences.refreshToken),
     });
 
     final response = await this.execute(

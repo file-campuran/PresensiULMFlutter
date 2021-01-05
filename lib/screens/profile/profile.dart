@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:absen_online/api/api.dart';
+import 'package:flutter/gestures.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/models/screen_models/screen_models.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key key}) : super(key: key);
@@ -19,7 +20,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   LoginBloc _loginBloc;
-  ProfilePageModel _profilePage;
+  UserModel _userModel;
 
   @override
   void initState() {
@@ -31,16 +32,9 @@ class _ProfileState extends State<Profile> {
   ///Fetch API
   Future<void> _loadData() async {
     String user = UtilPreferences.getString('user');
-    UserModel userModel = userModelFromJson(user);
-    if (this.mounted) {
-      setState(() {
-        _profilePage = ProfilePageModel(userModel, [
-          {"title": "feedback", "value": "97.01%"},
-          {"title": "post", "value": "245"},
-          {"title": "follower", "value": "78"}
-        ]);
-      });
-    }
+    print(user);
+    _userModel = userModelFromJson(user);
+    setState(() {});
   }
 
   @override
@@ -56,7 +50,7 @@ class _ProfileState extends State<Profile> {
   ///Build profile UI
   Widget _buildProfile() {
     return AppUserInfo(
-      user: _profilePage?.user,
+      user: _userModel,
       onPressed: () {},
       type: AppUserType.basic,
     );
@@ -128,20 +122,6 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
-                          title:
-                              Translate.of(context).translate('privacy_policy'),
-                          onPressed: () {
-                            _onNavigate(Routes.privacyPolicy);
-                          },
-                          trailing: RotatedBox(
-                            quarterTurns: UtilLanguage.isRTL() ? 2 : 0,
-                            child: Icon(
-                              Icons.keyboard_arrow_right,
-                              textDirection: TextDirection.ltr,
-                            ),
-                          ),
-                        ),
-                        AppListTitle(
                           title: Translate.of(context).translate('setting'),
                           onPressed: () {
                             _onNavigate(Routes.setting);
@@ -153,14 +133,40 @@ class _ProfileState extends State<Profile> {
                               textDirection: TextDirection.ltr,
                             ),
                           ),
+                        ),
+                        AppListTitle(
+                          title: Translate.of(context).translate('version'),
+                          onPressed: () {
+                            Fluttertoast.showToast(
+                                msg:
+                                    Translate.of(context).translate('version') +
+                                        ' ' +
+                                        Application.version);
+                          },
+                          trailing: Row(
+                            children: <Widget>[
+                              Text(
+                                Application.version,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                              RotatedBox(
+                                quarterTurns: UtilLanguage.isRTL() ? 2 : 0,
+                                child: Icon(
+                                  Icons.keyboard_arrow_right,
+                                  textDirection: TextDirection.ltr,
+                                ),
+                              ),
+                            ],
+                          ),
                           border: false,
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
+            _buildTermsConditions(),
             Padding(
               padding: EdgeInsets.only(
                 left: 20,
@@ -170,7 +176,11 @@ class _ProfileState extends State<Profile> {
               ),
               child: BlocBuilder<LoginBloc, LoginState>(
                 builder: (context, login) {
-                  return AppButton(
+                  return OutlineButton(
+                    borderSide: BorderSide(color: Color(0xffEB5757)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                    color: Colors.white,
                     onPressed: () {
                       showDialog<void>(
                         context: context,
@@ -200,13 +210,59 @@ class _ProfileState extends State<Profile> {
                         },
                       );
                     },
-                    text: Translate.of(context).translate('sign_out'),
-                    loading: login is LoginLoading,
-                    disableTouchWhenLoading: true,
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                              child: Text(
+                            Translate.of(context).translate('sign_out'),
+                            style: TextStyle(
+                                color: Color(0xffEB5757),
+                                fontWeight: FontWeight.bold),
+                          ))),
+                    ),
                   );
+                  // return AppButton(
+                  //   text: Translate.of(context).translate('sign_out'),
+                  //   loading: login is LoginLoading,
+                  //   disableTouchWhenLoading: true,
+                  // );
                 },
               ),
             )
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Function to build text terms and conditions
+  _buildTermsConditions() {
+    return Container(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 15,
+      ),
+      child: RichText(
+        text: TextSpan(
+          text: Translate.of(context).translate('privacy_policy_title'),
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              .copyWith(fontWeight: FontWeight.w600),
+          children: <TextSpan>[
+            TextSpan(
+                text: Translate.of(context).translate('privacy_policy'),
+                style: TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.bold),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    _onNavigate(Routes.privacyPolicy);
+                  })
           ],
         ),
       ),

@@ -23,6 +23,8 @@ import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/components/ColorLoader.dart';
 import 'package:absen_online/components/FacePainter.dart';
+import 'package:absen_online/components/TextList.dart';
+import 'package:http_parser/http_parser.dart';
 
 import 'dart:ui' as ui;
 
@@ -170,7 +172,7 @@ class PresensiState extends State<Presensi> {
     Map<String, dynamic> dataPresensi = new Map();
     dataPresensi['latitude'] = latitude;
     dataPresensi['longitude'] = longitude;
-    dataPresensi['deskripsi'] = deskripsi;
+    dataPresensi['deskripsiKinerja'] = deskripsi;
     dataPresensi['deviceIsRoot'] = isRoot ? 1 : 0;
     dataPresensi['deviceIsFakeGps'] = isFakeGps ? 1 : 0;
     dataPresensi['deviceIsIos'] = Platform.isIOS ? 1 : 0;
@@ -178,15 +180,25 @@ class PresensiState extends State<Presensi> {
     dataPresensi['deviceInfo'] = jsonEncode(deviceInfo);
     // dataPresensi['face_data'] = _faces;
 
+    final fileGambarName = imagePath.split("/").last + '.jpg';
+    UtilLogger.log('FILE GAMBAR', fileGambarName);
+    UtilLogger.log('FILE GAMBAR PATH', imagePath);
+
     dataPresensi['fileGambar'] = await MultipartFile.fromFile(
       imagePath,
-      filename: imagePath.split("/").last + '.jpg',
+      filename: fileGambarName,
+      contentType: MediaType("*", "*"),
     );
 
+    UtilLogger.log('DATA PRESENSI', dataPresensi['fileGambar']);
     if (filePath != null) {
+      final fileBerkasName = filePath.split("/").last;
+      UtilLogger.log('FILE BERKAS', fileBerkasName);
+      UtilLogger.log('FILE BERKAS PATH', filePath);
       dataPresensi['fileBerkas'] = await MultipartFile.fromFile(
         filePath,
-        filename: filePath.split("/")?.last,
+        filename: fileBerkasName,
+        contentType: MediaType("*", "*"),
       );
     }
 
@@ -202,7 +214,7 @@ class PresensiState extends State<Presensi> {
       } else {
         print('ERROR');
         List<String> error = [];
-        response.message.forEach((k, v) => error.add('- $v'));
+        response.message.forEach((k, v) => error.add('$v'));
         showDialog<void>(
             context: context,
             barrierDismissible: false, // user must tap button!
@@ -211,7 +223,11 @@ class PresensiState extends State<Presensi> {
                 title: Text('ERROR'),
                 content: SingleChildScrollView(
                   child: ListBody(
-                    children: error.map((e) => Text(e)).toList(),
+                    children: error
+                        .map(
+                          (e) => TextList(e),
+                        )
+                        .toList(),
                   ),
                 ),
                 actions: <Widget>[
@@ -360,10 +376,7 @@ class PresensiState extends State<Presensi> {
         child: FloatingActionButton(
           child: !isSendPresensi
               ? Icon(Icons.save, color: Colors.white)
-              : CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                  valueColor: AlwaysStoppedAnimation(Colors.grey),
-                ),
+              : CupertinoActivityIndicator(),
           onPressed: () {
             if (!isSendPresensi) {
               sendPresensi();
@@ -701,7 +714,11 @@ class PresensiState extends State<Presensi> {
   Future detectedImage(File fileRaw) async {
     UtilLogger.log('START DETECT FACE IMAGE', DateTime.now());
     final visionImage = FirebaseVisionImage.fromFile(fileRaw);
-    final faceDetector = FirebaseVision.instance.faceDetector();
+    final faceDetector = FirebaseVision.instance.faceDetector(
+      FaceDetectorOptions(
+        mode: FaceDetectorMode.fast,
+      ),
+    );
     List<Face> faces = await faceDetector.processImage(visionImage);
 
     final dataFaceFirebase = await fileRaw.readAsBytes();

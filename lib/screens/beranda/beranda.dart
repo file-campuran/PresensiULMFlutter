@@ -122,13 +122,12 @@ class _BerandaState extends State<Beranda> {
         slivers: <Widget>[
           SliverPersistentHeader(
             delegate: AppBarHomeSliver(
-              expandedHeight: 250,
-              banners: [
-                ImageModel(1, "assets/images/banner-2.jpg"),
-                ImageModel(1, "assets/images/banner-1.jpg"),
-                ImageModel(1, "assets/images/banner-3.jpg"),
-              ],
-            ),
+                expandedHeight: 300,
+                banners: Application.remoteConfig?.banner == null
+                    ? []
+                    : Application.remoteConfig.banner
+                        .map((banner) => ImageModel(1, banner))
+                        .toList()),
             pinned: true,
           ),
           SliverList(

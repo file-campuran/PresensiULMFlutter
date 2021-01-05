@@ -12,20 +12,20 @@ String configModelToJson(ConfigModel data) => json.encode(data.toJson());
 class ConfigModel {
   ConfigModel({
     this.application,
-    this.imageHeader,
+    this.banner,
   });
 
   Application application;
-  String imageHeader;
+  List<String> banner;
 
   factory ConfigModel.fromJson(Map<String, dynamic> json) => ConfigModel(
         application: Application.fromJson(json["application"]),
-        imageHeader: json["image_header"],
+        banner: List<String>.from(json["banner"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "application": application.toJson(),
-        "image_header": imageHeader,
+        "banner": List<dynamic>.from(banner.map((x) => x)),
       };
 }
 

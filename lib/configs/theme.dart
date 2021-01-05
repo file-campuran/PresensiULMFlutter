@@ -23,7 +23,6 @@ class AppTheme {
     "Merriweather",
     "SourceSansPro",
     "Intro",
-    "Roboto",
     "Lato",
   ];
 

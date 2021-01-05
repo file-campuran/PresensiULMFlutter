@@ -1,4 +1,4 @@
-enum Type {
+enum TypeValidate {
   normal,
   email,
   password,
@@ -15,13 +15,13 @@ class UtilValidator {
 
   static validate({
     String data,
-    Type type = Type.normal,
+    TypeValidate type = TypeValidate.normal,
     int min,
     int max,
     bool allowEmpty = false,
   }) {
     switch (type) {
-      case Type.email:
+      case TypeValidate.email:
 
         ///Empty
         if (!allowEmpty && data.isEmpty) {
@@ -42,7 +42,7 @@ class UtilValidator {
         }
         return null;
 
-      case Type.phone:
+      case TypeValidate.phone:
 
         ///Empty
         if (!allowEmpty && data.isEmpty) {

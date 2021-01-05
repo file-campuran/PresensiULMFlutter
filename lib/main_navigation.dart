@@ -1,14 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/application.dart';
 import 'package:absen_online/screens/screen.dart';
 import 'package:absen_online/utils/logger.dart';
 import 'package:absen_online/utils/utils.dart';
-import 'package:absen_online/models/model.dart';
-
-import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MainNavigation extends StatefulWidget {
   MainNavigation({Key key}) : super(key: key);
@@ -136,7 +132,10 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: WillPopScope(
+        child: _widgetOptions.elementAt(_selectedIndex),
+        onWillPop: onWillPop,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomBarItem(context),
         currentIndex: _selectedIndex,
@@ -147,5 +146,19 @@ class _MainNavigationState extends State<MainNavigation> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  DateTime currentBackPressTime;
+
+  /// Function double tap back when close from apps
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(msg: Translate.of(context).translate('ask_quit'));
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 }

@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Application {
   static bool debug = true;
-  static String version = '2.0.0';
+  static String version = '2.0.0 Beta.4.1.2021_B10';
   static int versionCode = 11;
   static SharedPreferences preferences;
   static UserModel user;

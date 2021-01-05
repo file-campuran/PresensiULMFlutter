@@ -65,13 +65,6 @@ class Routes {
           },
         );
 
-      case forgotPassword:
-        return MaterialPageRoute(
-          builder: (context) {
-            return ForgotPassword();
-          },
-        );
-
       case productDetail:
         final id = settings.arguments;
         return MaterialPageRoute(
@@ -101,14 +94,6 @@ class Routes {
           },
         );
 
-      case chat:
-        final id = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) => Chat(
-            id: id,
-          ),
-        );
-
       case editProfile:
         return MaterialPageRoute(
           builder: (context) {
@@ -127,20 +112,6 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) {
             return LanguageSetting();
-          },
-        );
-
-      case contactUs:
-        return MaterialPageRoute(
-          builder: (context) {
-            return ContactUs();
-          },
-        );
-
-      case aboutUs:
-        return MaterialPageRoute(
-          builder: (context) {
-            return AboutUs();
           },
         );
 
@@ -176,14 +147,6 @@ class Routes {
           builder: (context) {
             return FontSetting();
           },
-        );
-
-      case writeReview:
-        final author = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) => WriteReview(
-            author: author,
-          ),
         );
 
       case location:

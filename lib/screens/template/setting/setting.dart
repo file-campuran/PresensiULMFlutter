@@ -211,26 +211,6 @@ class _SettingState extends State<Setting> {
                 ],
               ),
             ),
-            AppListTitle(
-              title: Translate.of(context).translate('version'),
-              onPressed: () {},
-              trailing: Row(
-                children: <Widget>[
-                  Text(
-                    Application.version,
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  RotatedBox(
-                    quarterTurns: UtilLanguage.isRTL() ? 2 : 0,
-                    child: Icon(
-                      Icons.keyboard_arrow_right,
-                      textDirection: TextDirection.ltr,
-                    ),
-                  ),
-                ],
-              ),
-              border: false,
-            ),
           ],
         ),
       ),

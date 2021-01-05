@@ -40,13 +40,13 @@ class _IntroPreviewState extends State<IntroPreview> {
           color: Colors.white,
         ),
         body: Text(
-          "Favorite brands and hottest trends.",
+          Translate.of(context).translate('slide1_content'),
           style: Theme.of(context).textTheme.headline6.copyWith(
                 color: Colors.white,
               ),
         ),
         title: Text(
-          Translate.of(context).translate('shopping'),
+          Translate.of(context).translate('slide1_title'),
           style: Theme.of(context)
               .textTheme
               .headline4
@@ -66,14 +66,14 @@ class _IntroPreviewState extends State<IntroPreview> {
           color: Colors.white,
         ),
         body: Text(
-          Translate.of(context).translate('shopping_intro'),
+          Translate.of(context).translate('slide2_content'),
           style: Theme.of(context)
               .textTheme
               .headline6
               .copyWith(color: Colors.white),
         ),
         title: Text(
-          Translate.of(context).translate('payment'),
+          Translate.of(context).translate('slide2_title'),
           style: Theme.of(context)
               .textTheme
               .headline4
@@ -93,14 +93,14 @@ class _IntroPreviewState extends State<IntroPreview> {
           color: Colors.white,
         ),
         body: Text(
-          Translate.of(context).translate('payment_intro'),
+          Translate.of(context).translate('slide3_content'),
           style: Theme.of(context)
               .textTheme
               .headline6
               .copyWith(color: Colors.white),
         ),
         title: Text(
-          Translate.of(context).translate('location'),
+          Translate.of(context).translate('slide3_title'),
           style: Theme.of(context)
               .textTheme
               .headline4
