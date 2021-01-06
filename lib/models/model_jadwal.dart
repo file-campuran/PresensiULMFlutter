@@ -9,6 +9,9 @@ import 'package:absen_online/utils/utils.dart';
 JadwalListModel jadwalListModelFromJson(String str) =>
     JadwalListModel.fromJson(json.decode(str));
 
+JadwalModel jadwalModelFromJson(String str) =>
+    JadwalModel.fromJson(json.decode(str));
+
 String jadwalModelToJson(JadwalModel data) => json.encode(data.toJson());
 
 class JadwalListModel {
@@ -65,7 +68,7 @@ class JadwalModel {
         ruleUpdateAt: DateTime.parse(json["ruleUpdateAt"]),
         ruleIsUploadFile: json["ruleIsUploadFile"],
         ruleIsSifatUploadFile: json["ruleIsSifatUploadFile"],
-        presensi: json['presensi'] == false
+        presensi: json['presensi'] == false || json['presensi'] == null
             ? null
             : PresensiModel.fromJson(json['presensi']),
       );

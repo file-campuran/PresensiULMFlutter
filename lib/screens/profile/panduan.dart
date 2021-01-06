@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:absen_online/components/ColorLoader.dart';
+import 'package:absen_online/widgets/app_color_loader.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/api/presensi.dart';
 
@@ -13,18 +13,6 @@ class Panduan extends StatefulWidget {
 }
 
 WebViewController controllerGlobal;
-
-Future<bool> _exitApp(BuildContext context) async {
-  if (await controllerGlobal.canGoBack()) {
-    print("onwill goback");
-    controllerGlobal.goBack();
-  } else {
-    Scaffold.of(context).showSnackBar(
-      const SnackBar(content: Text("No back history item")),
-    );
-    return Future.value(false);
-  }
-}
 
 class _WebViewExampleState extends State<Panduan> {
   final Completer<WebViewController> _controller =
@@ -194,26 +182,4 @@ class NavigationControls extends StatelessWidget {
       },
     );
   }
-}
-
-const double _kMyLinearProgressIndicatorHeight = 6.0;
-
-class MyLinearProgressIndicator extends LinearProgressIndicator
-    implements PreferredSizeWidget {
-  MyLinearProgressIndicator({
-    Key key,
-    double value,
-    Color backgroundColor,
-    Animation<Color> valueColor,
-  }) : super(
-          key: key,
-          value: value,
-          backgroundColor: backgroundColor,
-          valueColor: valueColor,
-        ) {
-    preferredSize = Size(double.infinity, _kMyLinearProgressIndicatorHeight);
-  }
-
-  @override
-  Size preferredSize;
 }

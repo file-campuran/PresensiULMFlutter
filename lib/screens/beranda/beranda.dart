@@ -1,13 +1,10 @@
-import 'package:absen_online/components/OnBoarding.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/models/screen_models/screen_models.dart';
 import 'beranda_sliver_app_bar.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
-import 'package:absen_online/components/TimmerWidget.dart';
 
 class Beranda extends StatefulWidget {
   Beranda({Key key}) : super(key: key);
@@ -46,6 +43,11 @@ class _BerandaState extends State<Beranda> {
           _infoData = result.message;
           _jadwalData = JadwalListModel.fromJson(result.data);
         });
+      } else if (result.code == CODE.INFO) {
+        setState(() {
+          _errorData = null;
+          _infoData = result.message;
+        });
       } else {
         setState(() {
           _errorData = result.message;
@@ -57,7 +59,7 @@ class _BerandaState extends State<Beranda> {
   ///Build list recent
   Widget _buildList() {
     if (_errorData != null) {
-      return Error(
+      return AppError(
         title: _errorData['title'].toString(),
         message: _errorData['content'].toString(),
         image: _errorData['image'],
@@ -67,12 +69,10 @@ class _BerandaState extends State<Beranda> {
     }
 
     if (_infoData != null) {
-      return Info(
+      return AppInfo(
         title: _infoData['title'].toString(),
         message: _infoData['content'].toString(),
-        image: _infoData['type'].toString() == 'hari'
-            ? ''
-            : 'assets/svg/calendar.svg',
+        image: _infoData['type'].toString() == 'hari' ? '' : Images.Calendar,
         mode: ViewMode.Lottie,
       );
     }
@@ -93,7 +93,7 @@ class _BerandaState extends State<Beranda> {
     return Column(
       children: _jadwalData.list
           .map(
-            (item) => TimmerWidget(
+            (item) => AppTimmer(
               start: item.ruleStartTime,
               end: item.ruleEndTime,
               title: item.ruleStatus,

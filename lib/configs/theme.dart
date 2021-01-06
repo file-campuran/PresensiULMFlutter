@@ -29,18 +29,18 @@ class AppTheme {
   ///Default Theme
   static ThemeModel currentTheme = ThemeModel.fromJson({
     "name": "default",
-    "color": Color(0xfff6bb41),
-    "light": "pastelOrangeLight",
-    "dark": "pastelOrangeDark",
+    "color": Color(0xffff9f43),
+    "light": "ulmLight",
+    "dark": "ulmDark",
   });
 
   ///List Theme Support in Application
   static List themeSupport = [
     {
       "name": "default",
-      "color": Color(0xfff6bb41),
-      "light": "pastelOrangeLight",
-      "dark": "pastelOrangeDark",
+      "color": Color(0xffff9f43),
+      "light": "ulmLight",
+      "dark": "ulmDark",
     },
     {
       "name": "brown",
@@ -62,7 +62,7 @@ class AppTheme {
     },
     {
       "name": "green",
-      "color": Color(0xff93b7b0),
+      "color": Color(0xff27AE60),
       "light": "greenLight",
       "dark": "greenDark",
     },

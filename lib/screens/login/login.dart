@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:absen_online/blocs/bloc.dart';
-import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
-import 'package:absen_online/components/TextList.dart';
 import 'package:absen_online/widgets/widget.dart';
 
 class Login extends StatefulWidget {
@@ -45,8 +43,8 @@ class _LoginState extends State<Login> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                TextList('Operator Fakultas, jika anda seorang Dosen.'),
-                TextList(
+                AppTextList('Operator Fakultas, jika anda seorang Dosen.'),
+                AppTextList(
                     'Admin Tenaga Kependidikan (Subbag Tenaga Kependidikan kepegawaian rektorat), jika anda seorang Tenaga Kependidikan.'),
               ],
             ),
@@ -62,11 +60,6 @@ class _LoginState extends State<Login> {
         );
       },
     );
-  }
-
-  ///On navigate sign up
-  void _signUp() {
-    Navigator.pushNamed(context, Routes.signUp);
   }
 
   ///On login

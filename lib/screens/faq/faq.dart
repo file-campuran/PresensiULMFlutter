@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:absen_online/blocs/bloc.dart';
-import 'package:absen_online/configs/config.dart';
-import 'package:absen_online/utils/language.dart';
-import 'package:absen_online/utils/other.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
-import 'package:absen_online/components/ColorLoader.dart';
-import 'package:absen_online/components/Expandable.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_html/flutter_html.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Faq extends StatefulWidget {
@@ -24,52 +15,24 @@ class Faq extends StatefulWidget {
 }
 
 class _FaqState extends State<Faq> {
-  LanguageBloc _languageBloc;
   final _textLanguageController = TextEditingController();
-  bool _loading = false;
 
-  List<Locale> _listLanguage = AppLanguage.supportLanguage;
-  Locale _languageSelected = AppLanguage.defaultLanguage;
   String search = '';
 
   @override
   void initState() {
-    _languageBloc = BlocProvider.of<LanguageBloc>(context);
     super.initState();
   }
 
-  ///On filter language
   void _onFilter(String text) {
-    // if (text.isEmpty) {
     setState(() {
       search = text.toLowerCase();
     });
-    // return;
-    // }
-    // setState(() {
-    //   _listLanguage = _listLanguage.where(((item) {
-    //     return UtilLanguage.getGlobalLanguageName(item.languageCode)
-    //         .toUpperCase()
-    //         .contains(text.toUpperCase());
-    //   })).toList();
-    // });
-  }
-
-  ///On change language
-  Future<void> _changeLanguage() async {
-    UtilOther.hiddenKeyboard(context);
-    setState(() {
-      _loading = true;
-    });
-    _languageBloc.add(
-      ChangeLanguage(_languageSelected),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     Query query = FirebaseFirestore.instance.collection('faq');
-    // .where('title', arrayContains: ['Tes']);
 
     return Scaffold(
       appBar: AppBar(
@@ -103,7 +66,7 @@ class _FaqState extends State<Faq> {
               stream: query.snapshots(),
               builder: (context, stream) {
                 if (stream.connectionState == ConnectionState.waiting) {
-                  return Center(child: ColorLoader());
+                  return Center(child: AppColorLoader());
                 }
 
                 if (stream.hasError) {
@@ -139,7 +102,7 @@ class _FaqState extends State<Faq> {
 
     return Column(
       children: <Widget>[
-        ExpandableNotifier(
+        AppExpandableNotifier(
           child: ScrollOnExpand(
             scrollOnExpand: false,
             scrollOnCollapse: true,

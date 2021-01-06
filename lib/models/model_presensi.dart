@@ -93,7 +93,9 @@ class PresensiModel {
           ? 'https://presensi.ulm.ac.id/pwa/getBerkas/${json["fileBerkas"]}'
           : null,
       deskripsiKinerja:
-          json["deskripsiKinerja"] == 'null' ? '' : json["deskripsiKinerja"],
+          json["deskripsiKinerja"] == 'null' || json["deskripsiKinerja"] == null
+              ? ''
+              : json["deskripsiKinerja"],
       deviceIsIos: json["deviceIsIos"] ?? '',
       deviceIsRoot: json["deviceIsRoot"] ?? '',
       deviceIsFakeGps: json["deviceIsFakeGps"] ?? '',

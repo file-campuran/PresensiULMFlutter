@@ -9,7 +9,6 @@ import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:absen_online/components/OnBoarding.dart';
 
 enum PageType { map, list }
 
@@ -39,6 +38,7 @@ class _RiwayatState extends State<Riwayat> {
 
   Map<String, dynamic> _errorData;
   bool _btnLoading = false;
+  bool _isEmptyListPresensi = false;
 
   @override
   void initState() {
@@ -80,18 +80,24 @@ class _RiwayatState extends State<Riwayat> {
           _markers[markerId] = marker;
         });
 
-        setState(() {
-          _errorData = null;
-          _pageType = PageType.map;
-          _presensiList = listProduct;
-          _initPosition = CameraPosition(
-            target: LatLng(
-              listProduct.list[0].latitude,
-              listProduct.list[0].longitude,
-            ),
-            zoom: 14.4746,
-          );
-        });
+        if (listProduct.list.length == 0) {
+          setState(() {
+            _isEmptyListPresensi = true;
+          });
+        } else {
+          setState(() {
+            _errorData = null;
+            _pageType = PageType.map;
+            _presensiList = listProduct;
+            _initPosition = CameraPosition(
+              target: LatLng(
+                listProduct.list[0].latitude,
+                listProduct.list[0].longitude,
+              ),
+              zoom: 14.4746,
+            );
+          });
+        }
       } else {
         setState(() {
           _errorData = getPresensi.message;
@@ -291,15 +297,26 @@ class _RiwayatState extends State<Riwayat> {
 
   ///Widget build Content
   Widget _buildList() {
+    if (_isEmptyListPresensi) {
+      return Center(
+        child: AppInfo(
+          title: 'Informasi',
+          message: 'Data Presensi Kosong',
+          image: Images.Calendar,
+        ),
+      );
+    }
+
     if (_errorData != null) {
       return Center(
-          child: Error(
-        title: _errorData['title'].toString(),
-        message: _errorData['content'].toString(),
-        image: _errorData['image'],
-        onPress: _loadData,
-        btnRefreshLoading: _btnLoading,
-      ));
+        child: AppError(
+          title: _errorData['title'].toString(),
+          message: _errorData['content'].toString(),
+          image: _errorData['image'],
+          onPress: _loadData,
+          btnRefreshLoading: _btnLoading,
+        ),
+      );
     }
 
     if (_presensiList?.list == null) {

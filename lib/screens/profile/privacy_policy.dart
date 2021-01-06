@@ -3,7 +3,7 @@ import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_html/flutter_html.dart';
-import 'package:absen_online/components/ColorLoader.dart';
+import 'package:absen_online/widgets/app_color_loader.dart';
 
 class PrivacyPolicy extends StatefulWidget {
   PrivacyPolicy({Key key}) : super(key: key);
@@ -65,7 +65,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                     )),
                   ],
                 )
-              : ColorLoader(),
+              : AppColorLoader(),
         ),
       ),
     );

@@ -23,8 +23,10 @@ class PresensiRepository {
 
   // Ambil list / riwayat presensi
   Future<ApiModel> getPresensi() async {
+    UserModel _userModel = userModelFromJson(UtilPreferences.getString('user'));
+
     return await Consumer()
-        .where({'user': '198112022014091002'})
+        .where({'user': _userModel.nip})
         .orderBy({'absenTanggal': 'DESC'})
         .limit(10)
         .execute(url: '/absen');
@@ -41,13 +43,21 @@ class PresensiRepository {
         .execute(url: '/absen', formData: formData, method: MethodRequest.POST);
   }
 
+  // Detail presensi
+  Future<ApiModel> getDetailPresensi() async {
+    UserModel _userModel = userModelFromJson(UtilPreferences.getString('user'));
+
+    return await Consumer()
+        .where({'user': _userModel.nip, 'role': _userModel.role}).execute(
+            url: '/absen/detail', method: MethodRequest.GET);
+  }
+
   // Ambil jadwal presensi
   Future<ApiModel> getJadwal() async {
     UserModel _userModel = userModelFromJson(UtilPreferences.getString('user'));
-    return await Consumer().where({
-      'role': _userModel.role,
-      'user =': '198112022014091002'
-    }).execute(url: '/absen/jadwal_presensi');
+    return await Consumer()
+        .where({'role': _userModel.role, 'user': _userModel.nip}).execute(
+            url: '/absen/jadwal_presensi');
   }
 
   // Ubah Biodata, jika ada di database maka di ubah, jika tidak maka akan ditambahkan

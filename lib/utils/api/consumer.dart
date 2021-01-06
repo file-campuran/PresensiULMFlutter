@@ -29,7 +29,7 @@ class Consumer {
   Consumer._internal();
 
   final String appId = 'PresensiULM';
-  final String baseUrl = 'http://10.72.2.19/PTIK/api-siapps/public/api';
+  final String baseUrl = 'http://192.168.43.247/PTIK/api-siapps/public/api';
   final String apiKey = '605dafe39ee0780e8cf2c829434eeae8';
   final int timeout = 10; //Seconds
 

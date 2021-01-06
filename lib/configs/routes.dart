@@ -3,30 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:absen_online/screens/screen.dart';
 
 class Routes {
-  static const String signIn = "/signIn";
-  static const String signUp = "/signUp";
-  static const String forgotPassword = "/forgotPassword";
-  static const String productDetail = "/productDetail";
-  static const String productDetailTab = "ProductDetailTab";
-  static const String searchHistory = "/searchHistory";
-  static const String category = "/category";
   static const String editProfile = "/editProfile";
-  static const String changePassword = "/changePassword";
   static const String changeLanguage = "/changeLanguage";
-  static const String contactUs = "/contactUs";
-  static const String chat = "/chat";
-  static const String aboutUs = "/aboutUs";
   static const String gallery = "/gallery";
   static const String photoPreview = "/photoPreview";
   static const String themeSetting = "/themeSetting";
-  static const String listProduct = "/listProduct";
-  static const String filter = "/filter";
-  static const String review = "/review";
-  static const String writeReview = "/writeReview";
   static const String location = "/location";
   static const String setting = "/setting";
   static const String fontSetting = "/fontSetting";
-  static const String chooseLocation = "/chooseLocation";
   static const String faq = "/faq";
   static const String privacyPolicy = "/privacyPolicy";
   static const String panduan = "/panduan";
@@ -34,13 +18,6 @@ class Routes {
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case signIn:
-        return MaterialPageRoute(
-          builder: (context) {
-            return SignIn();
-          },
-        );
-
       case privacyPolicy:
         return MaterialPageRoute(
           builder: (context) {
@@ -65,46 +42,10 @@ class Routes {
           },
         );
 
-      case productDetail:
-        final id = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) {
-            return ProductDetail(id: '1');
-          },
-        );
-
-      case productDetailTab:
-        final id = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) {
-            return ProductDetailTab(id: id);
-          },
-        );
-
-      case searchHistory:
-        return MaterialPageRoute(
-          builder: (context) => SearchHistory(),
-          fullscreenDialog: true,
-        );
-
-      case category:
-        return MaterialPageRoute(
-          builder: (context) {
-            return Category();
-          },
-        );
-
       case editProfile:
         return MaterialPageRoute(
           builder: (context) {
             return EditProfile();
-          },
-        );
-
-      case changePassword:
-        return MaterialPageRoute(
-          builder: (context) {
-            return ChangePassword();
           },
         );
 
@@ -119,19 +60,6 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) {
             return ThemeSetting();
-          },
-        );
-
-      case filter:
-        return MaterialPageRoute(
-          builder: (context) => Filter(),
-          fullscreenDialog: true,
-        );
-
-      case review:
-        return MaterialPageRoute(
-          builder: (context) {
-            return Review();
           },
         );
 
@@ -157,14 +85,6 @@ class Routes {
           ),
         );
 
-      case listProduct:
-        final category = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) {
-            return ListProduct(title: category);
-          },
-        );
-
       case gallery:
         final photo = settings.arguments;
         return MaterialPageRoute(
@@ -180,14 +100,6 @@ class Routes {
             initialIndex: params['index'],
           ),
           fullscreenDialog: true,
-        );
-
-      case chooseLocation:
-        final location = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) {
-            return ChooseLocation(location: location);
-          },
         );
 
       case faq:

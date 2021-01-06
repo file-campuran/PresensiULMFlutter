@@ -86,6 +86,15 @@ class MyException {
                 "image": Warning
               },
             });
+          } else if (e.response.statusCode == 403) {
+            return ApiModel.fromJson({
+              'code': 401,
+              "message": <String, dynamic>{
+                'title': ErrorInternalTitle,
+                'content': Error401,
+                "image": Warning
+              },
+            });
           } else if (e.response.statusCode == 404) {
             return ApiModel.fromJson({
               'code': 404,

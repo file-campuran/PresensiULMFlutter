@@ -64,6 +64,23 @@ class Images {
 
   ///Lottie
   static const String Writting = "assets/lottie/writing.json";
+  static const String Watermelon = "assets/lottie/watermelon.json";
+  static const String Network = "assets/lottie/network.json";
+  static const String Loading = "assets/lottie/loading.json";
+  static const String LoadingCircle = "assets/lottie/loading_circle_color.json";
+
+  //SVG
+  static const String Astrounot = "assets/lottie/astronot.json";
+  static const String Calendar = "assets/lottie/calendar.json";
+  static const String Document = "assets/lottie/dcument.json";
+  static const String Dream = "assets/lottie/dream.json";
+  static const String Error = "assets/lottie/error.json";
+  static const String Info = "assets/lottie/info.json";
+  static const String Repair = "assets/lottie/repair.json";
+  static const String Search = "assets/lottie/search.json";
+  static const String Setting = "assets/lottie/setting.json";
+  static const String Warning = "assets/lottie/warning.json";
+  static const String Working = "assets/lottie/working.json";
 
   ///Singleton factory
   static final Images _instance = Images._internal();

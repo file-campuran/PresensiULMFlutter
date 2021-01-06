@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/models/screen_models/screen_models.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class RiwayatDetail extends StatefulWidget {
@@ -17,8 +16,6 @@ class RiwayatDetail extends StatefulWidget {
 }
 
 class _RiwayatDetailState extends State<RiwayatDetail> {
-  ProductDetailPageModel _detailPage;
-
   @override
   void initState() {
     // _loadData();

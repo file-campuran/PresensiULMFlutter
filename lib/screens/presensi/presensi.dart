@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:absen_online/components/MyButton.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
@@ -14,16 +13,12 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/configs/config.dart';
-
 import 'package:image_editor/image_editor.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:device_info/device_info.dart';
 import 'package:trust_fall/trust_fall.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/components/ColorLoader.dart';
-import 'package:absen_online/components/FacePainter.dart';
-import 'package:absen_online/components/TextList.dart';
 import 'package:http_parser/http_parser.dart';
 
 import 'dart:ui' as ui;
@@ -51,8 +46,8 @@ class Presensi extends StatefulWidget {
 class PresensiState extends State<Presensi> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  var infoPresensi;
-  var responseStatus;
+  Map<String, dynamic> _infoData;
+  Map<String, dynamic> _errorData;
 
   bool isSendPresensi = false;
 
@@ -80,6 +75,9 @@ class PresensiState extends State<Presensi> {
 
   Size imageSize;
   Face faceDetected;
+
+  bool _btnLoading = false;
+  JadwalModel _infoPresensi;
 
   LocationError errorLocation = new LocationError();
   // @override
@@ -161,15 +159,40 @@ class PresensiState extends State<Presensi> {
   }
 
   void initPresensi() {
-    // apiProvider.getInfoPresensi().then((value) => setState(() {
-    //       infoPresensi = value;
-    //       responseStatus = value;
+    setState(() {
+      _btnLoading = true;
+    });
+    PresensiRepository().getDetailPresensi().then((result) {
+      setState(() {
+        _btnLoading = false;
+      });
+      if (result.code == CODE.SUCCESS) {
+        setState(() {
+          _errorData = null;
+          _infoPresensi = JadwalModel.fromJson(result.data);
+        });
+      } else if (result.code == CODE.INFO) {
+        setState(() {
+          _errorData = null;
+          _infoData = {
+            'title': 'Informasi',
+            'content': result.message,
+          };
+        });
+      } else {
+        setState(() {
+          _errorData = result.message;
+        });
+      }
+    });
+    //        = value;
     //       isRefreshLoading = false;
     //     }));
   }
 
   Future<void> sendPresensi() async {
     Map<String, dynamic> dataPresensi = new Map();
+    dataPresensi['status'] = _infoPresensi.ruleStatus;
     dataPresensi['latitude'] = latitude;
     dataPresensi['longitude'] = longitude;
     dataPresensi['deskripsiKinerja'] = deskripsi;
@@ -209,12 +232,22 @@ class PresensiState extends State<Presensi> {
       final response = await PresensiRepository().setPresensi(dataPresensi);
 
       if (response.code == CODE.SUCCESS) {
-        print('SUCCESS');
         print(response.data);
+        setState(() {
+          _infoData = {
+            'title': 'Informasi',
+            'content': 'Terimakasih sudah melakukan presensi',
+          };
+        });
       } else {
-        print('ERROR');
+        setState(() {
+          isSendPresensi = false;
+        });
         List<String> error = [];
-        response.message.forEach((k, v) => error.add('$v'));
+
+        if (response.message is Map) {
+          response.message.forEach((k, v) => error.add('$v'));
+        }
         showDialog<void>(
             context: context,
             barrierDismissible: false, // user must tap button!
@@ -222,13 +255,15 @@ class PresensiState extends State<Presensi> {
               return AlertDialog(
                 title: Text('ERROR'),
                 content: SingleChildScrollView(
-                  child: ListBody(
-                    children: error
-                        .map(
-                          (e) => TextList(e),
-                        )
-                        .toList(),
-                  ),
+                  child: response.message is String
+                      ? AppTextList(response.message)
+                      : ListBody(
+                          children: error
+                              .map(
+                                (e) => AppTextList(e),
+                              )
+                              .toList(),
+                        ),
                 ),
                 actions: <Widget>[
                   FlatButton(
@@ -241,10 +276,9 @@ class PresensiState extends State<Presensi> {
               );
             });
       }
-      setState(() {
-        isSendPresensi = false;
-      });
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   chooseFile() async {
@@ -258,7 +292,33 @@ class PresensiState extends State<Presensi> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildContent();
+    if (_errorData != null) {
+      return AppError(
+        title: _errorData['title'].toString(),
+        message: _errorData['content'].toString(),
+        image: _errorData['image'],
+        onPress: initPresensi,
+        btnRefreshLoading: _btnLoading,
+      );
+    }
+
+    if (_infoData != null) {
+      return _buildInfo();
+    } else if (_infoPresensi != null) {
+      return _buildContent();
+    }
+
+    return Center(child: AppColorLoader());
+  }
+
+  Widget _buildInfo() {
+    return Scaffold(
+      body: AppInfo(
+        title: _infoData['title'].toString(),
+        message: _infoData['content'].toString(),
+        image: Images.Calendar,
+      ),
+    );
   }
 
   Widget _buildContent() {
@@ -577,14 +637,14 @@ class PresensiState extends State<Presensi> {
           SizedBox(
             height: 10,
           ),
-          MyButton(
+          AppMyButton(
             loading: false,
             text: 'Reload',
             icon: Icons.refresh,
             onPress: _getLocation,
           ),
         ] else ...[
-          ColorLoader(),
+          AppColorLoader(),
           Text(Translate.of(context).translate('get_location')),
         ]
       ]);
@@ -605,7 +665,7 @@ class PresensiState extends State<Presensi> {
           width: _image.width.toDouble(),
           height: _image.height.toDouble(),
           child: CustomPaint(
-            painter: FacePainter(_image, _faces),
+            painter: AppFacePainter(_image, _faces),
           ),
         ),
       ),
@@ -615,7 +675,7 @@ class PresensiState extends State<Presensi> {
   Widget cameraPreviewWidget() {
     if (!isReady || !controller.value.isInitialized) {
       return Center(
-        child: ColorLoader(),
+        child: AppColorLoader(),
       );
     }
 

@@ -5,7 +5,6 @@ import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/api/presensi.dart';
-import 'package:absen_online/components/TextList.dart';
 
 class EditProfile extends StatefulWidget {
   EditProfile({Key key}) : super(key: key);
@@ -116,7 +115,7 @@ class _EditProfileState extends State<EditProfile> {
               return AlertDialog(
                 title: Text('ERROR'),
                 content: SingleChildScrollView(
-                  child: TextList(apiModel.message is String
+                  child: AppTextList(apiModel.message is String
                       ? apiModel.message
                       : apiModel.message['content']),
                 ),
