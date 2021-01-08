@@ -6,7 +6,7 @@ enum LogType { INFO, WARN, DANGER }
 enum ColorsHeader { RED, GREEN, PURPLE, YELLOW, DEFAULT }
 
 class UtilLogger {
-  static const String TAG = "LISTAR";
+  static const String TAG = "PRESENSI";
 
   static log([String tag = TAG, dynamic msg, LogType log = LogType.INFO]) {
     if (Application.debug) {

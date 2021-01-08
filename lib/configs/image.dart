@@ -70,17 +70,18 @@ class Images {
   static const String LoadingCircle = "assets/lottie/loading_circle_color.json";
 
   //SVG
-  static const String Astrounot = "assets/lottie/astronot.json";
-  static const String Calendar = "assets/lottie/calendar.json";
-  static const String Document = "assets/lottie/dcument.json";
-  static const String Dream = "assets/lottie/dream.json";
-  static const String Error = "assets/lottie/error.json";
-  static const String Info = "assets/lottie/info.json";
-  static const String Repair = "assets/lottie/repair.json";
-  static const String Search = "assets/lottie/search.json";
-  static const String Setting = "assets/lottie/setting.json";
-  static const String Warning = "assets/lottie/warning.json";
-  static const String Working = "assets/lottie/working.json";
+  static const String Astrounot = "assets/svg/astronot.svg";
+  static const String Calendar = "assets/svg/calendar.svg";
+  static const String Document = "assets/svg/dcument.svg";
+  static const String Dream = "assets/svg/dream.svg";
+  static const String Error = "assets/svg/error.svg";
+  static const String Info = "assets/svg/info.svg";
+  static const String Repair = "assets/svg/repair.svg";
+  static const String Search = "assets/svg/search.svg";
+  static const String Setting = "assets/svg/setting.svg";
+  static const String Warning = "assets/svg/warning.svg";
+  static const String Working = "assets/svg/working.svg";
+  static const String Empty = "assets/svg/empty.svg";
 
   ///Singleton factory
   static final Images _instance = Images._internal();

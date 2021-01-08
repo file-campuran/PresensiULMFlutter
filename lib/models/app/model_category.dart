@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
 
@@ -45,16 +45,25 @@ class CategoryModel {
   }
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    final icon = UtilIcon.getIconData(json['icon'] ?? "Unknown");
-    final color = UtilColor.getColorFromHex(json['color'] ?? "#ff8a65");
+    final icon = Icons.alarm;
+    final color = Color(0xFF58d68d);
     return CategoryModel(
       id: json['id'] as int ?? 0,
       title: json['title'] as String ?? 'Unknown',
       count: json['count'] as int ?? 0,
       image: json['image'] as String ?? 'Unknown',
-      icon: icon,
+      icon: Icons.alarm,
       color: color,
-      type: _setType(json['type'] as String ?? "Unknown"),
+      type: ProductType.hotel,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'count': count,
+      'image': image,
+    };
   }
 }

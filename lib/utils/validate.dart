@@ -37,7 +37,7 @@ class UtilValidator {
         return null;
 
       case TypeValidate.phone:
-        final Pattern _emailPattern = r"^(^62\s?|^8)(\d{5,13})$";
+        final Pattern _emailPattern = r"^(^62\s?|^08)(\d{5,13})$";
         if (!RegExp(_emailPattern).hasMatch(data)) {
           return error_phone;
         }

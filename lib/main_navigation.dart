@@ -1,10 +1,16 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:absen_online/configs/application.dart';
+import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/screens/screen.dart';
 import 'package:absen_online/utils/logger.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:io';
+
+// Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
+//   LocalNotification().localNotifikasi(title: 'TITLE', body: 'BODY');
+//   print('on background $message');
+// }
 
 class MainNavigation extends StatefulWidget {
   MainNavigation({Key key}) : super(key: key);
@@ -22,28 +28,42 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   void initState() {
     _fcmHandle();
+    LocalNotification().init();
     super.initState();
+  }
+
+  static Future myBackgroundMessageHandler(Map<String, dynamic> message) {
+    final notification = message['data'];
+    LocalNotification().localNotifikasi(
+        title: notification['title'], body: notification['body']);
+    UtilLogger.log("onBackground", '$message');
+    return null;
+  }
+
+  void iOSPermission() {
+    _fcm.requestNotificationPermissions(
+        IosNotificationSettings(sound: true, badge: true, alert: true));
+    _fcm.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
   }
 
   ///Support Notification listen
   void _fcmHandle() async {
-    await Future.delayed(Duration(seconds: 2));
+    if (Platform.isIOS) iOSPermission();
+    // await Future.delayed(Duration(seconds: 2));
     _fcm.requestNotificationPermissions();
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
-        final notification = message['aps']['alert'];
-        UtilLogger.log("onMessage", '$notification');
-        _showNotification(notification['title'], notification['body']);
+        _showNotif("onMessage", message);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        final notification = message['aps']['alert'];
-        _showNotification(notification['title'], notification['body']);
+        _showNotif("onLunch", message);
       },
       onResume: (Map<String, dynamic> message) async {
-        final notification = message['aps']['alert'];
-        _showNotification(notification['title'], notification['body']);
-        UtilLogger.log("onResume", 'onMessage $message');
+        _showNotif("onResumr", message);
       },
+      // onBackgroundMessage: myBackgroundMessageHandler,
     );
     Application.pushToken = await _fcm.getToken();
     UtilLogger.log("MY TOKEN", Application.pushToken);
@@ -53,39 +73,20 @@ class _MainNavigationState extends State<MainNavigation> {
     // UtilLogger.log('REMOTE CONFIG', Application.remoteConfig.toJson());
   }
 
+  void _showNotif(String log, Map<String, dynamic> message) {
+    final notification = message['data'];
+    UtilLogger.log(log, '$notification');
+    AppNotification()
+        .addNotification(notification['title'], notification['body']);
+    LocalNotification().localNotifikasi(
+        title: notification['title'], body: notification['body']);
+  }
+
   ///On change tab bottom menu
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-  }
-
-  ///Show notification received
-  Future<void> _showNotification(String title, String message) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message, style: Theme.of(context).textTheme.bodyText1),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(Translate.of(context).translate('close')),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   ///List bottom menu
@@ -113,6 +114,22 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
       ),
       BottomNavigationBarItem(
+        icon: new Stack(children: <Widget>[
+          new Icon(Icons.alarm),
+          new Positioned(
+            // draw a red marble
+            top: 0.0,
+            right: 0.0,
+            child: new Icon(Icons.brightness_1,
+                size: 8.0, color: Colors.redAccent),
+          )
+        ]),
+        title: Padding(
+          padding: EdgeInsets.only(top: 3),
+          child: Text(Translate.of(context).translate('notification')),
+        ),
+      ),
+      BottomNavigationBarItem(
         icon: Icon(Icons.account_circle),
         title: Padding(
           padding: EdgeInsets.only(top: 3),
@@ -126,11 +143,13 @@ class _MainNavigationState extends State<MainNavigation> {
     Beranda(),
     Presensi(),
     Riwayat(),
+    NotificationList(),
     Profile()
   ];
 
   @override
   Widget build(BuildContext context) {
+    // LocalNotification().localNotifikasi(title: "TETEL", body: "BODE");
     return Scaffold(
       body: WillPopScope(
         child: _widgetOptions.elementAt(_selectedIndex),

@@ -53,8 +53,8 @@ class JadwalModel {
   String ruleEndTime;
   DateTime ruleCreateAt;
   DateTime ruleUpdateAt;
-  String ruleIsUploadFile;
-  String ruleIsSifatUploadFile;
+  bool ruleIsUploadFile;
+  bool ruleIsSifatUploadFile;
   PresensiModel presensi;
 
   factory JadwalModel.fromJson(Map<String, dynamic> json) => JadwalModel(
@@ -66,8 +66,8 @@ class JadwalModel {
         ruleEndTime: json["ruleEndTime"],
         ruleCreateAt: DateTime.parse(json["ruleCreateAt"]),
         ruleUpdateAt: DateTime.parse(json["ruleUpdateAt"]),
-        ruleIsUploadFile: json["ruleIsUploadFile"],
-        ruleIsSifatUploadFile: json["ruleIsSifatUploadFile"],
+        ruleIsUploadFile: json["ruleIsUploadFile"] == '1',
+        ruleIsSifatUploadFile: json["ruleIsSifatUploadFile"] == '1',
         presensi: json['presensi'] == false || json['presensi'] == null
             ? null
             : PresensiModel.fromJson(json['presensi']),

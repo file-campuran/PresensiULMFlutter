@@ -15,6 +15,7 @@ class Routes {
   static const String privacyPolicy = "/privacyPolicy";
   static const String panduan = "/panduan";
   static const String riwayatDetail = "/riwayatDetail";
+  static const String notification = "/notification";
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -32,6 +33,13 @@ class Routes {
           },
         );
 
+      case notification:
+        return MaterialPageRoute(
+          builder: (context) {
+            return NotificationList();
+          },
+        );
+
       case riwayatDetail:
         final args = settings.arguments;
         return MaterialPageRoute(
@@ -43,9 +51,10 @@ class Routes {
         );
 
       case editProfile:
+        final leading = settings.arguments;
         return MaterialPageRoute(
           builder: (context) {
-            return EditProfile();
+            return EditProfile(leading: leading);
           },
         );
 

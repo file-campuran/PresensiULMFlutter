@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/models/model.dart';
+import 'package:absen_online/api/geocoder_repository.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class RiwayatDetail extends StatefulWidget {
@@ -16,10 +18,19 @@ class RiwayatDetail extends StatefulWidget {
 }
 
 class _RiwayatDetailState extends State<RiwayatDetail> {
+  String address = '';
+
   @override
   void initState() {
-    // _loadData();
+    _loadData();
     super.initState();
+  }
+
+  void _loadData() async {
+    address = await GeocoderRepository().getAddress(
+        latitude: widget.item.latitude, longitude: widget.item.longitude);
+    setState(() {});
+    UtilLogger.log('ADDRESS', address);
   }
 
   ///On navigate map
@@ -28,7 +39,7 @@ class _RiwayatDetailState extends State<RiwayatDetail> {
       context,
       Routes.location,
       arguments: LocationModel(
-          1, widget.item.status, widget.item.latitude, widget.item.longitude),
+          1, address, widget.item.latitude, widget.item.longitude),
     );
   }
 
@@ -68,6 +79,68 @@ class _RiwayatDetailState extends State<RiwayatDetail> {
                     .copyWith(fontWeight: FontWeight.w600),
               ),
             ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 20),
+          ),
+          InkWell(
+            onTap: () {},
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).dividerColor),
+                  child: Icon(
+                    Icons.location_on,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          'Alamat',
+                          style: Theme.of(context).textTheme.caption,
+                        ),
+                        address != ''
+                            ? Text(
+                                address,
+                                overflow: TextOverflow.clip,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(fontWeight: FontWeight.w600),
+                              )
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppSkeleton(
+                                    height: 10,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                  ),
+                                  SizedBox(height: 5),
+                                  AppSkeleton(
+                                    height: 10,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
+                                  )
+                                ],
+                              ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 20),
@@ -169,7 +242,7 @@ class _RiwayatDetailState extends State<RiwayatDetail> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            expandedHeight: 600.0,
+            expandedHeight: MediaQuery.of(context).size.height * 0.7,
             pinned: true,
             actions: <Widget>[
               IconButton(

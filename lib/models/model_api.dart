@@ -4,7 +4,7 @@ ApiModel apiModelFromJson(String str) => ApiModel.fromJson(json.decode(str));
 
 String apiModelToJson(ApiModel data) => json.encode(data.toJson());
 
-enum CODE { SUCCESS, ERROR, NOT_FOUND, VALIDATE, INFO }
+enum CODE { SUCCESS, ERROR, NOT_FOUND, VALIDATE, INFO, TOKEN_EXPIRED }
 
 class ApiModel {
   ApiModel({
@@ -43,6 +43,9 @@ CODE _convertStatusCode(int code) {
       break;
     case 109:
       return CODE.INFO;
+      break;
+    case 401:
+      return CODE.TOKEN_EXPIRED;
       break;
     default:
       return CODE.NOT_FOUND;

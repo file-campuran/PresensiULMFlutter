@@ -4,6 +4,7 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'beranda_sliver_app_bar.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/widgets/widget.dart';
 
 class Beranda extends StatefulWidget {
@@ -48,6 +49,8 @@ class _BerandaState extends State<Beranda> {
           _errorData = null;
           _infoData = result.message;
         });
+      } else if (result.code == CODE.TOKEN_EXPIRED) {
+        BlocProvider.of<LoginBloc>(context).add(OnLogout());
       } else {
         setState(() {
           _errorData = result.message;

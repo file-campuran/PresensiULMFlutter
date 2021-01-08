@@ -32,6 +32,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       ///Setup SharedPreferences
       UtilLogger.log('INITIALIZE SHARED PREF');
       Application.preferences = await SharedPreferences.getInstance();
+      Application.user = userModelFromJson(UtilPreferences.getString('user'));
       UtilLogger.log('SUCCESS INITIALIZE SHARED PREF');
 
       ///Get old Theme & Font & Language

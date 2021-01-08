@@ -141,17 +141,19 @@ class AppTimmer extends StatelessWidget {
                                         left: 6, right: 6, top: 3, bottom: 3),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(3),
-                                      color: Color.fromRGBO(100, 0, 255, 0.1),
+                                      color: Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.2),
                                     ),
                                     child: Text(
-                                      timeLeft == 'null'
-                                          ? "Waktu Presensi Berakhir"
-                                          : 'Sisa waktu',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 9,
-                                          color: Colors.blueAccent),
-                                    ),
+                                        timeLeft == 'null'
+                                            ? "Waktu Presensi Berakhir"
+                                            : 'Sisa waktu',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 9,
+                                            color: Theme.of(context)
+                                                .primaryColor)),
                                   ),
                                   Text(
                                     timeLeft == 'null' ? "" : timeLeft,

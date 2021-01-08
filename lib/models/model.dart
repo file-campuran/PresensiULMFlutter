@@ -5,7 +5,7 @@ export 'app/model_hour.dart';
 export 'app/model_icon.dart';
 export 'app/model_location.dart';
 export 'app/model_message.dart';
-export 'app/model_notification.dart';
+export 'notification/notification.dart';
 export 'app/model_product.dart';
 export 'app/model_rate.dart';
 export 'app/model_result_api.dart';

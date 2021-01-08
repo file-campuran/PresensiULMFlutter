@@ -19,21 +19,11 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   LoginBloc _loginBloc;
-  UserModel _userModel;
 
   @override
   void initState() {
     _loginBloc = BlocProvider.of<LoginBloc>(context);
-    _loadData();
     super.initState();
-  }
-
-  ///Fetch API
-  Future<void> _loadData() async {
-    String user = UtilPreferences.getString('user');
-    print(user);
-    _userModel = userModelFromJson(user);
-    setState(() {});
   }
 
   @override
@@ -49,7 +39,7 @@ class _ProfileState extends State<Profile> {
   ///Build profile UI
   Widget _buildProfile() {
     return AppUserInfo(
-      user: _userModel,
+      user: Application.user,
       onPressed: () {},
       type: AppUserType.basic,
     );
@@ -71,6 +61,7 @@ class _ProfileState extends State<Profile> {
       ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
               child: ListView(
@@ -165,6 +156,7 @@ class _ProfileState extends State<Profile> {
                 ],
               ),
             ),
+            _buildCs(),
             _buildTermsConditions(),
             Padding(
               padding: EdgeInsets.only(
@@ -222,14 +214,41 @@ class _ProfileState extends State<Profile> {
                           ))),
                     ),
                   );
-                  // return AppButton(
-                  //   text: Translate.of(context).translate('sign_out'),
-                  //   loading: login is LoginLoading,
-                  //   disableTouchWhenLoading: true,
-                  // );
                 },
               ),
             )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildCs() {
+    return Container(
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 15,
+      ),
+      child: RichText(
+        text: TextSpan(
+          text: Translate.of(context).translate('customer_service') +
+              ' (Muhammad Nebi Beri Muslim) : ',
+          style: Theme.of(context)
+              .textTheme
+              .caption
+              .copyWith(fontWeight: FontWeight.w600),
+          children: <TextSpan>[
+            TextSpan(
+                text: '082149091899',
+                style: TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                    fontWeight: FontWeight.bold),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () async {
+                    await launchExternal('tel:082149091899');
+                  })
           ],
         ),
       ),

@@ -24,8 +24,8 @@ class UserModel {
       json['nip'] as String ?? 'Unknown',
       json['name'] as String ?? 'Unknown',
       json['role'] as String ?? 'Unknown',
-      json['alamat'] as String ?? '-',
-      json['noHp'] as String ?? '-',
+      json['alamat'] as String ?? '',
+      json['noHp'] as String ?? '',
       json['golDarah'] as String ?? '',
     );
   }

@@ -16,3 +16,8 @@ export 'api/jwt_decode.dart';
 export 'launch_external.dart';
 export 'format_date.dart';
 export 'device_info.dart';
+export 'hex_color.dart';
+export 'basic_utils.dart';
+export 'youtube_thumbnail.dart';
+export 'local_notification.dart';
+export 'app_notification.dart';

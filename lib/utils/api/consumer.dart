@@ -29,7 +29,7 @@ class Consumer {
   Consumer._internal();
 
   final String appId = 'PresensiULM';
-  final String baseUrl = 'http://192.168.43.247/PTIK/api-siapps/public/api';
+  final String baseUrl = 'http://10.72.2.86/PTIK/api-siapps/public/api';
   final String apiKey = '605dafe39ee0780e8cf2c829434eeae8';
   final int timeout = 10; //Seconds
 
@@ -76,7 +76,9 @@ class Consumer {
 
       return ApiModel.fromJson(res.data);
     } on DioError catch (e) {
-      return MyException.getException(e);
+      final exception = MyException.getException(e);
+      UtilLogger.log('EXCEPTION DIO', exception.toJson());
+      return exception;
     }
   }
 
@@ -105,6 +107,7 @@ class Consumer {
    * Refresh token jika acces token expired
    */
   Future refreshToken() async {
+    this._cleanFillter();
     FormData formData = new FormData.fromMap({
       "tokenRefresh": UtilPreferences.getString(Preferences.refreshToken),
     });

@@ -5,7 +5,6 @@
 // export 'default/home/home.dart';
 // export 'default/list_product/list_product.dart' hide PageType;
 // export 'default/message/message.dart';
-// export 'default/notification/notification.dart';
 // export 'default/product_detail/product_detail.dart';
 // export 'default/product_detail_tab/product_detail_tab.dart';
 // export 'default/review/review.dart';
@@ -13,6 +12,7 @@
 // export 'default/signin/signin.dart';
 // export 'default/wishlist/wishlist.dart';
 
+export 'notification/notification.dart';
 export 'default/location/location.dart';
 export 'default/intro_preview/intro_preview.dart';
 export 'default/photo_preview/photo_preview.dart';

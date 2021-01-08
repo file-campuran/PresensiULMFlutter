@@ -89,9 +89,6 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
     } else {
       return super.onResponse(response);
     }
-    // } else {
-    //   return super.onResponse(response);
-    // }
   }
 
   @override

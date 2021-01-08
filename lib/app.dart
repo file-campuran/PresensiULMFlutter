@@ -22,7 +22,6 @@ class _AppState extends State<App> {
   ThemeBloc _themeBloc;
   AuthBloc _authBloc;
   LoginBloc _loginBloc;
-  SearchBloc _searchBloc;
 
   @override
   void initState() {
@@ -36,7 +35,6 @@ class _AppState extends State<App> {
       themeBloc: _themeBloc,
       languageBloc: _languageBloc,
     );
-    _searchBloc = SearchBloc();
     super.initState();
   }
 
@@ -47,7 +45,6 @@ class _AppState extends State<App> {
     _themeBloc.close();
     _authBloc.close();
     _loginBloc.close();
-    _searchBloc.close();
     super.dispose();
   }
 
@@ -69,9 +66,6 @@ class _AppState extends State<App> {
         ),
         BlocProvider<LoginBloc>(
           create: (context) => _loginBloc,
-        ),
-        BlocProvider<SearchBloc>(
-          create: (context) => _searchBloc,
         ),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(

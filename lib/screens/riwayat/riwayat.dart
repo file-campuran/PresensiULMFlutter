@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
+import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -52,16 +53,16 @@ class _RiwayatState extends State<Riwayat> {
       _presensiList = null;
       _btnLoading = true;
     });
-    final getPresensi = await PresensiRepository().getPresensi();
+    final result = await PresensiRepository().getPresensi();
 
     if (this.mounted) {
       setState(() {
         _btnLoading = false;
       });
 
-      if (getPresensi.code == CODE.SUCCESS) {
-        final listProduct = PresensiListModel.fromJson(getPresensi.data);
-        print(getPresensi.data.runtimeType);
+      if (result.code == CODE.SUCCESS) {
+        final listProduct = PresensiListModel.fromJson(result.data);
+        print(result.data.runtimeType);
 
         ///Setup list marker map from list
         listProduct.list.forEach((item) {
@@ -98,9 +99,11 @@ class _RiwayatState extends State<Riwayat> {
             );
           });
         }
+      } else if (result.code == CODE.TOKEN_EXPIRED) {
+        BlocProvider.of<LoginBloc>(context).add(OnLogout());
       } else {
         setState(() {
-          _errorData = getPresensi.message;
+          _errorData = result.message;
         });
       }
     }
@@ -302,7 +305,7 @@ class _RiwayatState extends State<Riwayat> {
         child: AppInfo(
           title: 'Informasi',
           message: 'Data Presensi Kosong',
-          image: Images.Calendar,
+          image: Images.Empty,
         ),
       );
     }

@@ -7,7 +7,8 @@ import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/api/presensi.dart';
 
 class EditProfile extends StatefulWidget {
-  EditProfile({Key key}) : super(key: key);
+  final bool leading;
+  EditProfile({Key key, this.leading = true}) : super(key: key);
 
   @override
   _EditProfileState createState() {
@@ -39,8 +40,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void initState() {
     super.initState();
-    String user = UtilPreferences.getString('user');
-    _userModel = userModelFromJson(user);
+    _userModel = Application.user;
     _textAlamatController.text = _userModel.alamat;
     _nomorPonsel.text = _userModel.noHp;
     _golonganDarah = _userModel.golDarah;
@@ -108,27 +108,8 @@ class _EditProfileState extends State<EditProfile> {
       } else if (apiModel.code == CODE.VALIDATE) {
         serverValidate(apiModel.message);
       } else {
-        showDialog<void>(
-            context: context,
-            barrierDismissible: false, // user must tap button!
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text('ERROR'),
-                content: SingleChildScrollView(
-                  child: AppTextList(apiModel.message is String
-                      ? apiModel.message
-                      : apiModel.message['content']),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                    child: Text('Close'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            });
+        appMyInfoDialog(
+            context: context, message: apiModel.message, title: 'Error');
       }
     }
   }

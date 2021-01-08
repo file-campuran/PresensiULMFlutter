@@ -104,15 +104,6 @@ class MyException {
                 "image": Warning
               },
             });
-          } else if (e.response != null) {
-            return ApiModel.fromJson({
-              'code': 500,
-              "message": <String, dynamic>{
-                'title': ErrorInternalTitle,
-                'content': e.response.data['error'],
-                "image": Warning
-              },
-            });
           } else {
             return ApiModel.fromJson({
               'code': 500,

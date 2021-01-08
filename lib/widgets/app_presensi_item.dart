@@ -93,6 +93,27 @@ class AppPresensiItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: CachedNetworkImage(
                   imageUrl: item.fileGambar,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      Center(
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.grey[300],
+                      highlightColor: Colors.white60,
+                      enabled: true,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(50)),
+                        child: Container(
+                          color: Colors.white,
+                          height: 130,
+                          width: 96,
+                        ),
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                      width: 80.0, height: 80.0, color: Colors.deepOrange),
                 ),
               ),
               Padding(

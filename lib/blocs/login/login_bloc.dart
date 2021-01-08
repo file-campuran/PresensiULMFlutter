@@ -46,6 +46,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           // 'golDarah': '',
         });
 
+        Application.user = user;
         UtilPreferences.setString(
             Preferences.refreshToken, result.data[Preferences.refreshToken]);
         UtilPreferences.setString(
