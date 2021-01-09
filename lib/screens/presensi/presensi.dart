@@ -197,8 +197,8 @@ class PresensiState extends State<Presensi> {
         setState(() {
           _errorData = null;
           _infoData = {
-            'title': 'Informasi',
-            'content': result.message,
+            'title': result.message['title'],
+            'content': result.message['content'],
           };
         });
       } else if (result.code == CODE.TOKEN_EXPIRED) {

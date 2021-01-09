@@ -82,11 +82,11 @@ class _BerandaState extends State<Beranda> {
 
     if (_jadwalData?.list == null) {
       return Column(
-        children: List.generate(8, (index) => index).map(
+        children: List.generate(2, (index) => index).map(
           (item) {
             return Padding(
               padding: EdgeInsets.only(bottom: 15),
-              child: AppProductItem(type: ProductViewType.small),
+              child: AppPresensiItem(type: PresensiViewType.small),
             );
           },
         ).toList(),

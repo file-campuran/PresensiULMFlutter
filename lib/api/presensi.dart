@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/models/model.dart';
-export 'package:absen_online/configs/config.dart';
+import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/api/http_manager.dart';
 
 class PresensiRepository {
@@ -74,6 +73,19 @@ class PresensiRepository {
         url: '/biodata/' + _userModel.nip,
         formData: formData,
         method: MethodRequest.PUT);
+  }
+
+  static setFirebaseToken() {
+    if (UtilPreferences.getString('user') != null) {
+      UserModel _userModel =
+          userModelFromJson(UtilPreferences.getString('user'));
+      FormData formData = new FormData.fromMap({
+        "token": Application.pushToken,
+        "username": _userModel.nip,
+      });
+      Consumer().execute(
+          url: '/firebaseToken', formData: formData, method: MethodRequest.PUT);
+    }
   }
 
   static Future<String> getPrivacyPolicy() async {

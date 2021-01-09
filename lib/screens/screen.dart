@@ -13,6 +13,7 @@
 // export 'default/wishlist/wishlist.dart';
 
 export 'notification/notification.dart';
+export 'notification/detail_notification.dart';
 export 'default/location/location.dart';
 export 'default/intro_preview/intro_preview.dart';
 export 'default/photo_preview/photo_preview.dart';

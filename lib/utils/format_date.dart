@@ -53,9 +53,6 @@ String unixTimeStampToDateWithoutMultiplication(int millisecond) {
 }
 
 String unixTimeStampToTimeAgo(int millisecond) {
-  var format = DateFormat.yMMMMEEEEd('id');
-  var dateString =
-      format.format(DateTime.fromMillisecondsSinceEpoch(millisecond));
   Duration diff = DateTime.now()
       .difference(DateTime.fromMillisecondsSinceEpoch(millisecond));
 

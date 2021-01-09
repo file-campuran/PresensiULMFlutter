@@ -11,12 +11,9 @@ class AppTimmer extends StatelessWidget {
   final bool isChecked;
   final AppPresensiItem item;
 
-  /// Widget Person.
+  /// Widget Timmer.
   ///
-  /// This is a good contrasting color for the [ThemeData.primaryColor] in the
-  /// dark theme. See [ThemeData.brightness].
-  ///
-  /// ![](https://raw.githubusercontent.com/Killers007/PresensiULM/master/assets/widget/Timmer.png?token=AGYTVSE6EQMP5WF5KTRKBIC7GY67W)
+  /// ![GAMBAR](docs/widget/app_timmer.jpg)
   ///
   /// See also:
   ///  * [transparent], a fully-transparent color.

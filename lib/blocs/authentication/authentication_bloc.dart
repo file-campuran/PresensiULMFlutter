@@ -3,10 +3,8 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:absen_online/api/presensi.dart';
-import 'package:absen_online/api/http_manager.dart';
 import 'package:absen_online/blocs/authentication/bloc.dart';
 import 'package:absen_online/configs/config.dart';
-import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
 
 class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {

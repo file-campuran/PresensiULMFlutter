@@ -13,11 +13,13 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   final AuthBloc authBloc;
   final ThemeBloc themeBloc;
   final LanguageBloc languageBloc;
+  final NotificationBloc notificationBloc;
 
   ApplicationBloc({
     @required this.authBloc,
     @required this.themeBloc,
     @required this.languageBloc,
+    @required this.notificationBloc,
   }) : assert(authBloc != null);
 
   @override
@@ -102,6 +104,10 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       final hasReview = UtilPreferences.containsKey(
         '${Preferences.reviewIntro}.${Application.version}',
       );
+
+      // Read Notification
+      notificationBloc.add(OnReadDataNotification());
+
       if (hasReview) {
         ///Become app
         yield ApplicationSetupCompleted();

@@ -3,23 +3,30 @@ import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/configs/config.dart';
 
 class AppNotification {
+  NotificationPageModel _notificationPage;
+
+  NotificationPageModel get notification => _notificationPage;
+
   addNotification(String title, String message) {
-    NotificationPageModel _notificationPage;
+    // _notificationPage.count++;
+    if (_notificationPage == null) {
+      final notificationPref =
+          UtilPreferences.getString(Preferences.notification);
 
-    final notificationPref =
-        UtilPreferences.getString(Preferences.notification);
-
-    if (notificationPref != null && notificationPref != '') {
-      _notificationPage = notificationPageModelFromJson(notificationPref);
-    } else {
-      _notificationPage = NotificationPageModel.fromJson({'notification': []});
+      if (notificationPref != null && notificationPref != '') {
+        _notificationPage = notificationPageModelFromJson(notificationPref);
+      } else {
+        _notificationPage =
+            NotificationPageModel.fromJson({'notification': []});
+      }
     }
 
     _notificationPage.notification.add(NotificationModel.fromJson(
       {
         "id": 6,
+        "isRead": false,
         "title": title,
-        "subtitle": message,
+        "content": message,
       },
     ));
 
@@ -27,22 +34,48 @@ class AppNotification {
         Preferences.notification, _notificationPage.toString());
   }
 
+  int getCount() {
+    _notificationPage.count = 0;
+    _notificationPage.notification.forEach((element) {
+      if (!element.isRead) {
+        _notificationPage.count++;
+      }
+    });
+
+    return _notificationPage.count;
+  }
+
+  void markAsRead(int index) {
+    _notificationPage.notification[index].isRead = true;
+    UtilPreferences.setString(
+        Preferences.notification, _notificationPage.toString());
+  }
+
+  void removeNotif(int index) {
+    _notificationPage.notification.removeAt(index);
+    UtilPreferences.setString(
+        Preferences.notification, _notificationPage.toString());
+  }
+
   NotificationPageModel loadNotification() {
-    NotificationPageModel _notificationPage;
+    if (_notificationPage == null) {
+      print('NULL');
+      final notificationPref =
+          UtilPreferences.getString(Preferences.notification);
 
-    final notificationPref =
-        UtilPreferences.getString(Preferences.notification);
-
-    if (notificationPref != null && notificationPref != '') {
-      _notificationPage = notificationPageModelFromJson(notificationPref);
-      _notificationPage.notification.sort((a, b) {
-        var adate = b.date;
-        var bdate = a.date;
-        return adate.compareTo(bdate);
-      });
-    } else {
-      _notificationPage = NotificationPageModel.fromJson({'notification': []});
+      if (notificationPref != null && notificationPref != '') {
+        _notificationPage = notificationPageModelFromJson(notificationPref);
+      } else {
+        _notificationPage =
+            NotificationPageModel.fromJson({'notification': []});
+      }
     }
+
+    _notificationPage.notification.sort((a, b) {
+      var adate = b.date;
+      var bdate = a.date;
+      return adate.compareTo(bdate);
+    });
 
     return _notificationPage;
   }

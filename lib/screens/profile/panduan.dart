@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:absen_online/widgets/app_color_loader.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/api/presensi.dart';
 

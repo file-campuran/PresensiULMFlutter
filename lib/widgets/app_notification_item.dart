@@ -95,7 +95,9 @@ class AppNotificationItem extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Theme.of(context).primaryColor,
+                color: item.isRead
+                    ? Theme.of(context).primaryColor
+                    : Colors.greenAccent,
               ),
               child: Icon(
                 Icons.timelapse,
@@ -132,8 +134,22 @@ class AppNotificationItem extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: 3),
                     ),
+                    // Html(
+                    //   useRichText: false,
+                    //   data: item.content
+                    //       .substring(0, 60)
+                    //       .replaceAll('\n', '</br>'),
+                    //   showImages: false,
+                    //   defaultTextStyle: Theme.of(context)
+                    //       .textTheme
+                    //       .caption
+                    //       .copyWith(fontWeight: FontWeight.w500),
+                    //   customTextAlign: (dom.Node node) {
+                    //     return TextAlign.left;
+                    //   },
+                    // ),
                     Text(
-                      item.subtitle,
+                      item.content,
                       maxLines: 1,
                       style: Theme.of(context)
                           .textTheme

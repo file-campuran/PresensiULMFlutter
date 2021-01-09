@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:absen_online/models/model.dart';
-import 'package:absen_online/utils/utils.dart';
 
 class CategoryModel {
   final int id;
@@ -21,31 +20,7 @@ class CategoryModel {
     this.type,
   });
 
-  static ProductType _setType(String type) {
-    switch (type) {
-      case 'shop':
-        return ProductType.shop;
-      case 'drink':
-        return ProductType.drink;
-      case 'event':
-        return ProductType.event;
-      case 'estate':
-        return ProductType.estate;
-      case 'job':
-        return ProductType.job;
-      case 'restaurant':
-        return ProductType.restaurant;
-      case 'automotive':
-        return ProductType.automotive;
-      case 'hotel':
-        return ProductType.hotel;
-      default:
-        return ProductType.more;
-    }
-  }
-
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    final icon = Icons.alarm;
     final color = Color(0xFF58d68d);
     return CategoryModel(
       id: json['id'] as int ?? 0,

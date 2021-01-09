@@ -16,7 +16,6 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
-  bool _receiveNotification = true;
   DarkOption _darkOption = AppTheme.darkThemeOption;
   ThemeBloc _themeBloc;
 

@@ -5,10 +5,12 @@ NotificationPageModel notificationPageModelFromJson(String str) =>
     NotificationPageModel.fromJson(json.decode(str));
 
 class NotificationPageModel {
+  int count = 0;
   final List<NotificationModel> notification;
 
   NotificationPageModel(
     this.notification,
+    this.count,
   );
 
   factory NotificationPageModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class NotificationPageModel {
 
     return NotificationPageModel(
       listCategory,
+      json['count'] ?? 0,
     );
   }
 

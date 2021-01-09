@@ -5,31 +5,36 @@ NotificationModel notificationModelFromJson(String str) =>
 
 class NotificationModel {
   final int id;
+  bool isRead;
   final String title;
-  final String subtitle;
+  final String content;
   final DateTime date;
 
-  NotificationModel(
+  NotificationModel({
     this.id,
+    this.isRead,
     this.title,
-    this.subtitle,
+    this.content,
     this.date,
-  );
+  });
 
-  factory NotificationModel.fromJson(Map<String, dynamic> json) {
-    return NotificationModel(
-      json['id'] as int,
-      json['title'] as String,
-      json['subtitle'] as String,
-      json['date'] != null ? DateTime.tryParse(json['date']) : DateTime.now(),
-    );
-  }
+  factory NotificationModel.fromJson(Map<String, dynamic> json) =>
+      NotificationModel(
+        id: json["id"],
+        isRead: json["isRead"] != null ? json["isRead"] : false,
+        title: json["title"],
+        content: json["content"] ?? '',
+        date: json['date'] != null
+            ? DateTime.tryParse(json['date'])
+            : DateTime.now(),
+      );
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'isRead': isRead,
       'title': title,
-      'subtitle': subtitle,
+      'content': content,
       'date': date.toString(),
     };
   }

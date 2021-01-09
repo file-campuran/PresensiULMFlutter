@@ -22,10 +22,12 @@ class _AppState extends State<App> {
   ThemeBloc _themeBloc;
   AuthBloc _authBloc;
   LoginBloc _loginBloc;
+  NotificationBloc _notificationBloc;
 
   @override
   void initState() {
     ///Bloc business logic
+    _notificationBloc = NotificationBloc();
     _languageBloc = LanguageBloc();
     _themeBloc = ThemeBloc();
     _authBloc = AuthBloc();
@@ -34,6 +36,7 @@ class _AppState extends State<App> {
       authBloc: _authBloc,
       themeBloc: _themeBloc,
       languageBloc: _languageBloc,
+      notificationBloc: _notificationBloc,
     );
     super.initState();
   }
@@ -45,6 +48,7 @@ class _AppState extends State<App> {
     _themeBloc.close();
     _authBloc.close();
     _loginBloc.close();
+    _notificationBloc.close();
     super.dispose();
   }
 
@@ -66,6 +70,9 @@ class _AppState extends State<App> {
         ),
         BlocProvider<LoginBloc>(
           create: (context) => _loginBloc,
+        ),
+        BlocProvider<NotificationBloc>(
+          create: (context) => _notificationBloc,
         ),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
@@ -90,13 +97,14 @@ class _AppState extends State<App> {
                   builder: (context, app) {
                     if (app is ApplicationSetupCompleted) {
                       return BlocBuilder<AuthBloc, AuthenticationState>(
-                          builder: (context, auth) {
-                        if (auth is AuthenticationFail) {
-                          return Login();
-                        } else if (auth is AuthenticationSuccess) {
-                          return MainNavigation();
-                        }
-                      });
+                        builder: (context, auth) {
+                          if (auth is AuthenticationFail) {
+                            return Login();
+                          } else if (auth is AuthenticationSuccess) {
+                            return MainNavigation();
+                          }
+                        },
+                      );
                     }
                     if (app is ApplicationIntroView) {
                       return IntroPreview();

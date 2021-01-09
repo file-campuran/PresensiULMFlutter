@@ -1,5 +1,5 @@
 
-## Version 2.0.0 Beta.4.1.2021.B10
+## Version [2.0.0 Beta.4.1.2021.B10] - 4.1.2021
 - New :
     - Face Detection
     - Flutter SDK
