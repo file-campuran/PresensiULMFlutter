@@ -194,11 +194,16 @@ class PresensiState extends State<Presensi> {
           _infoPresensi = JadwalModel.fromJson(result.data);
         });
       } else if (result.code == CODE.INFO) {
+        String title =
+            (result.message is String) ? 'Informasi' : result.message['title'];
+        String message = (result.message is String)
+            ? result.message
+            : result.message['content'];
         setState(() {
           _errorData = null;
           _infoData = {
-            'title': result.message['title'],
-            'content': result.message['content'],
+            'title': title,
+            'content': message,
           };
         });
       } else if (result.code == CODE.TOKEN_EXPIRED) {

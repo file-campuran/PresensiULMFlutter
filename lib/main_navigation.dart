@@ -204,7 +204,7 @@ class _MainNavigationState extends State<MainNavigation> {
               child: BlocBuilder<NotificationBloc, NotificationState>(
                 builder: (context, state) {
                   if (state is NotificationData) {
-                    if (state.count != 0) {
+                    if (state.data.count != 0) {
                       return Stack(
                         alignment: Alignment.center,
                         children: [
@@ -217,7 +217,7 @@ class _MainNavigationState extends State<MainNavigation> {
                             ),
                           ),
                           Text(
-                            state.count.toString(),
+                            state.data.count.toString(),
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 8,

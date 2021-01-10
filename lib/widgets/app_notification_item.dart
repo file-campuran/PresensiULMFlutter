@@ -95,9 +95,8 @@ class AppNotificationItem extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: item.isRead
-                    ? Theme.of(context).primaryColor
-                    : Colors.greenAccent,
+                color:
+                    !item.isRead ? Theme.of(context).primaryColor : Colors.grey,
               ),
               child: Icon(
                 Icons.timelapse,

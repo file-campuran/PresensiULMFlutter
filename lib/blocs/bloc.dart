@@ -1,7 +1,7 @@
-export 'application/bloc.dart';
-export 'authentication/bloc.dart';
-export 'language/bloc.dart';
-export 'login/bloc.dart';
-export 'theme/bloc.dart';
-export 'notification/bloc.dart';
+export 'core/application/bloc.dart';
+export 'core/authentication/bloc.dart';
+export 'core/language/bloc.dart';
+export 'core/login/bloc.dart';
+export 'core/theme/bloc.dart';
+export 'core/notification/bloc.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';

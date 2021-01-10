@@ -11,7 +11,7 @@ class GeocoderRepository {
   GeocoderRepository._internal();
 
   Future getAddress({double latitude, double longitude}) async {
-    await Future.delayed(Duration(seconds: 1));
+    // await Future.delayed(Duration(seconds: 1));
 
     if (latitude != null) {
       List<Placemark> placemarks =
@@ -33,7 +33,7 @@ class GeocoderRepository {
   }
 
   Future getCity({double latitude, double longitude}) async {
-    await Future.delayed(Duration(seconds: 1));
+    // await Future.delayed(Duration(seconds: 1));
 
     if (latitude != null) {
       List<Placemark> placemarks =

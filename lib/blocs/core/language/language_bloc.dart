@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:absen_online/blocs/language/bloc.dart';
+import 'bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
 

@@ -8,9 +8,8 @@ class InitialNotificationState extends NotificationState {}
 
 class NotificationData extends NotificationState {
   final NotificationPageModel data;
-  final int count;
 
-  NotificationData(this.data, this.count);
+  NotificationData(this.data);
 }
 
 class NotificationCount extends NotificationState {
