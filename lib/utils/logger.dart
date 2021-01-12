@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 import 'dart:convert';
-import 'package:absen_online/configs/application.dart';
+import 'package:absen_online/configs/config.dart';
 
 enum LogType { INFO, WARN, DANGER }
 enum ColorsHeader { RED, GREEN, PURPLE, YELLOW, DEFAULT }
@@ -9,7 +9,7 @@ class UtilLogger {
   static const String TAG = "PRESENSI";
 
   static log([String tag = TAG, dynamic msg, LogType log = LogType.INFO]) {
-    if (Application.debug) {
+    if (Environment.DEBUG) {
       switch (log) {
         case LogType.INFO:
           developer.log('\x1b[32m $msg \x1b[0m', name: tag);

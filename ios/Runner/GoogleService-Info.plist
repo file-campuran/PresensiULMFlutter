@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>254789615258-qbpjmknq1u9473imrnnh2chlbcs6i2b1.apps.googleusercontent.com</string>
+	<string>478168368282-qq2arrtmmipdubc0scioerrjqsr5j6ip.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.254789615258-qbpjmknq1u9473imrnnh2chlbcs6i2b1</string>
+	<string>com.googleusercontent.apps.478168368282-qq2arrtmmipdubc0scioerrjqsr5j6ip</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC-hfYmzFW_hF2JMYF1tOkYHfcwE2xyJwY</string>
+	<string>AIzaSyA_AXjNaiGJZ6inO-GXHOYK6fzVAHoEaP0</string>
 	<key>GCM_SENDER_ID</key>
-	<string>254789615258</string>
+	<string>478168368282</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.huynh.listarFlutter</string>
+	<string>com.absenOnline</string>
 	<key>PROJECT_ID</key>
-	<string>listarflutter</string>
+	<string>presensiulm</string>
 	<key>STORAGE_BUCKET</key>
-	<string>listarflutter.appspot.com</string>
+	<string>presensiulm.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:254789615258:ios:6a158b7c95902906f8a923</string>
-	<key>DATABASE_URL</key>
-	<string>https://listarflutter.firebaseio.com</string>
+	<string>1:478168368282:ios:81c74af4320e4f953d0b23</string>
 </dict>
 </plist>

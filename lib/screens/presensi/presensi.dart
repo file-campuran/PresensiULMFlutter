@@ -6,6 +6,7 @@ import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lottie/lottie.dart' hide Marker;
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
@@ -109,7 +110,9 @@ class PresensiState extends State<Presensi> {
 
   void checkBiodata() {
     final user = Application.user;
-    if (user.alamat == '' && user.noHp == '' && user.golDarah == '') {
+    if (user.alamatRumahPresensi == '' &&
+        user.noHp == '' &&
+        user.golDarah == '') {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushNamed(context, Routes.editProfile, arguments: false);
       });
@@ -169,7 +172,7 @@ class PresensiState extends State<Presensi> {
       setState(() {
         latitude = position.latitude;
         longitude = position.longitude;
-        isFakeGps = position.mocked;
+        isFakeGps = position.isMocked;
       });
     } else {
       setState(() {
@@ -204,6 +207,8 @@ class PresensiState extends State<Presensi> {
           _infoData = {
             'title': title,
             'content': message,
+            'image':
+                result.message is String ? Images.Document : Images.Calendar,
           };
         });
       } else if (result.code == CODE.TOKEN_EXPIRED) {
@@ -266,6 +271,7 @@ class PresensiState extends State<Presensi> {
           _infoData = {
             'title': 'Informasi',
             'content': 'Terimakasih sudah melakukan presensi',
+            'image': Images.Document,
           };
         });
       } else {
@@ -314,7 +320,7 @@ class PresensiState extends State<Presensi> {
       body: AppInfo(
         title: _infoData['title'].toString(),
         message: _infoData['content'].toString(),
-        image: Images.Calendar,
+        image: _infoData['image'],
       ),
     );
   }
@@ -785,6 +791,7 @@ class PresensiState extends State<Presensi> {
                 size: 50,
                 background: false,
                 onTap: () {
+                  _getLocation();
                   Navigator.of(context).pushNamed(Routes.location,
                       arguments: LocationModel(1, '', latitude, longitude));
                 }),
@@ -855,7 +862,7 @@ class PresensiState extends State<Presensi> {
       'type': build.type,
       'isPhysicalDevice': build.isPhysicalDevice,
       'androidId': build.androidId,
-      'app_version': Application.version,
+      'app_version': Environment.VERSION,
       'systemFeatures': build.systemFeatures,
     };
   }

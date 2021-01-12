@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
@@ -99,7 +100,7 @@ class AppNotificationItem extends StatelessWidget {
                     !item.isRead ? Theme.of(context).primaryColor : Colors.grey,
               ),
               child: Icon(
-                Icons.timelapse,
+                FontAwesomeIcons.bell,
                 color: Colors.white,
               ),
             ),

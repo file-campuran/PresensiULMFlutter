@@ -35,14 +35,15 @@ class _EditProfileState extends State<EditProfile> {
     'A',
     'B',
     'AB',
-    '0',
+    'O',
   ];
 
   @override
   void initState() {
     super.initState();
     _userModel = Application.user;
-    _textAlamatController.text = _userModel.alamat;
+    print(_userModel.toJson());
+    _textAlamatController.text = _userModel.alamatRumah;
     _nomorPonsel.text = _userModel.noHp;
     _golonganDarah = _userModel.golDarah;
   }
@@ -101,9 +102,10 @@ class _EditProfileState extends State<EditProfile> {
       if (apiModel.code == CODE.SUCCESS) {
         _userModel.golDarah = _golonganDarah;
         _userModel.noHp = _nomorPonsel.text;
-        _userModel.alamat = _textAlamatController.text;
+        _userModel.alamatRumah = _textAlamatController.text;
 
-        UtilPreferences.setString('user', _userModel.toString());
+        Application.user = _userModel;
+        UtilPreferences.setString(Preferences.user, _userModel.toString());
 
         Navigator.pop(context);
       } else if (apiModel.code == CODE.VALIDATE) {

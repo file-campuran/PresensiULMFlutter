@@ -43,22 +43,22 @@ class _MainNavigationState extends State<MainNavigation> {
   final _fcm = FirebaseMessaging();
   int _selectedIndex = 0;
   NotificationBloc _notificationBloc;
-  final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult> _connectivitySubscription;
+  // final Connectivity _connectivity = Connectivity();
+  // StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
     _fcmHandle();
     LocalNotification().init();
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    // _connectivitySubscription =
+    //     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     super.initState();
   }
 
   @override
   void dispose() {
-    _connectivitySubscription.cancel();
+    // _connectivitySubscription.cancel();
     super.dispose();
   }
 
@@ -133,18 +133,17 @@ class _MainNavigationState extends State<MainNavigation> {
     // await Future.delayed(Duration(seconds: 2));
     _fcm.requestNotificationPermissions();
     _fcm.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          _showNotif("onMessage", message);
-        },
-        onLaunch: (Map<String, dynamic> message) async {
-          _showNotif("onLunch", message);
-        },
-        onResume: (Map<String, dynamic> message) async {
-          _showNotif("onResumr", message);
-        },
-        onBackgroundMessage: Platform.isAndroid && !Application.debug
-            ? myBackgroundMessageHandler
-            : null);
+      onMessage: (Map<String, dynamic> message) async {
+        _showNotif("onMessage", message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        _showNotif("onLunch", message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        _showNotif("onResumr", message);
+      },
+      // onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
+    );
     Application.pushToken = await _fcm.getToken();
     UtilLogger.log("MY TOKEN", Application.pushToken);
     PresensiRepository.setFirebaseToken();
@@ -194,49 +193,49 @@ class _MainNavigationState extends State<MainNavigation> {
           child: Text(Translate.of(context).translate('history')),
         ),
       ),
-      BottomNavigationBarItem(
-        icon: new Stack(children: <Widget>[
-          new Icon(Icons.alarm),
-          new Positioned(
-              // draw a red marble
-              top: 0.0,
-              right: 0.0,
-              child: BlocBuilder<NotificationBloc, NotificationState>(
-                builder: (context, state) {
-                  if (state is NotificationData) {
-                    if (state.data.count != 0) {
-                      return Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.redAccent,
-                            ),
-                          ),
-                          Text(
-                            state.data.count.toString(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 8,
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    return Container();
-                  }
-                  return Container();
-                },
-              ))
-        ]),
-        title: Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('notification')),
-        ),
-      ),
+      // BottomNavigationBarItem(
+      //   icon: new Stack(children: <Widget>[
+      //     new Icon(Icons.alarm),
+      //     new Positioned(
+      //         // draw a red marble
+      //         top: 0.0,
+      //         right: 0.0,
+      //         child: BlocBuilder<NotificationBloc, NotificationState>(
+      //           builder: (context, state) {
+      //             if (state is NotificationData) {
+      //               if (state.data.count != 0) {
+      //                 return Stack(
+      //                   alignment: Alignment.center,
+      //                   children: [
+      //                     Container(
+      //                       width: 10,
+      //                       height: 10,
+      //                       decoration: BoxDecoration(
+      //                         shape: BoxShape.circle,
+      //                         color: Colors.redAccent,
+      //                       ),
+      //                     ),
+      //                     Text(
+      //                       state.data.count.toString(),
+      //                       style: TextStyle(
+      //                         color: Colors.white,
+      //                         fontSize: 8,
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 );
+      //               }
+      //               return Container();
+      //             }
+      //             return Container();
+      //           },
+      //         ))
+      //   ]),
+      //   title: Padding(
+      //     padding: EdgeInsets.only(top: 3),
+      //     child: Text(Translate.of(context).translate('notification')),
+      //   ),
+      // ),
       BottomNavigationBarItem(
         icon: Icon(Icons.account_circle),
         title: Padding(
@@ -251,7 +250,7 @@ class _MainNavigationState extends State<MainNavigation> {
     Beranda(),
     Presensi(),
     Riwayat(),
-    NotificationList(),
+    // NotificationList(),
     Profile()
   ];
 

@@ -138,7 +138,7 @@ class AppUserInfo extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                     ),
                     child: Center(
-                        child: Text(user.name[0],
+                        child: Text(user.nama[0],
                             style:
                                 TextStyle(fontSize: 20, color: Colors.white))),
                   ),
@@ -167,7 +167,7 @@ class AppUserInfo extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Theme.of(context).primaryColor),
                 child: Center(
-                    child: Text(user.name[0],
+                    child: Text(user.nama[0],
                         style: TextStyle(fontSize: 20, color: Colors.white))),
               ),
               Padding(
@@ -176,7 +176,7 @@ class AppUserInfo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      user.name,
+                      user.namaLengkap,
                       style: Theme.of(context)
                           .textTheme
                           .subtitle1

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:absen_online/blocs/core/authentication/bloc.dart';
 import 'bloc.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 
@@ -26,48 +27,53 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       yield LoginLoading();
 
       ///Fetch API
-      final ApiModel result = await Consumer().auth(
+      final ApiModel auth = await Consumer().auth(
         username: event.username,
         password: event.password,
       );
 
-      ///Case API fail but not have token
-      if (result.code == CODE.SUCCESS) {
-        ///Login API success
-        final parse = tokenFromJwt(result.data[Preferences.refreshToken]);
-        UtilLogger.log(
-            "PARSE JWT", parseJwt(result.data[Preferences.refreshToken]));
-        final UserModel user = UserModel.fromJson({
-          'nip': parse.user.username,
-          'name': parse.user.username,
-          'role': 'tenaga_kependidikan',
-          // 'alamat': '',
-          // 'noHp': '',
-          // 'golDarah': '',
-        });
+      try {
+        ///Case API fail but not have token
+        if (auth.code == CODE.SUCCESS) {
+          ///Login API success
+          final parse = tokenFromJwt(auth.data[Preferences.refreshToken]);
+          UtilLogger.log("PARSE JWT", parse.toJson());
+          UtilPreferences.setString(
+              Preferences.refreshToken, auth.data[Preferences.refreshToken]);
+          UtilPreferences.setString(
+              Preferences.accessToken, auth.data[Preferences.accessToken]);
 
-        Application.user = user;
-        UtilPreferences.setString(
-            Preferences.refreshToken, result.data[Preferences.refreshToken]);
-        UtilPreferences.setString(
-            Preferences.accessToken, result.data[Preferences.accessToken]);
-        UtilPreferences.setString(Preferences.user, user.toString());
+          ApiModel biodata =
+              await PresensiRepository().getBiodata(parse.user.username);
 
-        try {
-          ///Begin start AuthBloc Event AuthenticationSave
-          authBloc.add(AuthenticationSave(user));
+          if (biodata.code == CODE.SUCCESS) {
+            biodata.data['role'] = parse.user.role;
+            final UserModel user = UserModel.fromJson(biodata.data);
+            Application.user = user;
+            UtilPreferences.setString(Preferences.user, user.toString());
 
+            try {
+              ///Begin start AuthBloc Event AuthenticationSave
+              authBloc.add(AuthenticationSave(user));
+
+              ///Notify loading to UI
+              yield LoginSuccess();
+            } catch (error) {
+              ///Notify loading to UI
+              yield LoginFail(error.toString());
+            }
+          } else {
+            yield LoginFail(biodata.message is String
+                ? biodata.message
+                : biodata.message['content']);
+          }
+        } else {
           ///Notify loading to UI
-          yield LoginSuccess();
-        } catch (error) {
-          ///Notify loading to UI
-          yield LoginFail(error.toString());
+          yield LoginFail(
+              auth.message is Map ? auth.message['content'] : auth.message);
         }
-      } else {
-        ///Notify loading to UI
-        yield LoginFail(result.message is String
-            ? result.message
-            : result.message['content']);
+      } catch (e) {
+        yield LoginFail(e.toString());
       }
     }
 

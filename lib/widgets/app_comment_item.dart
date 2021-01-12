@@ -162,7 +162,7 @@ class AppCommentItem extends StatelessWidget {
                         children: <Widget>[
                           Expanded(
                             child: Text(
-                              item.user.name,
+                              item.user.nama,
                               maxLines: 1,
                               style: Theme.of(context)
                                   .textTheme

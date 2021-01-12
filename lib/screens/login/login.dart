@@ -27,8 +27,8 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     _loginBloc = BlocProvider.of<LoginBloc>(context);
-    _textIDController.text = "";
-    _textPassController.text = "";
+    _textIDController.text = "19930525201908213243";
+    _textPassController.text = "1q2w3e4r";
     super.initState();
   }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:absen_online/models/model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/blocs/core/authentication/bloc.dart';
@@ -20,6 +21,7 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
 
       if (hasToken) {
         yield AuthenticationSuccess();
+        Application.user = userModelFromJson(UtilPreferences.getString('user'));
 
         // //Getting data from Storage
         // final getUserPreferences = UtilPreferences.getString(
@@ -72,6 +74,7 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
       final deletePreferences =
           await UtilPreferences.remove(Preferences.refreshToken);
       await UtilPreferences.remove(Preferences.accessToken);
+      await UtilPreferences.remove(Preferences.user);
 
       ///Check result delete user
       if (deletePreferences) {

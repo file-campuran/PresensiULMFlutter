@@ -72,7 +72,7 @@ class Images {
   //SVG
   static const String Astrounot = "assets/svg/astronot.svg";
   static const String Calendar = "assets/svg/calendar.svg";
-  static const String Document = "assets/svg/dcument.svg";
+  static const String Document = "assets/svg/document.svg";
   static const String Dream = "assets/svg/dream.svg";
   static const String Error = "assets/svg/error.svg";
   static const String Info = "assets/svg/info.svg";

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:absen_online/utils/utils.dart';
-import 'package:absen_online/api/presensi.dart';
+import 'package:absen_online/configs/config.dart';
 
 class Panduan extends StatefulWidget {
   @override
@@ -56,7 +56,7 @@ class _WebViewExampleState extends State<Panduan> {
                       //   isLoading = true;
                       // });
                     },
-                    initialUrl: PresensiRepository.GUIDE,
+                    initialUrl: Environment.GUIDE,
                     javascriptMode: JavascriptMode.unrestricted,
                     onWebViewCreated: (WebViewController webViewController) {
                       _controller.complete(webViewController);

@@ -37,6 +37,7 @@ class _ProfileState extends State<Profile> {
 
   ///Build profile UI
   Widget _buildProfile() {
+    print(Application.user.toJson());
     return AppUserInfo(
       user: Application.user,
       onPressed: () {},
@@ -130,12 +131,12 @@ class _ProfileState extends State<Profile> {
                                 msg:
                                     Translate.of(context).translate('version') +
                                         ' ' +
-                                        Application.version);
+                                        Environment.VERSION);
                           },
                           trailing: Row(
                             children: <Widget>[
                               Text(
-                                Application.version,
+                                Environment.VERSION,
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                               RotatedBox(
@@ -232,14 +233,14 @@ class _ProfileState extends State<Profile> {
       child: RichText(
         text: TextSpan(
           text: Translate.of(context).translate('customer_service') +
-              ' (Muhammad Nebi Beri Muslim) : ',
+              ' (${Environment.namaCs}) : ',
           style: Theme.of(context)
               .textTheme
               .caption
               .copyWith(fontWeight: FontWeight.w600),
           children: <TextSpan>[
             TextSpan(
-                text: '082149091899',
+                text: Environment.noCs,
                 style: TextStyle(
                     color: Colors.blue,
                     decoration: TextDecoration.underline,

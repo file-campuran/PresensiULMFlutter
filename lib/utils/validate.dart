@@ -17,7 +17,7 @@ class UtilValidator {
     bool allowEmpty = false,
   }) {
     ///Empty
-    if (!allowEmpty && data.isEmpty) {
+    if (!allowEmpty && data == null) {
       return error_empty;
     }
 

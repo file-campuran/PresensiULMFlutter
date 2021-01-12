@@ -20,8 +20,9 @@ class MyLocation {
   Future<Position> getLoacation() async {
     var currentLocation;
     try {
-      currentLocation = await geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
+      // Geolocator.checkPermission();
+      currentLocation = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
 
       // if (currentLocation.accuracy > 2500) {
       //   // _locationController.sink.add(currentLocation);
@@ -36,7 +37,7 @@ class MyLocation {
   }
 
   Future<bool> gpsServiceEnable() async {
-    if (await Geolocator().isLocationServiceEnabled()) {
+    if (await Geolocator.isLocationServiceEnabled()) {
       return true;
     } else {
       return false;

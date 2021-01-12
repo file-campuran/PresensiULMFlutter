@@ -34,8 +34,6 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       ///Setup SharedPreferences
       UtilLogger.log('INITIALIZE SHARED PREF');
       Application.preferences = await SharedPreferences.getInstance();
-      Application.user = userModelFromJson(UtilPreferences.getString('user'));
-      UtilLogger.log('SUCCESS INITIALIZE SHARED PREF');
 
       ///Get old Theme & Font & Language
       final oldTheme = UtilPreferences.getString(Preferences.theme);
@@ -102,7 +100,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
       ///First or After upgrade version show intro preview app
       final hasReview = UtilPreferences.containsKey(
-        '${Preferences.reviewIntro}.${Application.version}',
+        '${Preferences.reviewIntro}.${Environment.VERSION}',
       );
 
       // Read Notification
@@ -123,7 +121,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
       // Cek Update Aplikasi
       if (Application.remoteConfig.application.minVersion >
-          Application.versionCode) {
+          Environment.VERSION_CODE) {
         yield ApplicationUpdateView(Application.remoteConfig);
       }
     }
@@ -131,7 +129,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     ///Event Completed IntroView
     if (event is OnCompletedIntro) {
       await UtilPreferences.setBool(
-        '${Preferences.reviewIntro}.${Application.version}',
+        '${Preferences.reviewIntro}.${Environment.VERSION}',
         true,
       );
 

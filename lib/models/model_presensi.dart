@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/configs/config.dart';
 
 PresensiModel presensiModelFromJson(String str) =>
     PresensiModel.fromJson(json.decode(str));
@@ -88,9 +89,9 @@ class PresensiModel {
       latitude: json["latitude"] != null ? double.parse(json["latitude"]) : 0,
       longitude: json["latitude"] != null ? double.parse(json["longitude"]) : 0,
       fileGambar:
-          'https://presensi.ulm.ac.id/pwa/getImage/${json["fileGambar"]}',
+          '${Environment.PRESENSI_IMAGE_URL}/${json["fileGambar"]}',
       fileBerkas: json["fileBerkas"] != null
-          ? 'https://presensi.ulm.ac.id/pwa/getBerkas/${json["fileBerkas"]}'
+          ? '${Environment.PRESENSI_FILE_URL}/${json["fileBerkas"]}'
           : null,
       deskripsiKinerja:
           json["deskripsiKinerja"] == 'null' || json["deskripsiKinerja"] == null

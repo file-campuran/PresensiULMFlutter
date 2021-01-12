@@ -27,9 +27,6 @@ class Consumer {
 
   Consumer._internal();
 
-  final String appId = 'PresensiULM';
-  final String baseUrl = 'http://192.168.43.247/PTIK/api-siapps/public/api';
-  final String apiKey = '605dafe39ee0780e8cf2c829434eeae8';
   final int timeout = 10; //Seconds
 
   int limits;
@@ -50,11 +47,11 @@ class Consumer {
       // Application.preferences = await SharedPreferences.getInstance();
       BaseOptions options = new BaseOptions(
         headers: {
-          'AppId': appId,
-          'X-ApiKey': apiKey,
+          'AppId': Environment.API_ID,
+          'X-ApiKey': Environment.API_KEY,
           'X-Token': UtilPreferences.getString(Preferences.accessToken),
         },
-        baseUrl: baseUrl,
+        baseUrl: Environment.API_URL,
         method: this._convertMethod(method),
         connectTimeout: timeout * 1000,
         receiveTimeout: timeout * 1000,
@@ -64,14 +61,13 @@ class Consumer {
 
       Dio dio = new Dio(options);
 
-      if (Application.debug) {
+      if (Environment.DEBUG) {
         dio.interceptors.add(DioLoggingInterceptors(dio, false));
       }
 
+      this._cleanFillter();
       Response<Map<String, dynamic>> res =
           await dio.request(urlRequest, data: formData);
-
-      this._cleanFillter();
 
       return ApiModel.fromJson(res.data);
     } on DioError catch (e) {
@@ -144,7 +140,11 @@ class Consumer {
     });
 
     String _tempLimit = limits != null ? '&limit=$limits' : '';
-    return '?' + _tempFillter + _tempOrder + _tempLimit;
+
+    String _combineFillter = _tempFillter + _tempOrder + _tempLimit;
+    _combineFillter =
+        _combineFillter.length != 0 ? _combineFillter.substring(1) : '';
+    return '?' + _combineFillter;
   }
 
   /* 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/models/model.dart';
@@ -6,11 +7,6 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/api/http_manager.dart';
 
 class PresensiRepository {
-  static const PRIVACY_POLICY =
-      'https://simari.ulm.ac.id/privacy_policy_presensi.html';
-  static const GUIDE =
-      'https://cdn01.ovo.id/homepage/public/assets/webview/panduan_ovo.html';
-
   ///Singleton factory
   static final PresensiRepository _instance = PresensiRepository._internal();
 
@@ -22,7 +18,8 @@ class PresensiRepository {
 
   // Ambil list / riwayat presensi
   Future<ApiModel> getPresensi() async {
-    UserModel _userModel = userModelFromJson(UtilPreferences.getString('user'));
+    UserModel _userModel =
+        userModelFromJson(UtilPreferences.getString(Preferences.user));
 
     return await Consumer()
         .where({'user': _userModel.nip})
@@ -33,7 +30,8 @@ class PresensiRepository {
 
   // Simpan presensi
   Future<ApiModel> setPresensi(Map<String, dynamic> formDatas) async {
-    UserModel _userModel = userModelFromJson(UtilPreferences.getString('user'));
+    UserModel _userModel =
+        userModelFromJson(UtilPreferences.getString(Preferences.user));
     formDatas['user'] = _userModel.nip;
 
     FormData formData = new FormData.fromMap(formDatas);
@@ -44,7 +42,8 @@ class PresensiRepository {
 
   // Detail presensi
   Future<ApiModel> getDetailPresensi() async {
-    UserModel _userModel = userModelFromJson(UtilPreferences.getString('user'));
+    UserModel _userModel =
+        userModelFromJson(UtilPreferences.getString(Preferences.user));
 
     return await Consumer()
         .where({'user': _userModel.nip, 'role': _userModel.role}).execute(
@@ -53,7 +52,9 @@ class PresensiRepository {
 
   // Ambil jadwal presensi
   Future<ApiModel> getJadwal() async {
-    UserModel _userModel = userModelFromJson(UtilPreferences.getString('user'));
+    getToken();
+    UserModel _userModel =
+        userModelFromJson(UtilPreferences.getString(Preferences.user));
     return await Consumer()
         .where({'role': _userModel.role, 'user': _userModel.nip}).execute(
             url: '/absen/jadwal_presensi');
@@ -68,43 +69,53 @@ class PresensiRepository {
       "golDarah": golDarah,
     });
 
-    UserModel _userModel = userModelFromJson(UtilPreferences.getString('user'));
+    UserModel _userModel =
+        userModelFromJson(UtilPreferences.getString(Preferences.user));
     return Consumer().execute(
         url: '/biodata/' + _userModel.nip,
         formData: formData,
         method: MethodRequest.PUT);
   }
 
+  // Ambil data biodata
+  Future<ApiModel> getBiodata(String nip) async {
+    return Consumer().where({'username': nip}).execute(
+        url: '/biodata', method: MethodRequest.GET);
+  }
+
   static setFirebaseToken() {
-    if (UtilPreferences.getString('user') != null) {
+    if (UtilPreferences.getString(Preferences.user) != null) {
       UserModel _userModel =
-          userModelFromJson(UtilPreferences.getString('user'));
+          userModelFromJson(UtilPreferences.getString(Preferences.user));
       FormData formData = new FormData.fromMap({
         "token": Application.pushToken,
-        "username": _userModel.nip,
+        "role": _userModel.role,
+        "nip": _userModel.nip,
       });
       Consumer().execute(
-          url: '/firebaseToken', formData: formData, method: MethodRequest.PUT);
+          url: '/firebase_token',
+          formData: formData,
+          method: MethodRequest.PUT);
     }
   }
 
   static Future<String> getPrivacyPolicy() async {
-    final result = await httpManager.get(url: PRIVACY_POLICY);
+    final result = await httpManager.get(url: Environment.PRIVACY_POLICY);
     return result;
   }
 
-  // String getToken() {
-  //   String token = UtilPreferences.getToken()['accessToken'];
-  //   print('GET TOKEN');
-  //   print(UtilLogger.convert(parseJwt(token)));
-  //   return UtilPreferences.getToken()['refreshToken'];
-  // }
+  String getToken() {
+    String token = UtilPreferences.getToken()['accessToken'];
+    print('GET TOKEN');
+    print(UtilLogger.convert(parseJwt(token)));
+    return UtilPreferences.getToken()['refreshToken'];
+  }
 
-  // Map<String, dynamic> getUser() {
-  //   String token = UtilPreferences.getToken()['accessToken'];
-  //   Map<String, dynamic> decode =
-  //       json.decode(UtilLogger.convert(parseJwt(token)));
+  Map<String, dynamic> getUser() {
+    String token = UtilPreferences.getToken()['accessToken'];
+    Map<String, dynamic> decode =
+        json.decode(UtilLogger.convert(parseJwt(token)));
 
-  //   return decode['user'];
-  // }
+    return decode[Preferences.user];
+  }
 }
