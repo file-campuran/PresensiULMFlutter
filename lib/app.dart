@@ -23,6 +23,7 @@ class _AppState extends State<App> {
   AuthBloc _authBloc;
   LoginBloc _loginBloc;
   NotificationBloc _notificationBloc;
+  MessageCubit _messageCubit;
 
   @override
   void initState() {
@@ -31,12 +32,14 @@ class _AppState extends State<App> {
     _languageBloc = LanguageBloc();
     _themeBloc = ThemeBloc();
     _authBloc = AuthBloc();
+    _messageCubit = MessageCubit();
     _loginBloc = LoginBloc(authBloc: _authBloc);
     _applicationBloc = ApplicationBloc(
       authBloc: _authBloc,
       themeBloc: _themeBloc,
       languageBloc: _languageBloc,
       notificationBloc: _notificationBloc,
+      messageCubit: _messageCubit,
     );
     super.initState();
   }
@@ -49,6 +52,7 @@ class _AppState extends State<App> {
     _authBloc.close();
     _loginBloc.close();
     _notificationBloc.close();
+    _messageCubit.close();
     super.dispose();
   }
 
@@ -73,6 +77,9 @@ class _AppState extends State<App> {
         ),
         BlocProvider<NotificationBloc>(
           create: (context) => _notificationBloc,
+        ),
+        BlocProvider<MessageCubit>(
+          create: (context) => _messageCubit,
         ),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(

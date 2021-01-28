@@ -30,21 +30,12 @@ class DBProvider {
         version: _dbVersion, onCreate: _onCreate, onUpgrade: _onUpgrade);
   }
 
-  static final String _createTablePopupInformation =
-      "CREATE TABLE PopupInformation ("
-      "id INTEGER PRIMARY KEY,"
-      "last_shown TEXT"
-      ")";
-
   static final String _createTableMessages = "CREATE TABLE Messages ("
       "id TEXT PRIMARY KEY,"
-      "backlink TEXT,"
       "content TEXT,"
       "title TEXT,"
-      "action_title TEXT,"
-      "action_url TEXT,"
       "read_at INTEGER,"
-      "published_at INTEGER"
+      "published_at TEXT"
       ")";
 
   static final String _createTableNotificaton = """CREATE TABLE Notification (
@@ -56,7 +47,6 @@ class DBProvider {
       )""";
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute(_createTablePopupInformation);
     await db.execute(_createTableMessages);
     await db.execute(_createTableNotificaton);
   }

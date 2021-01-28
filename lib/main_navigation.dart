@@ -26,6 +26,7 @@ class _MainNavigationState extends State<MainNavigation> {
   final _fcm = FirebaseMessaging();
   int _selectedIndex = 0;
   NotificationBloc _notificationBloc;
+  MessageCubit _messageCubit;
   // final Connectivity _connectivity = Connectivity();
   // StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
@@ -34,6 +35,7 @@ class _MainNavigationState extends State<MainNavigation> {
     _fcmHandle();
     LocalNotification().init();
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+    _messageCubit = BlocProvider.of<MessageCubit>(context);
     // _connectivitySubscription =
     //     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     super.initState();
@@ -173,32 +175,42 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
       ),
       BottomNavigationBarItem(
-        icon: new Stack(children: <Widget>[
+        icon: new Stack(alignment: Alignment.center, children: <Widget>[
           new Icon(Icons.message),
-          new Positioned(
-            top: 0.0,
-            right: 0.0,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  width: 10,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.redAccent,
-                  ),
-                ),
-                Text(
-                  '1',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 8,
-                  ),
-                ),
-              ],
-            ),
-          )
+          BlocBuilder<MessageCubit, MessageState>(
+            builder: (context, state) {
+              if (state is MessageData) {
+                if (state.count != 0) {
+                  return new Positioned(
+                    top: 0.0,
+                    right: 0.0,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.redAccent,
+                          ),
+                        ),
+                        Text(
+                          state.count.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return Container();
+              }
+              return Container();
+            },
+          ),
         ]),
         title: Padding(
           padding: EdgeInsets.only(top: 3),

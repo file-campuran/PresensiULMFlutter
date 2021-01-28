@@ -26,7 +26,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Message'),
+          title: Text(Translate.of(context).translate('message')),
         ),
         body: _buildContent(context, widget.message));
   }
@@ -66,7 +66,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
             context),
         _buildText(
             Text(
-              data.publishedAt.toString(),
+              data.humanDate(),
               style: TextStyle(fontSize: 15.0, color: Colors.grey),
             ),
             context),

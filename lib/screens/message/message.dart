@@ -1,3 +1,4 @@
+import 'package:absen_online/blocs/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
@@ -7,6 +8,7 @@ import 'package:html/parser.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Message extends StatefulWidget {
   Message({Key key}) : super(key: key);
@@ -21,32 +23,20 @@ class _MessageState extends State<Message> {
   ScrollController _scrollController = ScrollController();
   List<MessageModel> listMessage = [];
 
+  MessageCubit _messageCubit;
+
   @override
   void initState() {
-    initFaq();
+    _messageCubit = BlocProvider.of<MessageCubit>(context);
     super.initState();
-  }
-
-  void initFaq() {
-    FirebaseFirestore.instance
-        .collection('message')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      querySnapshot.docs.forEach((element) {
-        listMessage.add(MessageModel.fromJson(element.data()));
-      });
-      setState(() {});
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // Query query = FirebaseFirestore.instance.collection('faq');
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Message'),
+        title: Text(Translate.of(context).translate('message')),
       ),
       body: _buildContent(),
     );
@@ -99,13 +89,6 @@ class _MessageState extends State<Message> {
                             color: Colors.grey[300]),
                       ),
                       AppSkeleton(
-                        child: Container(
-                            width: MediaQuery.of(context).size.width - 170,
-                            height: 20.0,
-                            margin: EdgeInsets.only(bottom: 15.0),
-                            color: Colors.grey[300]),
-                      ),
-                      AppSkeleton(
                           width: MediaQuery.of(context).size.width - 250,
                           height: 15.0),
                     ],
@@ -118,17 +101,19 @@ class _MessageState extends State<Message> {
   }
 
   _buildContent() {
-    return listMessage.isNotEmpty
-        ? ListView.separated(
+    return BlocBuilder<MessageCubit, MessageState>(
+      builder: (_, state) {
+        if (state is MessageData) {
+          return ListView.separated(
             controller: _scrollController,
-            itemCount: listMessage.length,
+            itemCount: state.data.length,
             separatorBuilder: (context, index) {
               return Container(
-                  color: Theme.of(context).highlightColor, height: 10);
+                  color: Theme.of(context).highlightColor, height: 8);
             },
             itemBuilder: (context, index) {
-              bool hasRead = listMessage[index].readAt == null ||
-                      listMessage[index].readAt == 0
+              bool hasRead = state.data[index].readAt == null ||
+                      state.data[index].readAt == 0
                   ? false
                   : true;
 
@@ -172,25 +157,27 @@ class _MessageState extends State<Message> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              listMessage[index].title,
+                              state.data[index].title,
                               style: TextStyle(
-                                  fontSize: 15.0, fontWeight: FontWeight.bold),
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: hasRead ? Colors.grey : null),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 5.0, bottom: 10.0),
                               child: Text(
-                                listMessage[index].publishedAt.toString(),
+                                state.data[index].humanDate(),
                                 style: TextStyle(
                                     fontSize: 12.0, color: Colors.grey),
                               ),
                             ),
                             Text(
-                              _parseHtmlString(listMessage[index].content),
+                              _parseHtmlString(state.data[index].content),
                               maxLines: 3,
                               overflow: TextOverflow.clip,
                               style: TextStyle(
-                                fontSize: 14.0,
-                              ),
+                                  fontSize: 14.0,
+                                  color: hasRead ? Colors.grey : null),
                             ),
                           ],
                         ),
@@ -199,12 +186,19 @@ class _MessageState extends State<Message> {
                   ),
                 ),
                 onTap: () {
+                  if (state.data[index].readAt != 1) {
+                    _messageCubit.markAsRead(state.data[index].id);
+                  }
                   Navigator.of(context).pushNamed(Routes.messageDetail,
-                      arguments: listMessage[index]);
+                      arguments: state.data[index]);
                 },
               );
             },
-          )
-        : _buildLoading();
+          );
+        }
+
+        return _buildLoading();
+      },
+    );
   }
 }

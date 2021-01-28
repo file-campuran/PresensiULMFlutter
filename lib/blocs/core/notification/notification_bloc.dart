@@ -27,7 +27,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       Database db = await DBProvider.db.database;
       UtilLogger.log('START READ', new DateTime.now());
       var res =
-          await db.rawQuery('SELECT * FROM Notification ORDER BY date ASC');
+          await db.rawQuery('SELECT * FROM Notification ORDER BY date DESC');
       UtilLogger.log('END READ', new DateTime.now());
       List<NotificationModel> notificationModel = res.isNotEmpty
           ? res.map((c) => NotificationModel.fromJson(c)).toList()

@@ -136,14 +136,14 @@ class _NotificationListState extends State<NotificationList> {
       appBar: AppBar(
         centerTitle: true,
         actions: [
-          AppMyButton(
-            icon: Icons.ac_unit,
-            text: 'FORCE ADD',
-            loading: false,
-            onPress: () {
-              _notificationBloc.add(OnAddNotification('TITLE', 'MY MESSAGE'));
-            },
-          ),
+          // AppMyButton(
+          //   icon: Icons.ac_unit,
+          //   text: 'FORCE ADD',
+          //   loading: false,
+          //   onPress: () {
+          //     _notificationBloc.add(OnAddNotification('TITLE', 'MY MESSAGE'));
+          //   },
+          // ),
         ],
         title: Text(
           Translate.of(context).translate('notification'),
