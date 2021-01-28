@@ -63,6 +63,7 @@ class Images {
   static const String Service7 = "assets/images/service-restaurant.jpg";
 
   static const String Broadcast = "assets/images/broadcast.png";
+  static const String Chat = "assets/images/chat.png";
 
   ///Lottie
   static const String Writting = "assets/lottie/writing.json";

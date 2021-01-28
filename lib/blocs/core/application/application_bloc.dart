@@ -121,6 +121,9 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       if (UtilPreferences.containsKey(Preferences.remoteConfig)) {
         final config = UtilPreferences.getString(Preferences.remoteConfig);
         Application.remoteConfig = configModelFromJson(config);
+      } else {
+        Application.remoteConfig =
+            ConfigModel.fromJson(RemoteConfigs.defaultConfig);
       }
 
       RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();

@@ -22,3 +22,4 @@ export 'youtube_thumbnail.dart';
 export 'local_notification.dart';
 export 'app_notification.dart';
 export 'adapt.dart';
+export 'analytics_helper.dart';

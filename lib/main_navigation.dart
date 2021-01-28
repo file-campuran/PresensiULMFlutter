@@ -237,6 +237,8 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    Adapt.initContext(context);
+
     // LocalNotification().localNotifikasi(title: "TETEL", body: "BODE");
     return Scaffold(
       body: WillPopScope(

@@ -25,6 +25,7 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: BackButton(),
           centerTitle: true,
           title: Text(Translate.of(context).translate('message')),
         ),

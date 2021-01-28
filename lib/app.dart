@@ -88,7 +88,7 @@ class _AppState extends State<App> {
             builder: (context, theme) {
               return MaterialApp(
                 color: Colors.white,
-                title: "Presensi ULM",
+                title: Environment.APP_NAME,
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,

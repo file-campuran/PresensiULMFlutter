@@ -58,6 +58,17 @@ class MessageCubit extends Cubit<MessageState> {
     loadData();
   }
 
+  void markAll(int readAt) async {
+    Database db = await DBProvider.db.database;
+
+    await db.update(
+      'Messages',
+      {'read_at': readAt},
+    );
+
+    loadData();
+  }
+
   Future<int> countRead() async {
     Database db = await DBProvider.db.database;
 

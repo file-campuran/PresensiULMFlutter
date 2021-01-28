@@ -2,12 +2,9 @@ import 'package:absen_online/blocs/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
-import 'package:html/dom.dart' as dom;
-import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/configs/config.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Message extends StatefulWidget {
@@ -35,9 +32,32 @@ class _MessageState extends State<Message> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text(Translate.of(context).translate('message')),
-      ),
+          centerTitle: true,
+          title: Text(Translate.of(context).translate('message')),
+          actions: <Widget>[
+            PopupMenuButton<int>(
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 1,
+                  child: Text('Tandai sudah baca'),
+                ),
+                PopupMenuItem(
+                  value: 0,
+                  child: Text('Hapus'),
+                ),
+              ],
+              // initialValue: 1,
+              onCanceled: () {},
+              onSelected: (value) async {
+                if (value == 0) {
+                  _messageCubit.markAll(value);
+                } else {
+                  _messageCubit.markAll(value);
+                }
+              },
+              icon: Icon(Icons.more_horiz),
+            ),
+          ]),
       body: _buildContent(),
     );
   }
@@ -131,11 +151,8 @@ class _MessageState extends State<Message> {
                               Padding(
                                 padding:
                                     EdgeInsets.only(top: hasRead ? 0.0 : 2.0),
-                                child: Image.asset(
-                                  Images.Broadcast,
-                                  width: 32.0,
-                                  height: 32.0,
-                                ),
+                                child: Icon(Icons.message_rounded,
+                                    color: Theme.of(context).primaryColor),
                               ),
                               hasRead
                                   ? Container()
@@ -186,6 +203,8 @@ class _MessageState extends State<Message> {
                   ),
                 ),
                 onTap: () {
+                  AnalyticsHelper.setLogEvent(
+                      Analytics.tappedMarkAsReadMessage);
                   if (state.data[index].readAt != 1) {
                     _messageCubit.markAsRead(state.data[index].id);
                   }

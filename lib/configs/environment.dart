@@ -1,6 +1,8 @@
 class Environment {
   static const bool DEBUG = true;
 
+  static const String APP_NAME = 'PRESENSI ULM';
+
   // PRIMARY CONFIGS
   static const String API_URL = 'http://10.72.2.61//api-siapps/public/api';
   static const String API_KEY = '605dafe39ee0780e8cf2c829434eea99';
