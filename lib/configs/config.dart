@@ -3,7 +3,7 @@ export 'image.dart';
 export 'language.dart';
 export 'preferences.dart';
 export 'routes.dart';
-export 'sort.dart';
 export 'theme.dart';
 export 'theme_collection.dart';
 export 'environment.dart';
+export 'db_provider.dart';

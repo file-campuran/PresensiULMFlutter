@@ -62,6 +62,8 @@ class Images {
   static const String Service6 = "assets/images/service-job.jpg";
   static const String Service7 = "assets/images/service-restaurant.jpg";
 
+  static const String Broadcast = "assets/images/broadcast.png";
+
   ///Lottie
   static const String Writting = "assets/lottie/writing.json";
   static const String Watermelon = "assets/lottie/watermelon.json";
@@ -82,6 +84,9 @@ class Images {
   static const String Warning = "assets/svg/warning.svg";
   static const String Working = "assets/svg/working.svg";
   static const String Empty = "assets/svg/empty.svg";
+
+  static const String ImageBg = "assets/images/image_bg.png";
+  static const String ImageError = "assets/images/image_error.png";
 
   ///Singleton factory
   static final Images _instance = Images._internal();

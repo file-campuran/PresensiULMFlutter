@@ -96,8 +96,9 @@ class AppNotificationItem extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color:
-                    !item.isRead ? Theme.of(context).primaryColor : Colors.grey,
+                color: item.isRead == 0
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey,
               ),
               child: Icon(
                 FontAwesomeIcons.bell,
@@ -116,7 +117,7 @@ class AppNotificationItem extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: Text(
-                            item.title,
+                            item.title ?? '',
                             maxLines: 1,
                             style: Theme.of(context).textTheme.subtitle2,
                             overflow: TextOverflow.ellipsis,
@@ -149,7 +150,7 @@ class AppNotificationItem extends StatelessWidget {
                     //   },
                     // ),
                     Text(
-                      item.content,
+                      item.content ?? '',
                       maxLines: 1,
                       style: Theme.of(context)
                           .textTheme

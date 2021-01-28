@@ -18,10 +18,27 @@ class _FaqState extends State<Faq> {
   final _textLanguageController = TextEditingController();
 
   String search = '';
+  bool loaded = false;
+  List data = [];
 
   @override
   void initState() {
+    // initFaq();
     super.initState();
+  }
+
+  void initFaq() {
+    FirebaseFirestore.instance
+        .collection('faq')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((element) {
+        data.add(element.data());
+      });
+      setState(() {
+        loaded = true;
+      });
+    });
   }
 
   void _onFilter(String text) {
@@ -61,6 +78,15 @@ class _FaqState extends State<Faq> {
                 },
               ),
             ),
+            // if (!loaded) ...[
+            //   Center(child: AppColorLoader()),
+            // ] else if (loaded) ...[
+            //   Expanded(
+            //     child: ListView.builder(
+            //         itemCount: data.length,
+            //         itemBuilder: (context, index) => _cardContent(data[index])),
+            //   ),
+            // ],
             Expanded(
                 child: StreamBuilder<QuerySnapshot>(
               stream: query.snapshots(),
@@ -127,8 +153,6 @@ class _FaqState extends State<Faq> {
                     padding: EdgeInsets.only(bottom: 10),
                     child: Html(
                       data: dataHelp['content'].replaceAll('\n', '</br>'),
-                      defaultTextStyle:
-                          TextStyle(color: Colors.grey[600], fontSize: 14.0),
                       onLinkTap: (url) {
                         print(url);
                         launchExternal(url);
@@ -155,7 +179,7 @@ class _FaqState extends State<Faq> {
         ),
         Container(
           margin: EdgeInsets.only(left: 16, right: 16),
-          color: Colors.grey[300],
+          color: Theme.of(context).dividerColor,
           height: 1,
         )
       ],

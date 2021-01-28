@@ -6,6 +6,8 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
 
 class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
+  LanguageBloc() : super(InitialLanguageState());
+
   @override
   LanguageState get initialState => InitialLanguageState();
 

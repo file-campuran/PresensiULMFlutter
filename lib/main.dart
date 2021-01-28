@@ -6,37 +6,59 @@ import 'package:flutter/widgets.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'package:absen_online/z_testing/cubit.dart';
 import 'package:absen_online/app.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/configs/config.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
-class AppDelegate extends BlocDelegate {
-  ///Support Development
+class AppBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object event) {
-    super.onEvent(bloc, event);
     UtilLogger.log('BLOC EVENT', event);
+    super.onEvent(bloc, event);
   }
 
-  ///Support Development
   @override
   void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
     UtilLogger.log('BLOC TRANSITION', transition);
+    super.onTransition(bloc, transition);
   }
 
-  ///Support Development
   @override
-  void onError(Bloc bloc, Object error, StackTrace stacktrace) {
-    super.onError(bloc, error, stacktrace);
-    UtilLogger.log('BLOC ERROR', error);
+  void onChange(Cubit cubit, Change change) {
+    UtilLogger.log(
+        'BLOC CHANGE',
+        'onChange ${cubit.runtimeType}'
+            'From: ${change?.currentState} '
+            'To: ${change.nextState}');
+    super.onChange(cubit, change);
+  }
+
+  @override
+  void onClose(Cubit cubit) {
+    UtilLogger.log('BLOC CLOSE', '${cubit.runtimeType}');
+    super.onClose(cubit);
+  }
+
+  @override
+  void onCreate(Cubit cubit) {
+    UtilLogger.log('BLOC CREATE', '${cubit.runtimeType}');
+    super.onCreate(cubit);
+  }
+
+  @override
+  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
+    UtilLogger.log(
+        'BLOC ERROR',
+        'Error in : ${cubit.runtimeType}'
+            'Error: $error'
+            'StackTrace: $stackTrace');
+    super.onError(cubit, error, stackTrace);
   }
 }
 
 void main() async {
-  BlocSupervisor.delegate = AppDelegate();
-  // SharedPreferences.setMockInitialValues({});
+  Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 

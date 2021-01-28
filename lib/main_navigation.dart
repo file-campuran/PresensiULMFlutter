@@ -9,26 +9,9 @@ import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity/connectivity.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-
-// Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
-//   LocalNotification().localNotifikasi(title: 'TITLE', body: 'BODY');
-//   print('on background $message');
-// }
-// Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-//   // final notification = message['data'];
-//   // AppNotification()
-//   //     .addNotification(notification['title'], notification['body']);
-//   // LocalNotification().localNotifikasi(
-//   //     title: notification['title'], body: notification['body']);
-//   final pref = await SharedPreferences.getInstance();
-
-//   pref.setString('tes', 'tes');
-//   UtilLogger.log("onBackground", '$message');
-// }
 
 class MainNavigation extends StatefulWidget {
   MainNavigation({Key key}) : super(key: key);
@@ -62,60 +45,58 @@ class _MainNavigationState extends State<MainNavigation> {
     super.dispose();
   }
 
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    switch (result) {
-      case ConnectivityResult.wifi:
-      case ConnectivityResult.mobile:
-        return Fluttertoast.showToast(
-            msg: 'Online',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP,
-            backgroundColor: Colors.green,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        break;
-      case ConnectivityResult.none:
-        UtilLogger.log('NETWORK', result.toString(), LogType.INFO);
-        return Fluttertoast.showToast(
-            msg: "Check your internet connection",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
-        break;
-      default:
-        UtilLogger.log(
-            'NETWORK', 'Failed to get connectivity.', LogType.DANGER);
-        break;
-    }
-  }
+  // Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+  //   switch (result) {
+  //     case ConnectivityResult.wifi:
+  //     case ConnectivityResult.mobile:
+  //       return Fluttertoast.showToast(
+  //           msg: 'Online',
+  //           toastLength: Toast.LENGTH_SHORT,
+  //           gravity: ToastGravity.TOP,
+  //           backgroundColor: Colors.green,
+  //           textColor: Colors.white,
+  //           fontSize: 16.0);
+  //       break;
+  //     case ConnectivityResult.none:
+  //       UtilLogger.log('NETWORK', result.toString(), LogType.INFO);
+  //       return Fluttertoast.showToast(
+  //           msg: "Check your internet connection",
+  //           toastLength: Toast.LENGTH_SHORT,
+  //           gravity: ToastGravity.TOP,
+  //           backgroundColor: Colors.red,
+  //           textColor: Colors.white,
+  //           fontSize: 16.0);
+  //       break;
+  //     default:
+  //       UtilLogger.log(
+  //           'NETWORK', 'Failed to get connectivity.', LogType.DANGER);
+  //       break;
+  //   }
+  // }
 
   static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
     final notification = message['data'];
-    final pref = await SharedPreferences.getInstance();
-    final notificationPref = pref.getString(Preferences.notification);
-    NotificationPageModel _notificationPage;
+    if (!notification.isEmpty) {
+      final notificationModel = NotificationModel.fromJson(
+        {
+          "id": new DateTime.now().millisecondsSinceEpoch,
+          "isRead": 0,
+          "title": notification['title'],
+          "content": notification['body'],
+        },
+      );
 
-    if (notificationPref != null && notificationPref != '') {
-      _notificationPage = notificationPageModelFromJson(notificationPref);
-    } else {
-      _notificationPage = NotificationPageModel.fromJson({'notification': []});
+      Database db = await DBProvider.db.database;
+      await db.insert(
+        'Notification',
+        notificationModel.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      );
+
+      LocalNotification().localNotifikasi(
+          title: notification['title'], body: notification['body']);
     }
 
-    _notificationPage.notification.add(NotificationModel.fromJson({
-      "id": 6,
-      "isRead": false,
-      "title": notification['title'],
-      "content": notification['body'],
-    }));
-
-    pref.setString(Preferences.notification, _notificationPage.toString());
-
-    // AppNotification()
-    //     .addNotification(notification['title'], notification['body']);
-    LocalNotification().localNotifikasi(
-        title: notification['title'], body: notification['body']);
     UtilLogger.log("onBackground", '$message');
   }
 
@@ -140,26 +121,24 @@ class _MainNavigationState extends State<MainNavigation> {
         _showNotif("onLunch", message);
       },
       onResume: (Map<String, dynamic> message) async {
-        _showNotif("onResumr", message);
+        _showNotif("onResume", message);
       },
       // onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
     );
     Application.pushToken = await _fcm.getToken();
     UtilLogger.log("MY TOKEN", Application.pushToken);
     PresensiRepository.setFirebaseToken();
-
-    // RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();
-    // Application.remoteConfig = configModelFromJson(config.getString('config'));
-    // UtilLogger.log('REMOTE CONFIG', Application.remoteConfig.toJson());
   }
 
   void _showNotif(String log, Map<String, dynamic> message) {
     final notification = message['data'];
     UtilLogger.log(log, '$notification');
-    _notificationBloc
-        .add(OnAddNotification(notification['title'], notification['body']));
-    LocalNotification().localNotifikasi(
-        title: notification['title'], body: notification['body']);
+    if (!notification.isEmpty) {
+      _notificationBloc
+          .add(OnAddNotification(notification['title'], notification['body']));
+      LocalNotification().localNotifikasi(
+          title: notification['title'], body: notification['body']);
+    }
   }
 
   ///On change tab bottom menu
@@ -193,49 +172,39 @@ class _MainNavigationState extends State<MainNavigation> {
           child: Text(Translate.of(context).translate('history')),
         ),
       ),
-      // BottomNavigationBarItem(
-      //   icon: new Stack(children: <Widget>[
-      //     new Icon(Icons.alarm),
-      //     new Positioned(
-      //         // draw a red marble
-      //         top: 0.0,
-      //         right: 0.0,
-      //         child: BlocBuilder<NotificationBloc, NotificationState>(
-      //           builder: (context, state) {
-      //             if (state is NotificationData) {
-      //               if (state.data.count != 0) {
-      //                 return Stack(
-      //                   alignment: Alignment.center,
-      //                   children: [
-      //                     Container(
-      //                       width: 10,
-      //                       height: 10,
-      //                       decoration: BoxDecoration(
-      //                         shape: BoxShape.circle,
-      //                         color: Colors.redAccent,
-      //                       ),
-      //                     ),
-      //                     Text(
-      //                       state.data.count.toString(),
-      //                       style: TextStyle(
-      //                         color: Colors.white,
-      //                         fontSize: 8,
-      //                       ),
-      //                     ),
-      //                   ],
-      //                 );
-      //               }
-      //               return Container();
-      //             }
-      //             return Container();
-      //           },
-      //         ))
-      //   ]),
-      //   title: Padding(
-      //     padding: EdgeInsets.only(top: 3),
-      //     child: Text(Translate.of(context).translate('notification')),
-      //   ),
-      // ),
+      BottomNavigationBarItem(
+        icon: new Stack(children: <Widget>[
+          new Icon(Icons.message),
+          new Positioned(
+            top: 0.0,
+            right: 0.0,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.redAccent,
+                  ),
+                ),
+                Text(
+                  '1',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 8,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ]),
+        title: Padding(
+          padding: EdgeInsets.only(top: 3),
+          child: Text(Translate.of(context).translate('message')),
+        ),
+      ),
       BottomNavigationBarItem(
         icon: Icon(Icons.account_circle),
         title: Padding(
@@ -250,7 +219,7 @@ class _MainNavigationState extends State<MainNavigation> {
     Beranda(),
     Presensi(),
     Riwayat(),
-    // NotificationList(),
+    Message(),
     Profile()
   ];
 

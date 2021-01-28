@@ -1,70 +1,52 @@
-import 'dart:io';
+import 'dart:convert';
+import 'package:absen_online/utils/utils.dart';
 
-import 'package:absen_online/models/model.dart';
+List<MessageModel> listMessageFromJson(String str) => List<MessageModel>.from(
+    json.decode(str).map((x) => MessageModel.fromJson(x)));
 
-enum Status { sent, received }
-enum Type { textMessage, photo }
+MessageModel messageFromJson(String str) =>
+    MessageModel.fromJson(json.decode(str));
 
 class MessageModel {
-  final int id;
-  final String roomName;
-  final List<UserModel> member;
-  final UserModel from;
-  final String message;
-  final DateTime date;
-  final Status status;
-  final File file;
-  final Type type;
+  String id;
+  String backLink;
+  String content;
+  String title;
+  String actionTitle;
+  String actionUrl;
+  String publishedAt;
+  int readAt;
 
   MessageModel(
-    this.id,
-    this.roomName,
-    this.member,
-    this.from,
-    this.message,
-    this.date,
-    this.status,
-    this.file,
-    this.type,
-  );
+      {this.id,
+      this.backLink,
+      this.content,
+      this.title,
+      this.actionTitle,
+      this.actionUrl,
+      this.publishedAt,
+      this.readAt});
 
-  factory MessageModel.fromJson(Map<String, dynamic> json) {
-    Status status = Status.sent;
-    File file;
-    Type type = Type.textMessage;
-    List<UserModel> member;
-    UserModel from;
+  factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
+        id: json["id"],
+        backLink: json["backlink"],
+        content: json["content"],
+        title: json["title"],
+        actionTitle: json["action_title"],
+        actionUrl: json["action_url"],
+        publishedAt: unixTimeStampToDateDocs(
+            DateTime.parse(json["published_at"]).millisecondsSinceEpoch),
+        readAt: json["read_at"],
+      );
 
-    if (json['status'] == 'received') {
-      status = Status.received;
-    }
-
-    if (json['file'] != null) {
-      file = File(json['file']);
-      type = Type.photo;
-    }
-
-    if (json['member'] != null) {
-      final Iterable convertUser = json['member'] ?? [];
-      member = convertUser.map((item) {
-        return UserModel.fromJson(item);
-      }).toList();
-    }
-
-    if (json['from'] != null) {
-      from = UserModel.fromJson(json['from']);
-    }
-
-    return MessageModel(
-      json['id'] as int ?? 0,
-      json['room_name'] as String ?? '',
-      member,
-      from,
-      json['message'] as String ?? 'Unknown',
-      DateTime.tryParse(json['date']) ?? DateTime.now(),
-      status,
-      file,
-      type,
-    );
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "backlink": backLink,
+        "content": content,
+        "title": title,
+        "action_title": actionTitle,
+        "action_url": actionUrl,
+        "published_at": publishedAt,
+        "read_at": readAt,
+      };
 }

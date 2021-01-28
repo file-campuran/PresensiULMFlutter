@@ -17,6 +17,7 @@ class Routes {
   static const String riwayatDetail = "/riwayatDetail";
   static const String notification = "/notification";
   static const String detailNotification = "/detailNotification";
+  static const String messageDetail = "/messageDetail";
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -119,6 +120,15 @@ class Routes {
           builder: (context) => PhotoPreview(
             galleryList: params['photo'],
             initialIndex: params['index'],
+          ),
+          fullscreenDialog: true,
+        );
+
+      case messageDetail:
+        final args = settings.arguments;
+        return MaterialPageRoute(
+          builder: (context) => MessageDetailScreen(
+            message: args,
           ),
           fullscreenDialog: true,
         );

@@ -8,6 +8,7 @@ class Preferences {
   static String font = 'font';
   static String accessToken = 'accessToken';
   static String refreshToken = 'refreshToken';
+  static String remoteConfig = 'remoteConfig';
 
   ///Singleton factory
   static final Preferences _instance = Preferences._internal();

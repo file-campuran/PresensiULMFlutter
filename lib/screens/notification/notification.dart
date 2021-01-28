@@ -88,7 +88,7 @@ class _NotificationListState extends State<NotificationList> {
                 child: AppNotificationItem(
                   item: item,
                   onPressed: () {
-                    _notificationBloc.add(OnMarkReadNotification(index));
+                    _notificationBloc.add(OnMarkReadNotification(item.id));
                     _showDialog(item.content);
                     // Navigator.pushNamed(context, Routes.detailNotification,
                     //     arguments: item);
@@ -110,7 +110,7 @@ class _NotificationListState extends State<NotificationList> {
                   ),
                 ),
                 onDismissed: (direction) {
-                  _notificationBloc.add(OnRemoveNotification(index));
+                  _notificationBloc.add(OnRemoveNotification(item.id));
                 },
               );
             },
@@ -136,14 +136,14 @@ class _NotificationListState extends State<NotificationList> {
       appBar: AppBar(
         centerTitle: true,
         actions: [
-          // AppMyButton(
-          //   icon: Icons.ac_unit,
-          //   text: 'FORCE ADD',
-          //   loading: false,
-          //   onPress: () {
-          //     _notificationBloc.add(OnAddNotification('TITLE', 'MY MESSAGE'));
-          //   },
-          // ),
+          AppMyButton(
+            icon: Icons.ac_unit,
+            text: 'FORCE ADD',
+            loading: false,
+            onPress: () {
+              _notificationBloc.add(OnAddNotification('TITLE', 'MY MESSAGE'));
+            },
+          ),
         ],
         title: Text(
           Translate.of(context).translate('notification'),

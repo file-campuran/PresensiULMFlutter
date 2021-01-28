@@ -37,7 +37,7 @@ class AppNotification {
   int getCount() {
     _notificationPage.count = 0;
     _notificationPage.notification.forEach((element) {
-      if (!element.isRead) {
+      if (element.isRead == 0) {
         _notificationPage.count++;
       }
     });
@@ -46,7 +46,7 @@ class AppNotification {
   }
 
   void markAsRead(int index) {
-    _notificationPage.notification[index].isRead = true;
+    _notificationPage.notification[index].isRead = 1;
     UtilPreferences.setString(
         Preferences.notification, _notificationPage.toString());
   }

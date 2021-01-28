@@ -30,6 +30,8 @@ export 'beranda/beranda.dart';
 export 'riwayat/riwayat.dart';
 export 'riwayat/riwayat_detail.dart';
 export 'faq/faq.dart';
+export 'message/message.dart';
+export 'message/message_detail.dart';
 export 'login/login.dart';
 export 'profile/panduan.dart';
 export 'profile/profile.dart';

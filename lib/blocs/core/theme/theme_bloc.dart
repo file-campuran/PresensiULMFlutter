@@ -10,6 +10,8 @@ const DARK_ALWAYS_OFF = 'off';
 const DARK_ALWAYS_ON = 'on';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
+  ThemeBloc() : super(InitialThemeState());
+
   @override
   ThemeState get initialState => InitialThemeState();
 

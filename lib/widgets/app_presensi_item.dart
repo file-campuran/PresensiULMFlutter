@@ -228,50 +228,100 @@ class AppPresensiItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  height: 120,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8),
+                CachedNetworkImage(
+                  imageUrl: item.fileGambar,
+                  imageBuilder: (context, imageProvider) => Container(
+                    height: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    image: DecorationImage(
-                      image: new CachedNetworkImageProvider(item.fileGambar),
-                      fit: BoxFit.cover,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            item.status != null
+                                ? Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: AppTag(
+                                      item.status,
+                                      type: TagType.status,
+                                    ),
+                                  )
+                                : Container()
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Visibility(
+                                visible: item.fileBerkas != null,
+                                child: InkWell(
+                                  child: Icon(
+                                    Icons.file_download,
+                                    color: Theme.of(context).buttonColor,
+                                  ),
+                                  onTap: () {
+                                    launchExternal(item.fileBerkas);
+                                  },
+                                )),
+                          ],
+                        )
+                      ],
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          item.status != null
-                              ? Padding(
-                                  padding: EdgeInsets.all(5),
-                                  child: AppTag(
-                                    item.status,
-                                    type: TagType.status,
-                                  ),
-                                )
-                              : Container()
-                        ],
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Container(
+                    height: 120,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          Visibility(
-                              visible: item.fileBerkas != null,
-                              child: InkWell(
-                                child: Icon(
-                                  Icons.file_download,
-                                  color: Theme.of(context).buttonColor,
-                                ),
-                                onTap: () {
-                                  launchExternal(item.fileBerkas);
-                                },
-                              )),
-                        ],
-                      )
-                    ],
+                      image: DecorationImage(
+                        image: new ExactAssetImage(Images.Intro1),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            item.status != null
+                                ? Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: AppTag(
+                                      item.status,
+                                      type: TagType.status,
+                                    ),
+                                  )
+                                : Container()
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Visibility(
+                                visible: item.fileBerkas != null,
+                                child: InkWell(
+                                  child: Icon(
+                                    Icons.file_download,
+                                    color: Theme.of(context).buttonColor,
+                                  ),
+                                  onTap: () {
+                                    launchExternal(item.fileBerkas);
+                                  },
+                                )),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(top: 10)),
@@ -284,24 +334,26 @@ class AppPresensiItem extends StatelessWidget {
                       .copyWith(fontWeight: FontWeight.w600),
                 ),
                 Padding(padding: EdgeInsets.only(top: 5)),
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.timer,
-                      size: 12,
-                      color: Theme.of(context).buttonColor,
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 3, right: 3),
-                        child: Text(item.jamPresensi,
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.caption),
+                if (item.deskripsiKinerja != '') ...[
+                  Row(
+                    children: <Widget>[
+                      Icon(
+                        Icons.timer,
+                        size: 12,
+                        color: Theme.of(context).buttonColor,
                       ),
-                    )
-                  ],
-                ),
-                Padding(padding: EdgeInsets.only(top: 5)),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 3, right: 3),
+                          child: Text(item.jamPresensi,
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.caption),
+                        ),
+                      )
+                    ],
+                  ),
+                  Padding(padding: EdgeInsets.only(top: 5)),
+                ],
                 Text(
                   item.deskripsiKinerja,
                   maxLines: 1,
@@ -406,32 +458,93 @@ class AppPresensiItem extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                width: 120,
-                height: 140,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: new CachedNetworkImageProvider(item.fileGambar),
-                    fit: BoxFit.cover,
+              CachedNetworkImage(
+                imageUrl: item.fileGambar,
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 120,
+                  height: 140,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: new CachedNetworkImageProvider(item.fileGambar),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                    ),
                   ),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    bottomLeft: Radius.circular(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      item.status != null
+                          ? Padding(
+                              padding: EdgeInsets.all(5),
+                              child: AppTag(
+                                item.status,
+                                type: TagType.status,
+                              ),
+                            )
+                          : Container()
+                    ],
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    item.status != null
-                        ? Padding(
-                            padding: EdgeInsets.all(5),
-                            child: AppTag(
-                              item.status,
-                              type: TagType.status,
-                            ),
-                          )
-                        : Container()
-                  ],
+                placeholder: (context, url) => Container(
+                  width: 120,
+                  height: 140,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(
+                      image: new ExactAssetImage(Images.ImageBg),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      item.status != null
+                          ? Padding(
+                              padding: EdgeInsets.all(5),
+                              child: AppTag(
+                                item.status,
+                                type: TagType.status,
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  width: 120,
+                  height: 140,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(
+                      image: new ExactAssetImage(Images.ImageError),
+                      // fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      item.status != null
+                          ? Padding(
+                              padding: EdgeInsets.all(5),
+                              child: AppTag(
+                                item.status,
+                                type: TagType.status,
+                              ),
+                            )
+                          : Container()
+                    ],
+                  ),
                 ),
               ),
               Expanded(
@@ -487,24 +600,26 @@ class AppPresensiItem extends StatelessWidget {
                         ],
                       ),
                       Padding(padding: EdgeInsets.only(top: 5)),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.info,
-                            size: 12,
-                            color: Theme.of(context).buttonColor,
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 3, right: 3),
-                              child: Text("Deskripsi Kinerja",
-                                  maxLines: 1,
-                                  style: Theme.of(context).textTheme.caption),
+                      if (item.deskripsiKinerja != '') ...[
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.info,
+                              size: 12,
+                              color: Theme.of(context).buttonColor,
                             ),
-                          )
-                        ],
-                      ),
-                      Padding(padding: EdgeInsets.only(top: 5)),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(left: 3, right: 3),
+                                child: Text("Deskripsi Kinerja",
+                                    maxLines: 1,
+                                    style: Theme.of(context).textTheme.caption),
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(padding: EdgeInsets.only(top: 5)),
+                      ],
                       Row(
                         children: <Widget>[
                           // Icon(
@@ -685,24 +800,26 @@ class AppPresensiItem extends StatelessWidget {
                       ],
                     ),
                     Padding(padding: EdgeInsets.only(top: 5)),
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.info,
-                          size: 12,
-                          color: Theme.of(context).buttonColor,
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(left: 3, right: 3),
-                            child: Text("Deskripsi Kinerja",
-                                maxLines: 1,
-                                style: Theme.of(context).textTheme.caption),
+                    if (item.deskripsiKinerja != '') ...[
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.info,
+                            size: 12,
+                            color: Theme.of(context).buttonColor,
                           ),
-                        )
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 5)),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 3, right: 3),
+                              child: Text("Deskripsi Kinerja",
+                                  maxLines: 1,
+                                  style: Theme.of(context).textTheme.caption),
+                            ),
+                          )
+                        ],
+                      ),
+                      Padding(padding: EdgeInsets.only(top: 5)),
+                    ],
                     Row(
                       children: <Widget>[
                         SizedBox(

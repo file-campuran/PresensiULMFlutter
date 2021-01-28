@@ -10,15 +10,15 @@ class OnAddNotification extends NotificationEvent {
 }
 
 class OnRemoveNotification extends NotificationEvent {
-  final int index;
+  final String id;
 
-  OnRemoveNotification(this.index);
+  OnRemoveNotification(this.id);
 }
 
 class OnMarkReadNotification extends NotificationEvent {
-  final int index;
+  final String id;
 
-  OnMarkReadNotification(this.index);
+  OnMarkReadNotification(this.id);
 }
 
 class OnGetCountNotification extends NotificationEvent {}

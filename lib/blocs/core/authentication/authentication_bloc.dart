@@ -9,6 +9,8 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
 
 class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+  AuthBloc() : super(InitialAuthenticationState());
+
   @override
   AuthenticationState get initialState => InitialAuthenticationState();
 

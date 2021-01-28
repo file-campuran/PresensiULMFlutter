@@ -4,8 +4,8 @@ NotificationModel notificationModelFromJson(String str) =>
     NotificationModel.fromJson(json.decode(str));
 
 class NotificationModel {
-  final int id;
-  bool isRead;
+  final String id;
+  int isRead;
   final String title;
   final String content;
   final DateTime date;
@@ -20,8 +20,8 @@ class NotificationModel {
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
       NotificationModel(
-        id: json["id"],
-        isRead: json["isRead"] != null ? json["isRead"] : false,
+        id: json["id"].toString(),
+        isRead: json["isRead"] ?? 0,
         title: json["title"],
         content: json["content"] ?? '',
         date: json['date'] != null

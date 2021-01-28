@@ -660,7 +660,8 @@ class PresensiState extends State<Presensi> {
     try {
       cameras = await availableCameras();
       controller = new CameraController(
-          cameraDescription(CameraLensDirection.front), ResolutionPreset.high,
+          cameraDescription(CameraLensDirection.front),
+          ResolutionPreset.veryHigh,
           enableAudio: true);
       await controller.initialize();
     } on CameraException catch (_) {

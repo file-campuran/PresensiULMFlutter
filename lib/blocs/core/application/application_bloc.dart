@@ -20,7 +20,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     @required this.themeBloc,
     @required this.languageBloc,
     @required this.notificationBloc,
-  }) : assert(authBloc != null);
+  })  : assert(authBloc != null),
+        super(InitialApplicationState());
 
   @override
   ApplicationState get initialState => InitialApplicationState();
@@ -114,7 +115,14 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         yield ApplicationIntroView();
       }
 
+      if (UtilPreferences.containsKey(Preferences.remoteConfig)) {
+        final config = UtilPreferences.getString(Preferences.remoteConfig);
+        Application.remoteConfig = configModelFromJson(config);
+      }
+
       RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();
+      UtilPreferences.setString(
+          Preferences.remoteConfig, config.getString('config'));
       Application.remoteConfig =
           configModelFromJson(config.getString('config'));
       UtilLogger.log('REMOTE CONFIG', Application.remoteConfig.toJson());
