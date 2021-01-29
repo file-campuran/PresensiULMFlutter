@@ -10,9 +10,9 @@ class Brown {
 
   Brown._internal();
 
-  static ThemeData getTheme({@required String font, String type}) {
-    switch (type) {
-      case 'LIGHT':
+  static ThemeData getTheme({@required String font, bool isLight = true}) {
+    switch (isLight) {
+      case true:
         return ThemeData(
           primarySwatch: MaterialColor(4288776319, {
             50: Color(0xfff4f1f0),

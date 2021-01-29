@@ -10,9 +10,9 @@ class Pink {
 
   Pink._internal();
 
-  static ThemeData getTheme({@required String font, String type}) {
-    switch (type) {
-      case 'LIGHT':
+  static ThemeData getTheme({@required String font, bool isLight = true}) {
+    switch (isLight) {
+      case true:
         return ThemeData(
           primarySwatch: MaterialColor(4292912833, {
             50: Color(0xfff8ecf2),

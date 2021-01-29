@@ -1,5 +1,4 @@
-import 'package:absen_online/configs/db_provider.dart';
-import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +14,6 @@ class MessageCubit extends Cubit<MessageState> {
 
   void readMessage() async {
     // await clearLocalData();
-    Database db = await DBProvider.db.database;
     if (listMessage.isEmpty) {
       FirebaseFirestore.instance
           .collection('message')
@@ -25,7 +23,7 @@ class MessageCubit extends Cubit<MessageState> {
         listMessage = [];
         querySnapshot.docs.forEach((element) async {
           MessageModel messageModel = MessageModel.fromJson(element.data());
-          await db.insert(
+          await Application.db.insert(
             'Messages',
             messageModel.toJson(),
             conflictAlgorithm: ConflictAlgorithm.ignore,
@@ -39,29 +37,27 @@ class MessageCubit extends Cubit<MessageState> {
   }
 
   void loadData() async {
-    Database db = await DBProvider.db.database;
-
-    var res =
-        await db.rawQuery('SELECT * FROM Messages ORDER BY published_at DESC');
+    var res = await Application.db
+        .rawQuery('SELECT * FROM Messages ORDER BY published_at DESC');
     listMessage =
         res.isNotEmpty ? res.map((c) => MessageModel.fromJson(c)).toList() : [];
-    countNotRead = await countRead();
+    countNotRead = await countUnRead();
     emit(MessageData(listMessage, countNotRead));
   }
 
   void markAsRead(String id) async {
-    Database db = await DBProvider.db.database;
-
-    await db.update('Messages', {'read_at': 1},
-        where: 'id = ?', whereArgs: [id]);
+    await Application.db
+        .update('Messages', {'read_at': 1}, where: 'id = ?', whereArgs: [id]);
 
     loadData();
   }
 
+  /*
+   * Read = 1
+   * Unread = 0
+   */
   void markAll(int readAt) async {
-    Database db = await DBProvider.db.database;
-
-    await db.update(
+    await Application.db.update(
       'Messages',
       {'read_at': readAt},
     );
@@ -69,17 +65,13 @@ class MessageCubit extends Cubit<MessageState> {
     loadData();
   }
 
-  Future<int> countRead() async {
-    Database db = await DBProvider.db.database;
-
-    return Sqflite.firstIntValue(
-        await db.rawQuery('SELECT COUNT(*) FROM Messages WHERE read_at = 0'));
+  Future<int> countUnRead() async {
+    return Sqflite.firstIntValue(await Application.db
+        .rawQuery('SELECT COUNT(*) FROM Messages WHERE read_at = 0'));
   }
 
   //Clear all data from db
   Future<void> clearLocalData() async {
-    Database db = await DBProvider.db.database;
-
-    await db.rawDelete('Delete from Messages');
+    await Application.db.rawDelete('Delete from Messages');
   }
 }

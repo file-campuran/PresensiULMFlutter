@@ -10,9 +10,9 @@ class PastelOrange {
 
   PastelOrange._internal();
 
-  static ThemeData getTheme({@required String font, String type}) {
-    switch (type) {
-      case 'LIGHT':
+  static ThemeData getTheme({@required String font, bool isLight = true}) {
+    switch (isLight) {
+      case true:
         return ThemeData(
           primarySwatch: MaterialColor(4294359873, {
             50: Color(0xfffef6e7),

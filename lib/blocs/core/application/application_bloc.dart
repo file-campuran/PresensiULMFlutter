@@ -35,8 +35,10 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       yield ApplicationWaiting();
 
       ///Setup SharedPreferences
-      UtilLogger.log('INITIALIZE SHARED PREF');
       Application.preferences = await SharedPreferences.getInstance();
+
+      ///Setup Database SQFLITE
+      Application.db = await DBProvider.db.database;
 
       ///Get old Theme & Font & Language
       final oldTheme = UtilPreferences.getString(Preferences.theme);

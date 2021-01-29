@@ -10,9 +10,9 @@ class Green {
 
   Green._internal();
 
-  static ThemeData getTheme({@required String font, String type}) {
-    switch (type) {
-      case 'LIGHT':
+  static ThemeData getTheme({@required String font, bool isLight = true}) {
+    switch (isLight) {
+      case true:
         return ThemeData(
           primarySwatch: MaterialColor(4287870896, {
             50: Color(0xfff0f5f4),
