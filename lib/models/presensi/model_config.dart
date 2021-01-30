@@ -66,22 +66,26 @@ class Presensi {
     this.detectFakeGps,
     this.detectFace,
     this.detectFaceRecognition,
+    this.showFaceInformation,
   });
 
   bool detectFakeGps;
   bool detectFace;
   bool detectFaceRecognition;
+  bool showFaceInformation;
 
   factory Presensi.fromJson(Map<String, dynamic> json) => Presensi(
         detectFakeGps: json["detect_fake_gps"],
         detectFace: json["detect_face"],
         detectFaceRecognition: json["detect_face_recognition"],
+        showFaceInformation: json["show_face_information"],
       );
 
   Map<String, dynamic> toJson() => {
         "detect_fake_gps": detectFakeGps,
         "detect_face": detectFace,
         "detect_face_recognition": detectFaceRecognition,
+        "show_face_information": showFaceInformation,
       };
 }
 

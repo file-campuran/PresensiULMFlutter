@@ -66,8 +66,11 @@ class _RiwayatState extends State<Riwayat> {
 
         ///Setup list marker map from list
         listProduct.list.forEach((item) {
-          imageModel
-              .add(ImageModel.fromJson({"id": 1, "image": item.fileGambar}));
+          imageModel.add(ImageModel.fromJson({
+            "id": 1,
+            "image": item.fileGambar,
+            "description": item.deskripsiKinerja
+          }));
 
           final markerId = MarkerId(item.id.toString());
           final marker = Marker(

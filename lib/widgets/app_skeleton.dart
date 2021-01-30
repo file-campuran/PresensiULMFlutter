@@ -17,7 +17,7 @@ class AppSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300],
+      baseColor: Theme.of(context).highlightColor,
       highlightColor: Colors.white,
       child: child != null
           ? child
@@ -26,10 +26,9 @@ class AppSkeleton extends StatelessWidget {
               padding: padding != null
                   ? EdgeInsets.all(padding)
                   : EdgeInsets.all(0.0),
-              margin:
-                  margin != null ? EdgeInsets.all(margin) : EdgeInsets.all(0.0),
+              margin: EdgeInsets.all(margin ?? 0),
               width: width,
-              color: Colors.grey[300],
+              color: Theme.of(context).highlightColor,
             ),
     );
   }

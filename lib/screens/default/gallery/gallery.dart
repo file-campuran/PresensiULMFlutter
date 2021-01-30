@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:absen_online/configs/config.dart';
+import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -83,12 +84,15 @@ class _GalleryState extends State<Gallery> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(
-                    "",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2
-                        .copyWith(color: Colors.white),
+                  Container(
+                    width: Adapt.screenW() * 0.8,
+                    child: Text(
+                      widget.photo[_index].description ?? '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle2
+                          .copyWith(color: Colors.white),
+                    ),
                   ),
                   Text(
                     "${_index + 1}/${widget.photo.length}",

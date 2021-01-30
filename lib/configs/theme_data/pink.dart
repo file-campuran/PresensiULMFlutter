@@ -10,7 +10,7 @@ class Pink {
 
   Pink._internal();
 
-  static ThemeData getTheme({@required String font, bool isLight = true}) {
+  static ThemeData getTheme({@required String font, bool isLight = false}) {
     switch (isLight) {
       case true:
         return ThemeData(

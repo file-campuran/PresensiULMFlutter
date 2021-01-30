@@ -64,6 +64,7 @@ class Images {
 
   static const String Broadcast = "assets/images/broadcast.png";
   static const String Chat = "assets/images/chat.png";
+  static const String Intersect = "assets/images/intersect.png";
 
   ///Lottie
   static const String Writting = "assets/lottie/writing.json";

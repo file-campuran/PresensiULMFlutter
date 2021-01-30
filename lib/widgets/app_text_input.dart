@@ -15,6 +15,7 @@ class AppTextInput extends StatelessWidget {
   final TextInputAction textInputAction;
   final String errorText;
   final int maxLines;
+  final Widget leading;
 
   AppTextInput({
     Key key,
@@ -31,6 +32,7 @@ class AppTextInput extends StatelessWidget {
     this.keyboardType,
     this.textInputAction,
     this.errorText,
+    this.leading,
     this.maxLines = 1,
   }) : super(key: key);
 
@@ -59,15 +61,21 @@ class AppTextInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null) ...[
-          Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 10),
-            child: Text(
-              title,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle2
-                  .copyWith(fontWeight: FontWeight.w600),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10),
+                child: Text(
+                  title,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+              ),
+              leading ?? Container(),
+            ],
           ),
         ],
         Container(

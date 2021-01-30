@@ -27,7 +27,7 @@ class Consumer {
 
   Consumer._internal();
 
-  final int timeout = 10; //Seconds
+  final int timeout = Environment.API_TIMEOUT; //Seconds
 
   int limits;
   Map<String, dynamic> orders;
@@ -144,7 +144,7 @@ class Consumer {
     String _combineFillter = _tempFillter + _tempOrder + _tempLimit;
     _combineFillter =
         _combineFillter.length != 0 ? _combineFillter.substring(1) : '';
-    return '?' + _combineFillter;
+    return _combineFillter != '' ? '?' + _combineFillter : '';
   }
 
   /* 

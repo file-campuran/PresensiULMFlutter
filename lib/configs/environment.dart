@@ -4,9 +4,11 @@ class Environment {
   static const String APP_NAME = 'PRESENSI ULM';
 
   // PRIMARY CONFIGS
-  static const String API_URL = 'http://10.72.2.61//api-siapps/public/api';
+  static const String API_URL = 'http://192.168.43.247/api-siapps/public/api';
   static const String API_KEY = '605dafe39ee0780e8cf2c829434eea99';
   static const String API_ID = 'PresensiULM';
+  static const int API_TIMEOUT = 10;
+
   static const String VERSION = '2.0.0 Beta.4.1.2021_B10';
   static const int VERSION_CODE = 11;
 

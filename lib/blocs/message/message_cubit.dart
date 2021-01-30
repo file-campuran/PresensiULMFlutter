@@ -22,7 +22,9 @@ class MessageCubit extends Cubit<MessageState> {
           .then((QuerySnapshot querySnapshot) {
         listMessage = [];
         querySnapshot.docs.forEach((element) async {
-          MessageModel messageModel = MessageModel.fromJson(element.data());
+          Map<String, dynamic> model = element.data();
+          model['id'] = element.id;
+          MessageModel messageModel = MessageModel.fromJson(model);
           await Application.db.insert(
             'Messages',
             messageModel.toJson(),

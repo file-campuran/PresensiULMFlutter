@@ -141,6 +141,12 @@ class _BerandaState extends State<Beranda> {
                 child: Column(
                   children: <Widget>[
                     Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: Dimens.cardMargin,
+                          vertical: Dimens.cardMargin),
+                      child: Announcement(title: 'Title', content: 'Content'),
+                    ),
+                    Container(
                       padding: EdgeInsets.only(
                         left: 20,
                         right: 20,

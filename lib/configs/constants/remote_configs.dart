@@ -10,7 +10,8 @@ class RemoteConfigs {
       "presensi": {
         "detect_fake_gps": false,
         "detect_face": true,
-        "detect_face_recognition": false
+        "detect_face_recognition": false,
+        "show_face_information": true,
       },
       "update": {
         "ios_url":

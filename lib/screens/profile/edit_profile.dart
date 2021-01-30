@@ -6,6 +6,7 @@ import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/api/presensi.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class EditProfile extends StatefulWidget {
   final bool leading;
@@ -133,6 +134,19 @@ class _EditProfileState extends State<EditProfile> {
                 children: <Widget>[
                   ///ADDRESS
                   AppTextInput(
+                    leading: InkWell(
+                      onTap: () async {
+                        dynamic result = await Navigator.pushNamed(
+                            context, Routes.locationPicker);
+                        if (result.isNotEmpty) {
+                          setState(() {
+                            _textAlamatController.text = result;
+                          });
+                        }
+                        UtilLogger.log('ROUTE RESPONSE', result);
+                      },
+                      child: Icon(Icons.location_on),
+                    ),
                     title: Translate.of(context).translate(
                       'address',
                     ),

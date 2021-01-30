@@ -45,7 +45,9 @@ class _RiwayatDetailState extends State<RiwayatDetail> {
 
   ///Build banner UI
   Widget _buildBanner() {
-    List<ImageModel> image = [ImageModel(0, widget.item.fileGambar)];
+    List<ImageModel> image = [
+      ImageModel(0, widget.item.fileGambar, widget.item.deskripsiKinerja)
+    ];
     return InkWell(
       onTap: () {
         Navigator.pushNamed(

@@ -1,20 +1,7 @@
-// export 'default/category/category.dart';
-// export 'default/change_password/change_password.dart';
-// export 'default/choose_location/choose_location.dart';
-// export 'default/filter/filter.dart';
-// export 'default/home/home.dart';
-// export 'default/list_product/list_product.dart' hide PageType;
-// export 'default/message/message.dart';
-// export 'default/product_detail/product_detail.dart';
-// export 'default/product_detail_tab/product_detail_tab.dart';
-// export 'default/review/review.dart';
-// export 'default/search_history/search_history.dart';
-// export 'default/signin/signin.dart';
-// export 'default/wishlist/wishlist.dart';
-
 export 'notification/notification.dart';
 export 'notification/detail_notification.dart';
 export 'default/location/location.dart';
+export 'default/location/location_picker.dart';
 export 'default/intro_preview/intro_preview.dart';
 export 'default/photo_preview/photo_preview.dart';
 export 'default/language_setting/language_setting.dart';

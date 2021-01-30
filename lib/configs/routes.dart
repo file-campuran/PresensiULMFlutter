@@ -9,6 +9,7 @@ class Routes {
   static const String photoPreview = "/photoPreview";
   static const String themeSetting = "/themeSetting";
   static const String location = "/location";
+  static const String locationPicker = "/location_picker";
   static const String setting = "/setting";
   static const String fontSetting = "/fontSetting";
   static const String faq = "/faq";
@@ -105,6 +106,11 @@ class Routes {
           builder: (context) => Location(
             location: location,
           ),
+        );
+
+      case locationPicker:
+        return MaterialPageRoute(
+          builder: (context) => LocationPicker(),
         );
 
       case gallery:

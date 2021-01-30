@@ -92,6 +92,7 @@ class PresensiState extends State<Presensi> {
   @override
   void dispose() {
     controller.dispose();
+    faceDetector.close();
     // myLocation.closeStream();
     super.dispose();
   }
@@ -122,7 +123,8 @@ class PresensiState extends State<Presensi> {
   void initFirebaseML() {
     faceDetector = FirebaseVision.instance.faceDetector(
       FaceDetectorOptions(
-        mode: FaceDetectorMode.fast,
+        enableClassification: true,
+        mode: FaceDetectorMode.accurate,
       ),
     );
   }
@@ -342,7 +344,7 @@ class PresensiState extends State<Presensi> {
               boxShadow: [
                 BoxShadow(
                   blurRadius: 3,
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withOpacity(0.2),
                 ),
               ],
               backdropEnabled: true,
@@ -498,7 +500,8 @@ class PresensiState extends State<Presensi> {
                             width: 10.0,
                           ),
                           Text(
-                            Translate.of(context).translate('presence'),
+                            Translate.of(context).translate('presence') +
+                                " ${_infoPresensi?.ruleStatus}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24.0,
@@ -623,7 +626,15 @@ class PresensiState extends State<Presensi> {
   }
 
   Widget imagePreviewWidget() {
-    // return Image.asset(imagePath);
+    if (_image == null) {
+      return AspectRatio(
+        aspectRatio: 3 / 1,
+        child: FittedBox(
+          fit: BoxFit.cover,
+          child: Image.asset(imagePath),
+        ),
+      );
+    }
     return AspectRatio(
       aspectRatio: 3 / 1,
       child: FittedBox(
@@ -660,8 +671,7 @@ class PresensiState extends State<Presensi> {
     try {
       cameras = await availableCameras();
       controller = new CameraController(
-          cameraDescription(CameraLensDirection.front),
-          ResolutionPreset.veryHigh,
+          cameraDescription(CameraLensDirection.front), ResolutionPreset.max,
           enableAudio: true);
       await controller.initialize();
     } on CameraException catch (_) {
@@ -710,6 +720,12 @@ class PresensiState extends State<Presensi> {
   }
 
   Future detectedImage(File fileRaw) async {
+    setState(() {
+      imagePath = fileRaw.path;
+      showCamera = false;
+      _btnCameraLoading = false;
+    });
+
     UtilLogger.log('START DETECT FACE IMAGE', DateTime.now());
 
     final visionImage = FirebaseVisionImage.fromFile(fileRaw);
@@ -720,9 +736,9 @@ class PresensiState extends State<Presensi> {
 
     UtilLogger.log('END DETECT FACE IMAGE', DateTime.now().toString());
     setState(() {
-      imagePath = fileRaw.path;
-      showCamera = false;
-      _btnCameraLoading = false;
+      // imagePath = fileRaw.path;
+      // showCamera = false;
+      // _btnCameraLoading = false;
 
       _faces = faces;
       _image = decodeImage;
@@ -827,11 +843,14 @@ class PresensiState extends State<Presensi> {
   }
 
   void eventRecapture() {
-    File _tempFile = File(imagePath);
-    _tempFile.delete();
+    try {
+      File _tempFile = File(imagePath);
+      _tempFile.delete();
+    } catch (e) {}
     setState(() {
       showCamera = true;
       imagePath = null;
+      _image = null;
     });
   }
 
