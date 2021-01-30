@@ -63,18 +63,21 @@ class Application {
 
 class Presensi {
   Presensi({
+    this.zone,
     this.detectFakeGps,
     this.detectFace,
     this.detectFaceRecognition,
     this.showFaceInformation,
   });
 
+  List<Zone> zone;
   bool detectFakeGps;
   bool detectFace;
   bool detectFaceRecognition;
   bool showFaceInformation;
 
   factory Presensi.fromJson(Map<String, dynamic> json) => Presensi(
+        zone: List<Zone>.from(json["zone"].map((x) => Zone.fromJson(x))),
         detectFakeGps: json["detect_fake_gps"],
         detectFace: json["detect_face"],
         detectFaceRecognition: json["detect_face_recognition"],
@@ -82,10 +85,39 @@ class Presensi {
       );
 
   Map<String, dynamic> toJson() => {
+        "zone": List<dynamic>.from(zone.map((x) => x.toJson())),
         "detect_fake_gps": detectFakeGps,
         "detect_face": detectFace,
         "detect_face_recognition": detectFaceRecognition,
         "show_face_information": showFaceInformation,
+      };
+}
+
+class Zone {
+  Zone({
+    this.name,
+    this.latitude,
+    this.longitude,
+    this.radius,
+  });
+
+  String name;
+  double latitude;
+  double longitude;
+  int radius;
+
+  factory Zone.fromJson(Map<String, dynamic> json) => Zone(
+        name: json["name"],
+        latitude: json["latitude"].toDouble(),
+        longitude: json["longitude"].toDouble(),
+        radius: json["radius"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "latitude": latitude,
+        "longitude": longitude,
+        "radius": radius,
       };
 }
 

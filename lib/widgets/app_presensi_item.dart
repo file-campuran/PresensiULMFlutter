@@ -284,7 +284,7 @@ class AppPresensiItem extends StatelessWidget {
                         Radius.circular(8),
                       ),
                       image: DecorationImage(
-                        image: new ExactAssetImage(Images.Intro1),
+                        image: new ExactAssetImage(Images.ImageError),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -725,43 +725,64 @@ class AppPresensiItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                height: 200,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: new CachedNetworkImageProvider(item.fileGambar),
-                    fit: BoxFit.cover,
+              CachedNetworkImage(
+                imageUrl: item.fileGambar,
+                imageBuilder: (context, imageProvider) => Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: new CachedNetworkImageProvider(item.fileGambar),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            item.status != null
+                                ? AppTag(
+                                    item.status,
+                                    type: TagType.status,
+                                  )
+                                : Container(),
+                            Visibility(
+                                visible: item.fileBerkas != null,
+                                child: InkWell(
+                                  child: Icon(
+                                    Icons.file_download,
+                                    color: Theme.of(context).buttonColor,
+                                  ),
+                                  onTap: () {
+                                    launchExternal(item.fileBerkas);
+                                  },
+                                )),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          item.status != null
-                              ? AppTag(
-                                  item.status,
-                                  type: TagType.status,
-                                )
-                              : Container(),
-                          Visibility(
-                              visible: item.fileBerkas != null,
-                              child: InkWell(
-                                child: Icon(
-                                  Icons.file_download,
-                                  color: Theme.of(context).buttonColor,
-                                ),
-                                onTap: () {
-                                  launchExternal(item.fileBerkas);
-                                },
-                              )),
-                        ],
-                      ),
+                placeholder: (context, url) => Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: new ExactAssetImage(Images.ImageBg),
+                      fit: BoxFit.cover,
                     ),
-                  ],
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: new ExactAssetImage(Images.ImageError),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
               Padding(

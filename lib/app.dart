@@ -89,7 +89,7 @@ class _AppState extends State<App> {
               return MaterialApp(
                 color: Colors.white,
                 title: Environment.APP_NAME,
-                debugShowCheckedModeBanner: false,
+                debugShowCheckedModeBanner: Environment.DEBUG,
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
                 onGenerateRoute: route.generateRoute,

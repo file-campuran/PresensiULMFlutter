@@ -25,4 +25,9 @@ class Analytics {
       'tapped_change_camera_direction';
   static const String tappedSelectFiles = 'tapped_select_files';
   static const String tappedChangePreview = 'tapped_change_preview';
+
+  // Event Timmer
+  static const String timmerFaceDetection = 'timmer_face_detection';
+  static const String timmerTakePicture = 'timmer_take_picture';
+  static const String timmerPresensi = 'timmer_presensi';
 }

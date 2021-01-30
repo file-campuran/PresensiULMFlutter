@@ -16,6 +16,8 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
+  bool _receiveNotification =
+      UtilPreferences.containsKey(Preferences.notification);
   DarkOption _darkOption = AppTheme.darkThemeOption;
   ThemeBloc _themeBloc;
 
@@ -133,6 +135,22 @@ class _SettingState extends State<Setting> {
             top: 15,
           ),
           children: <Widget>[
+            AppListTitle(
+              title: Translate.of(context).translate('notification'),
+              trailing: Switch(
+                value: _receiveNotification,
+                onChanged: (value) {
+                  setState(() {
+                    _receiveNotification = value;
+                    if (value) {
+                      UtilPreferences.setBool(Preferences.notification, true);
+                    } else {
+                      UtilPreferences.remove(Preferences.notification);
+                    }
+                  });
+                },
+              ),
+            ),
             AppListTitle(
               title: Translate.of(context).translate('language'),
               onPressed: () {

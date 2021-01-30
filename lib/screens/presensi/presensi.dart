@@ -22,6 +22,7 @@ import 'package:trust_fall/trust_fall.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:absen_online/api/geocoder_repository.dart';
 
 import 'dart:ui' as ui;
 
@@ -52,6 +53,7 @@ class PresensiState extends State<Presensi> {
   Map<String, dynamic> _errorData;
 
   bool isSendPresensi = false;
+  bool pageDetail = false;
 
   double _bottomPanelSliderHeightOpen;
   double _bottomPanelSliderHeightClosed = 95.0;
@@ -61,6 +63,9 @@ class PresensiState extends State<Presensi> {
   bool showCamera = true;
 
   double latitude, longitude;
+  Position myPosition;
+  String myAddress = '';
+
   bool mocked;
   String imagePath;
   String filePath;
@@ -82,6 +87,9 @@ class PresensiState extends State<Presensi> {
   bool _btnCameraLoading = false;
   JadwalModel _infoPresensi;
   FaceDetector faceDetector;
+
+  int _startPresensi = 0;
+  int _endPresensi = 0;
 
   LocationError errorLocation = new LocationError();
   // @override
@@ -170,8 +178,11 @@ class PresensiState extends State<Presensi> {
     final position = await myLocation.getLoacation();
     UtilLogger.log('LOCATION', 'POSITION INITIALIZE');
     if (position != null) {
-      print(position.accuracy);
+      myLocation.inAreaPresensi();
+      myAddress = await GeocoderRepository().getAddress(
+          latitude: position.latitude, longitude: position.longitude);
       setState(() {
+        myPosition = position;
         latitude = position.latitude;
         longitude = position.longitude;
         isFakeGps = position.isMocked;
@@ -187,6 +198,7 @@ class PresensiState extends State<Presensi> {
 
   void initPresensi() {
     setState(() {
+      _startPresensi = DateTime.now().millisecondsSinceEpoch;
       _btnLoading = true;
     });
     PresensiRepository().getDetailPresensi().then((result) {
@@ -268,7 +280,16 @@ class PresensiState extends State<Presensi> {
       final response = await PresensiRepository().setPresensi(dataPresensi);
 
       if (response.code == CODE.SUCCESS) {
-        print(response.data);
+        // Delete temporary files
+        try {
+          File _tempFile = File(imagePath);
+          _tempFile.delete();
+        } catch (e) {}
+        // Set event time presensi
+        _endPresensi = DateTime.now().millisecondsSinceEpoch;
+        AnalyticsHelper.setLogEvent(Analytics.timmerPresensi,
+            {'time_ms': (_endPresensi - _startPresensi)});
+
         setState(() {
           _infoData = {
             'title': 'Informasi',
@@ -366,6 +387,9 @@ class PresensiState extends State<Presensi> {
     );
   }
 
+  /*
+   * Panel Atas memuat camera 
+   */
   Widget _panelBody() {
     return Container(
       child: Stack(
@@ -453,6 +477,11 @@ class PresensiState extends State<Presensi> {
     return Container();
   }
 
+  /*
+   * Panel Bottom
+   * Memilih berkas
+   * Keterangan Kinerja 
+   */
   Widget _bottomPanelSlider(ScrollController sc) {
     return MediaQuery.removePadding(
       context: context,
@@ -479,6 +508,46 @@ class PresensiState extends State<Presensi> {
                 ],
               ),
             ),
+            Container(
+              padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Row(
+                    children: [
+                      Lottie.asset(
+                        Images.Writting,
+                        width: 35,
+                        height: 35,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(
+                        Translate.of(context).translate('presence') +
+                            " ${_infoPresensi?.ruleStatus}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  InkWell(
+                      child: Icon(
+                          !pageDetail ? Icons.list : Icons.article_outlined),
+                      onTap: () {
+                        setState(() {
+                          pageDetail = !pageDetail;
+                        });
+                      }),
+                ],
+              ),
+            ),
+            Divider(),
+            SizedBox(
+              height: 10.0,
+            ),
             Expanded(
               child: ScrollConfiguration(
                 behavior: new ScrollBehavior()
@@ -486,35 +555,9 @@ class PresensiState extends State<Presensi> {
                 child: ListView(
                   controller: sc,
                   children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Lottie.asset(
-                            Images.Writting,
-                            width: 35,
-                            height: 35,
-                          ),
-                          SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(
-                            Translate.of(context).translate('presence') +
-                                " ${_infoPresensi?.ruleStatus}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Divider(),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    _bottomPanelSliderContent(),
+                    pageDetail
+                        ? _bottomPanelSliderContent2()
+                        : _bottomPanelSliderContent(),
                     SizedBox(
                       height: 36.0,
                     ),
@@ -621,12 +664,102 @@ class PresensiState extends State<Presensi> {
     }
   }
 
+  Widget _bottomPanelSliderContent2() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: Dimens.padding),
+      child: Column(
+        children: [
+          _itemContent2(
+              title: 'Lokasi Sekarang',
+              content: myAddress,
+              icon: Icons.location_on),
+          _itemContent2(
+              onTap: () {
+                _getLocation();
+              },
+              icon: Icons.my_location_rounded,
+              title: 'Akurasi GPS (Tap untuk refresh)',
+              content: myPosition?.accuracy == null
+                  ? ''
+                  : '${myPosition.accuracy.toStringAsFixed(2)} Meter'),
+          _itemContent2(
+              icon: Icons.edit_location_outlined,
+              title: 'Fake GPS',
+              content: myPosition?.isMocked == null
+                  ? ''
+                  : myPosition.isMocked
+                      ? 'Ya'
+                      : 'Tidak'),
+          _itemContent2(
+              icon: Icons.phonelink_lock,
+              title: Platform.isAndroid
+                  ? 'Terdeteksi Root'
+                  : 'Terdeteksi Jailbreak',
+              content: isRoot ? 'Ya' : 'Tidak'),
+        ],
+      ),
+    );
+  }
+
+  Widget _itemContent2(
+      {String title,
+      String content,
+      IconData icon,
+      Color color,
+      Function onTap}) {
+    return Container(
+      padding: EdgeInsets.only(bottom: Dimens.padding),
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Theme.of(context).dividerColor),
+              child: Icon(
+                icon ?? Icons.access_time,
+                color: color ?? Colors.white,
+                size: 18,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title ?? '',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  Container(
+                    width: Adapt.screenW() * 0.75,
+                    child: Text(
+                      content ?? '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void showInSnackBar(String message) {
     scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
   }
 
   Widget imagePreviewWidget() {
     if (_image == null) {
+      UtilLogger.log('IMAGE PATH PREVIEW', imagePath);
       return AspectRatio(
         aspectRatio: 3 / 1,
         child: FittedBox(
@@ -684,13 +817,26 @@ class PresensiState extends State<Presensi> {
     });
   }
 
+  int startTime = 0;
+  int endTime = 0;
+  int calculateTime = 0;
   void eventTakePicture() async {
     setState(() {
       _btnCameraLoading = true;
     });
-    UtilLogger.log('INIT TAKE PICTURE', DateTime.now().toString());
+
+    startTime = DateTime.now().millisecondsSinceEpoch;
+    UtilLogger.log('INIT TAKE PICTURE', startTime.toString());
+
     String filePath = await takePicture();
-    UtilLogger.log('COMPLETE TAKE PICTURE', DateTime.now().toString());
+
+    endTime = DateTime.now().millisecondsSinceEpoch;
+    calculateTime = (endTime - startTime);
+
+    UtilLogger.log('COMPLETE TAKE TIME', "$calculateTime ms");
+    AnalyticsHelper.setLogEvent(
+        Analytics.timmerTakePicture, {'time_ms': calculateTime});
+
     UtilLogger.log('TAKE PICTURE PATH', filePath);
     if (mounted) {
       if (controller.description.lensDirection == CameraLensDirection.front) {
@@ -715,7 +861,7 @@ class PresensiState extends State<Presensi> {
         file: file, imageEditorOption: editorOption);
     file.delete();
 
-    UtilLogger.log('COMPLETE FLIP PICTURE', DateTime.now().toString());
+    UtilLogger.log('COMPLETE FLIP PICTURE', flipImage.path);
     detectedImage(flipImage);
   }
 
@@ -726,7 +872,8 @@ class PresensiState extends State<Presensi> {
       _btnCameraLoading = false;
     });
 
-    UtilLogger.log('START DETECT FACE IMAGE', DateTime.now());
+    startTime = DateTime.now().millisecondsSinceEpoch;
+    UtilLogger.log('START DETECT FACE IMAGE', startTime.toString());
 
     final visionImage = FirebaseVisionImage.fromFile(fileRaw);
     List<Face> faces = await faceDetector.processImage(visionImage);
@@ -734,7 +881,13 @@ class PresensiState extends State<Presensi> {
     final dataFaceFirebase = await fileRaw.readAsBytes();
     final decodeImage = await decodeImageFromList(dataFaceFirebase);
 
-    UtilLogger.log('END DETECT FACE IMAGE', DateTime.now().toString());
+    endTime = DateTime.now().millisecondsSinceEpoch;
+    calculateTime = (endTime - startTime);
+
+    UtilLogger.log('END DETECT FACE IMAGE', "$calculateTime ms");
+    AnalyticsHelper.setLogEvent(
+        Analytics.timmerFaceDetection, {'time_ms': calculateTime});
+
     setState(() {
       // imagePath = fileRaw.path;
       // showCamera = false;
@@ -856,6 +1009,7 @@ class PresensiState extends State<Presensi> {
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
     return <String, dynamic>{
+      'app_version': Environment.VERSION,
       'version.securityPatch': build.version.securityPatch,
       'version.sdkInt': build.version.sdkInt,
       'version.release': build.version.release,
@@ -882,13 +1036,13 @@ class PresensiState extends State<Presensi> {
       'type': build.type,
       'isPhysicalDevice': build.isPhysicalDevice,
       'androidId': build.androidId,
-      'app_version': Environment.VERSION,
       'systemFeatures': build.systemFeatures,
     };
   }
 
   Map<String, dynamic> _readIosDeviceInfo(IosDeviceInfo data) {
     return <String, dynamic>{
+      'app_version': Environment.VERSION,
       'name': data.name,
       'systemName': data.systemName,
       'systemVersion': data.systemVersion,

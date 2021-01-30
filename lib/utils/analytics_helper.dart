@@ -1,5 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:absen_online/utils/utils.dart';
+// import 'package:absen_online/utils/utils.dart';
 
 class AnalyticsHelper {
   static Future<void> setCurrentScreen(String screenName,
@@ -17,7 +17,7 @@ class AnalyticsHelper {
       [Map<String, dynamic> source]) async {
     final FirebaseAnalytics analytics = FirebaseAnalytics();
 
-    UtilLogger.log('LOG EVENT', eventName);
+    // UtilLogger.log('LOG EVENT', eventName);
     await analytics.logEvent(
       name: eventName,
       parameters: source,

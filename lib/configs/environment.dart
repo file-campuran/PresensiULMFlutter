@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
+
 class Environment {
-  static const bool DEBUG = true;
+  static const bool DEBUG = !kReleaseMode;
 
   static const String APP_NAME = 'PRESENSI ULM';
 

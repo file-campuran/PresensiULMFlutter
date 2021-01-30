@@ -1,0 +1,24 @@
+{
+    "name": "absen_online",
+    "version": "2.0.0",
+    "description": "Presensi ULM",
+    "main": "firestore-import.js",
+    "scripts": {
+        "migrate": "node ./firestore-import.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Killers007/PresensiULMFlutter.git"
+    },
+    "author": "@killers007",
+    "license": "PTIK",
+    "bugs": {
+        "url": "https://github.com/Killers007/PresensiULMFlutter/issues"
+    },
+    "homepage": "https://github.com/Killers007/PresensiULMFlutter#readme",
+    "dependencies": {
+        "firebase-admin": "^8.10.0",
+        "node-firestore-import-export": "^0.14.1"
+    },
+    "devDependencies": {}
+}

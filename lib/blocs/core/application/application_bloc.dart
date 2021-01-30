@@ -148,6 +148,10 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         '${Preferences.reviewIntro}.${Environment.VERSION}',
         true,
       );
+      await UtilPreferences.setBool(
+        Preferences.notification,
+        true,
+      );
 
       ///Become app
       yield ApplicationSetupCompleted();

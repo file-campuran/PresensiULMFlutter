@@ -129,7 +129,7 @@ class _MessageState extends State<Message> {
             itemCount: state.data.length,
             separatorBuilder: (context, index) {
               return Container(
-                  color: Theme.of(context).highlightColor, height: 8);
+                  color: Theme.of(context).highlightColor, height: 1);
             },
             itemBuilder: (context, index) {
               bool hasRead = state.data[index].readAt == null ||

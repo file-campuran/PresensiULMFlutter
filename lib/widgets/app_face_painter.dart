@@ -11,11 +11,14 @@ class AppFacePainter extends CustomPainter {
   AppFacePainter(this.image, this.faces) {
     for (var i = 0; i < faces.length; i++) {
       rects.add(faces[i].boundingBox);
+      print('FACES');
+      print(faces[i]);
     }
   }
 
   @override
   void paint(ui.Canvas canvas, ui.Size size) {
+    final errorMessage = 'Clasification Error';
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 6.0
@@ -24,22 +27,29 @@ class AppFacePainter extends CustomPainter {
 
     canvas.drawImage(image, Offset.zero, Paint());
     for (var i = 0; i < faces.length; i++) {
-      print('SMILING' + faces[i].leftEyeOpenProbability.toString());
       if (Application.remoteConfig.application.presensi.showFaceInformation) {
         String teks = '';
         String smliling = faces[i] != null
             ? faces[i].smilingProbability.toString().substring(0, 5)
-            : 'Clasification Error';
+            : errorMessage;
         String eyeRight = faces[i].rightEyeOpenProbability != null
             ? faces[i].rightEyeOpenProbability.toString().substring(0, 5)
-            : 'Clasification Error';
+            : errorMessage;
         String eyeLeft = faces[i].leftEyeOpenProbability != null
             ? faces[i].leftEyeOpenProbability.toString().substring(0, 5)
-            : 'Clasification Error';
+            : errorMessage;
+        String headAngleY = faces[i].headEulerAngleY != null
+            ? faces[i].headEulerAngleY.toString().substring(0, 5)
+            : errorMessage;
+        String headAngleZ = faces[i].headEulerAngleZ != null
+            ? faces[i].headEulerAngleZ.toString().substring(0, 5)
+            : errorMessage;
 
         teks += 'Smiling : ' + smliling + ' %\n';
         teks += 'Left Eye Open : ' + eyeLeft + ' %\n';
         teks += 'Right Eye Open : ' + eyeRight + ' %\n';
+        teks += 'Head Euler Angle Y : ' + headAngleY + '\n';
+        teks += 'Head Euler Angle Z : ' + headAngleZ + '\n';
 
         textPainters(
             teks: teks,
@@ -47,13 +57,28 @@ class AppFacePainter extends CustomPainter {
             canvas: canvas,
             size: size);
         textPainters(
-            teks: 'Face Detected',
+            teks: 'Face ${i + 1}',
             offset: Offset(rects[i].left, rects[i].top - 30),
             canvas: canvas,
             size: size);
       }
       canvas.drawRect(rects[i], paint);
+      canvas.drawPath(
+          Path()
+            ..addRect(rects[i])
+            ..addOval(Rect.fromPoints(
+                Offset(rects[i].left, rects[i].bottom + 10),
+                Offset(size.width, size.height)))
+            ..fillType = PathFillType.evenOdd,
+          Paint()
+            ..color = Colors.black.withAlpha(4)
+            ..maskFilter =
+                MaskFilter.blur(BlurStyle.normal, convertRadiusToSigma(3)));
     }
+  }
+
+  static double convertRadiusToSigma(double radius) {
+    return radius * 0.57735 + 0.5;
   }
 
   textPainters({String teks, Offset offset, Canvas canvas, ui.Size size}) {

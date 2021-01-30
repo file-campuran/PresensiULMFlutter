@@ -78,25 +78,47 @@ class _MainNavigationState extends State<MainNavigation> {
 
   static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
     final notification = message['data'];
-    if (!notification.isEmpty) {
-      final notificationModel = NotificationModel.fromJson(
-        {
-          "id": new DateTime.now().millisecondsSinceEpoch,
-          "isRead": 0,
-          "title": notification['title'],
-          "content": notification['body'],
-        },
-      );
 
-      Database db = await DBProvider.db.database;
-      await db.insert(
-        'Notification',
-        notificationModel.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.ignore,
-      );
+    if (UtilPreferences.containsKey(Preferences.notification)) {
+      if (!notification.isEmpty) {
+        final notificationModel = NotificationModel.fromJson(
+          {
+            "id": new DateTime.now().millisecondsSinceEpoch,
+            "isRead": 0,
+            "title": notification['title'],
+            "content": notification['body'],
+          },
+        );
 
-      LocalNotification().localNotifikasi(
-          title: notification['title'], body: notification['body']);
+        Database db = await DBProvider.db.database;
+        await db.insert(
+          'Notification',
+          notificationModel.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+
+        LocalNotification().localNotifikasi(
+            title: notification['title'], body: notification['body']);
+      } else {
+        final notificationModel = NotificationModel.fromJson(
+          {
+            "id": new DateTime.now().millisecondsSinceEpoch,
+            "isRead": 0,
+            "title": message['notification']['title'],
+            "content": message['notification']['body'],
+          },
+        );
+
+        Database db = await DBProvider.db.database;
+        await db.insert(
+          'Notification',
+          notificationModel.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+        LocalNotification().localNotifikasi(
+            title: message['notification']['title'],
+            body: message['notification']['body']);
+      }
     }
 
     UtilLogger.log("onBackground", '$message');
@@ -134,12 +156,21 @@ class _MainNavigationState extends State<MainNavigation> {
 
   void _showNotif(String log, Map<String, dynamic> message) {
     final notification = message['data'];
-    UtilLogger.log(log, '$notification');
-    if (!notification.isEmpty) {
-      _notificationBloc
-          .add(OnAddNotification(notification['title'], notification['body']));
-      LocalNotification().localNotifikasi(
-          title: notification['title'], body: notification['body']);
+    UtilLogger.log(log, '$message');
+
+    if (UtilPreferences.containsKey(Preferences.notification)) {
+      if (!notification.isEmpty) {
+        _notificationBloc.add(
+            OnAddNotification(notification['title'], notification['body']));
+        LocalNotification().localNotifikasi(
+            title: notification['title'], body: notification['body']);
+      } else {
+        LocalNotification().localNotifikasi(
+            title: message['notification']['title'],
+            body: message['notification']['body']);
+        _notificationBloc.add(OnAddNotification(
+            message['notification']['title'], message['notification']['body']));
+      }
     }
   }
 
@@ -241,10 +272,17 @@ class _MainNavigationState extends State<MainNavigation> {
 
     // LocalNotification().localNotifikasi(title: "TETEL", body: "BODE");
     return Scaffold(
-      body: WillPopScope(
-        child: _widgetOptions.elementAt(_selectedIndex),
-        onWillPop: onWillPop,
-      ),
+      // body: WillPopScope(
+      //   child: AnimatedSwitcher(
+      //     duration: const Duration(milliseconds: 500),
+      //     transitionBuilder: (Widget child, Animation<double> animation) {
+      //       return FadeTransition(child: child, opacity: animation);
+      //     },
+      //     child: _widgetOptions.elementAt(_selectedIndex),
+      //   ),
+      //   onWillPop: onWillPop,
+      // ),
+      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomBarItem(context),
         currentIndex: _selectedIndex,

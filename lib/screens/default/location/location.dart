@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/configs/config.dart';
 
 class Location extends StatefulWidget {
   final LocationModel location;
+  final bool withBlueZone;
 
-  Location({
-    Key key,
-    this.location,
-  }) : super(key: key);
+  Location({Key key, this.location, this.withBlueZone = true})
+      : super(key: key);
 
   @override
   _LocationState createState() {
@@ -19,6 +19,7 @@ class Location extends StatefulWidget {
 
 class _LocationState extends State<Location> {
   CameraPosition _initPosition;
+  Set<Circle> circles;
   Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
 
   @override
@@ -29,6 +30,7 @@ class _LocationState extends State<Location> {
 
   ///On load map
   void _onLoadMap() {
+    List<Circle> circle = [];
     final MarkerId markerId = MarkerId(widget.location.id.toString());
     final Marker marker = Marker(
       markerId: markerId,
@@ -36,6 +38,35 @@ class _LocationState extends State<Location> {
       infoWindow: InfoWindow(title: widget.location.name),
       onTap: () {},
     );
+
+    List<Map<String, dynamic>> blueZoneExample = [
+      {
+        'name': 'UNLAM BJB',
+        'latitude': -3.4448526,
+        'longitude': 114.8418003,
+        'radius': 500,
+      },
+      {
+        'name': 'UNLAM BJM',
+        'latitude': -3.2975608,
+        'longitude': 114.5846911,
+        'radius': 800,
+      },
+    ];
+
+    if (widget.withBlueZone) {
+      for (var item in Application.remoteConfig.application.presensi.zone) {
+        circle.add(Circle(
+          strokeWidth: 0,
+          fillColor: Color.fromRGBO(0, 100, 255, 0.2),
+          circleId: CircleId('1'),
+          center: LatLng(item.latitude, item.longitude),
+          radius: double.parse(item.radius.toString()),
+        ));
+      }
+
+      circles = Set.from(circle);
+    }
 
     setState(() {
       _initPosition = CameraPosition(
@@ -59,8 +90,9 @@ class _LocationState extends State<Location> {
         child: GoogleMap(
           initialCameraPosition: _initPosition,
           markers: Set<Marker>.of(_markers.values),
-          myLocationEnabled: false,
+          myLocationEnabled: true,
           myLocationButtonEnabled: true,
+          circles: circles,
         ),
       ),
     );
