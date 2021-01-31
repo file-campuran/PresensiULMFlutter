@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:absen_online/widgets/widget.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +22,7 @@ import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:absen_online/api/geocoder_repository.dart';
+import 'package:absen_online/utils/api/multipart_file_extended.dart';
 
 import 'dart:ui' as ui;
 
@@ -256,7 +256,7 @@ class PresensiState extends State<Presensi> {
     UtilLogger.log('FILE GAMBAR', fileGambarName);
     UtilLogger.log('FILE GAMBAR PATH', imagePath);
 
-    dataPresensi['fileGambar'] = await MultipartFile.fromFile(
+    dataPresensi['fileGambar'] = MultipartFileExtended.fromFileSync(
       imagePath,
       filename: fileGambarName,
       contentType: MediaType("*", "*"),
@@ -267,7 +267,7 @@ class PresensiState extends State<Presensi> {
       final fileBerkasName = filePath.split("/").last;
       UtilLogger.log('FILE BERKAS', fileBerkasName);
       UtilLogger.log('FILE BERKAS PATH', filePath);
-      dataPresensi['fileBerkas'] = await MultipartFile.fromFile(
+      dataPresensi['fileBerkas'] = MultipartFileExtended.fromFileSync(
         filePath,
         filename: fileBerkasName,
         contentType: MediaType("*", "*"),
@@ -587,6 +587,7 @@ class PresensiState extends State<Presensi> {
                 )),
             SizedBox(height: 4),
             TextFormField(
+              initialValue: deskripsi,
               keyboardType: TextInputType.multiline,
               // maxLines: 3,
               maxLines: null,

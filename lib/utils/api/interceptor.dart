@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'consumer.dart';
+import 'multipart_file_extended.dart';
+import 'package:http_parser/http_parser.dart';
 import '../utils.dart';
 
 class DioLoggingInterceptors extends InterceptorsWrapper {
@@ -28,11 +30,29 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
     );
 
     RequestOptions options = response.request;
+
+    if (options.data is FormData) {
+      FormData formData = FormData();
+      formData.fields.addAll(options.data.fields);
+
+      for (MapEntry mapFile in options.data.files) {
+        formData.files.add(MapEntry(
+            mapFile.key,
+            MultipartFileExtended.fromFileSync(
+              mapFile.value.filePath,
+              filename: mapFile.value.filename,
+              contentType: MediaType("*", "*"),
+            )));
+      }
+      options.data = formData;
+    }
+
     options.headers.addAll({'X-Token': newAccessToken});
 
     _dio.interceptors.requestLock.unlock();
     _dio.interceptors.responseLock.unlock();
 
+    UtilLogger.log('DIO OPTIONS', options.headers);
     return _dio.request(options.path, options: options);
   }
 
