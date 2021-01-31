@@ -13,15 +13,15 @@ class AppTheme {
   static Color kashmirColor = Color.fromRGBO(93, 109, 126, 1);
 
   ///Default font
-  static String currentFont = "ProductSans";
+  static String currentFont = "SourceSansPro";
 
   ///List Font support
   static List<String> fontSupport = [
+    "SourceSansPro",
     "ProductSans",
     "Raleway",
     "Roboto",
     "Merriweather",
-    "SourceSansPro",
     "Intro",
     "Lato",
   ];

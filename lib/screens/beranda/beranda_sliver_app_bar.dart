@@ -27,6 +27,8 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
             height: expandedHeight,
           ),
         ),
+
+        //NOTIFICATION
         SafeArea(
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -35,11 +37,12 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
               child: Stack(
                 children: <Widget>[
                   AppTransparentButton(
-                      size: 50,
-                      icon: FontAwesomeIcons.bell,
-                      onTap: () {
-                        Navigator.of(context).pushNamed(Routes.notification);
-                      }),
+                    size: 50,
+                    icon: FontAwesomeIcons.bell,
+                    onTap: () {
+                      Navigator.of(context).pushNamed(Routes.notification);
+                    },
+                  ),
                   Positioned(
                     top: 0.0,
                     right: 0.0,

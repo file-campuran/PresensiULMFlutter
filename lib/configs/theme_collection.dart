@@ -3,8 +3,6 @@ import 'theme_data/theme_data.dart';
 
 class CollectionTheme {
   ///Get collection theme
-  ///
-  /// primaryLight/primaryDark/brownLight/brownDark/pinkLight/pinkDark
   static ThemeData getCollectionTheme(
       {String theme = "primaryLight", String font = "Raleway"}) {
     switch (theme) {

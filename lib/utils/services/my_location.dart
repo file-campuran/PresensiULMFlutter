@@ -40,6 +40,7 @@ class MyLocation {
   }
 
   inAreaPresensi() {
+    String result = 'Tidak dalam jangkauan area presensi';
     for (var zone in Application.remoteConfig.application.presensi.zone) {
       double distanceInMeters = Geolocator.distanceBetween(
           currentLocation.latitude,
@@ -48,10 +49,14 @@ class MyLocation {
           zone.longitude);
       if (distanceInMeters < zone.radius) {
         UtilLogger.log('PRESENSI IN AREA', zone.name);
+        result =
+            'Berada dalam area ${zone.name} dengan jarak ${distanceInMeters.toStringAsFixed(2)} Meter dari titik presensi';
       }
       UtilLogger.log(
           'DISATANCE BEETWEEN AREA ${zone.name} METERS', distanceInMeters);
     }
+
+    return result;
   }
 
   Future<bool> gpsServiceEnable() async {

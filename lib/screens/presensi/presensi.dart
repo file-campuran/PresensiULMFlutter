@@ -65,6 +65,7 @@ class PresensiState extends State<Presensi> {
   double latitude, longitude;
   Position myPosition;
   String myAddress = '';
+  String myArea = '';
 
   bool mocked;
   String imagePath;
@@ -178,7 +179,7 @@ class PresensiState extends State<Presensi> {
     final position = await myLocation.getLoacation();
     UtilLogger.log('LOCATION', 'POSITION INITIALIZE');
     if (position != null) {
-      myLocation.inAreaPresensi();
+      myArea = myLocation.inAreaPresensi();
       myAddress = await GeocoderRepository().getAddress(
           latitude: position.latitude, longitude: position.longitude);
       setState(() {
@@ -533,14 +534,16 @@ class PresensiState extends State<Presensi> {
                       ),
                     ],
                   ),
-                  InkWell(
-                      child: Icon(
-                          !pageDetail ? Icons.list : Icons.article_outlined),
-                      onTap: () {
-                        setState(() {
-                          pageDetail = !pageDetail;
-                        });
-                      }),
+                  if (myPosition != null) ...[
+                    InkWell(
+                        child: Icon(
+                            !pageDetail ? Icons.list : Icons.article_outlined),
+                        onTap: () {
+                          setState(() {
+                            pageDetail = !pageDetail;
+                          });
+                        }),
+                  ],
                 ],
               ),
             ),
@@ -674,14 +677,18 @@ class PresensiState extends State<Presensi> {
               content: myAddress,
               icon: Icons.location_on),
           _itemContent2(
-              onTap: () {
-                _getLocation();
-              },
-              icon: Icons.my_location_rounded,
-              title: 'Akurasi GPS (Tap untuk refresh)',
-              content: myPosition?.accuracy == null
-                  ? ''
-                  : '${myPosition.accuracy.toStringAsFixed(2)} Meter'),
+              title: 'Area Presensi',
+              content: myArea,
+              icon: Icons.radio_button_on_sharp),
+          // _itemContent2(
+          //     onTap: () {
+          //       _getLocation();
+          //     },
+          //     icon: Icons.my_location_rounded,
+          //     title: 'Akurasi GPS (Tap untuk refresh)',
+          //     content: myPosition?.accuracy == null
+          //         ? ''
+          //         : '${myPosition.accuracy.toStringAsFixed(2)} Meter'),
           _itemContent2(
               icon: Icons.edit_location_outlined,
               title: 'Fake GPS',
@@ -764,7 +771,7 @@ class PresensiState extends State<Presensi> {
         aspectRatio: 3 / 1,
         child: FittedBox(
           fit: BoxFit.cover,
-          child: Image.asset(imagePath),
+          child: Image.file(File(imagePath)),
         ),
       );
     }
@@ -955,17 +962,15 @@ class PresensiState extends State<Presensi> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           showCamera ? _cameraTogglesRowWidget() : Container(),
-          if (latitude != null) ...[
-            AppTransparentButton(
-                icon: Icons.map,
-                size: 50,
-                background: false,
-                onTap: () {
-                  _getLocation();
-                  Navigator.of(context).pushNamed(Routes.location,
-                      arguments: LocationModel(1, '', latitude, longitude));
-                }),
-          ],
+          AppTransparentButton(
+              icon: Icons.map,
+              size: 50,
+              background: false,
+              onTap: () async {
+                await Navigator.of(context).pushNamed(Routes.location,
+                    arguments: LocationModel(1, '', latitude, longitude));
+                _getLocation();
+              }),
         ],
       ),
     );

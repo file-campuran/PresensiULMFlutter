@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:absen_online/utils/adapt.dart';
+import 'package:absen_online/utils/ui/adapt.dart';
 
 class DialogRatingBar extends StatefulWidget {
   final double rating;

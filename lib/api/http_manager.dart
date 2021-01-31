@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:absen_online/utils/logger.dart';
+import 'package:absen_online/utils/services/logger.dart';
 
 String dioErrorHandle(DioError error) {
   UtilLogger.log("ERROR", error);

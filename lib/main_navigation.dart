@@ -2,7 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/screens/screen.dart';
-import 'package:absen_online/utils/logger.dart';
+import 'package:absen_online/utils/services/logger.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/blocs/bloc.dart';

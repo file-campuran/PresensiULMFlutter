@@ -31,13 +31,18 @@ class _LocationState extends State<Location> {
   ///On load map
   void _onLoadMap() {
     List<Circle> circle = [];
-    final MarkerId markerId = MarkerId(widget.location.id.toString());
-    final Marker marker = Marker(
-      markerId: markerId,
-      position: LatLng(widget.location.lat, widget.location.long),
-      infoWindow: InfoWindow(title: widget.location.name),
-      onTap: () {},
-    );
+    MarkerId markerId;
+    Marker marker;
+
+    if (widget.location.lat != null) {
+      markerId = MarkerId(widget.location.id.toString());
+      marker = Marker(
+        markerId: markerId,
+        position: LatLng(widget.location.lat, widget.location.long),
+        infoWindow: InfoWindow(title: widget.location.name),
+        onTap: () {},
+      );
+    }
 
     List<Map<String, dynamic>> blueZoneExample = [
       {
@@ -70,10 +75,13 @@ class _LocationState extends State<Location> {
 
     setState(() {
       _initPosition = CameraPosition(
-        target: LatLng(widget.location.lat, widget.location.long),
+        target: LatLng(widget.location.lat ?? -3.2975608,
+            widget.location.long ?? 114.5846911),
         zoom: 14.4746,
       );
-      _markers[markerId] = marker;
+      if (widget.location.lat != null) {
+        _markers[markerId] = marker;
+      }
     });
   }
 

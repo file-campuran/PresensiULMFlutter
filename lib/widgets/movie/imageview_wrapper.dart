@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:absen_online/utils/adapt.dart';
+import 'package:absen_online/utils/ui/adapt.dart';
 import 'package:photo_view/photo_view.dart';
 
 class HeroPhotoViewWrapper extends StatelessWidget {
