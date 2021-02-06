@@ -11,7 +11,7 @@ class Environment {
   static String apiUrl = 'http://192.168.43.247/api-siapps/public/api';
   static String apiKey = '605dafe39ee0780e8cf2c829434eea99';
   static String apiId = 'PresensiULM';
-  static int apiTimeout = kReleaseMode ? 20 : 10;
+  static int apiTimeout = !DEBUG ? 20 : 10;
 
   // APP SUPPPORT URL
   static String presensiImageUrl = 'https://presensi.ulm.ac.id/pwa/getImage';

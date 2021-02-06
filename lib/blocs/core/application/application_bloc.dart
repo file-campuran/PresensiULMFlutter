@@ -143,9 +143,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
           "presensi": json.decode(config.getString('presensi')),
           "update": json.decode(config.getString('update')),
           "banner": json.decode(config.getString('banner')),
-          "environments": json.decode(Environment.DEBUG
-              ? config.getString('environments_dev')
-              : config.getString('environments')),
+          "environments": json.decode(config.getString(
+              Environment.DEBUG ? 'environments_dev' : 'environments')),
         };
 
         UtilPreferences.setString(

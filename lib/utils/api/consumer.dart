@@ -61,9 +61,7 @@ class Consumer {
 
       Dio dio = new Dio(options);
 
-      if (Environment.DEBUG) {
-        dio.interceptors.add(DioLoggingInterceptors(dio, false));
-      }
+      dio.interceptors.add(DioLoggingInterceptors(dio, false));
 
       this._cleanFillter();
       Response<Map<String, dynamic>> res =
