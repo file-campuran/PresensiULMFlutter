@@ -4,6 +4,9 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:html/parser.dart';
 
 class Gallery extends StatefulWidget {
   final List<ImageModel> photo;
@@ -49,11 +52,26 @@ class _GalleryState extends State<Gallery> {
         centerTitle: true,
         backgroundColor: Colors.black,
         brightness: Brightness.dark,
+        actions: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Center(
+              child: Text(
+                "${_index + 1}/${widget.photo.length}",
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2
+                    .copyWith(color: Colors.white),
+              ),
+            ),
+          )
+        ],
       ),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: <Widget>[
-            Expanded(
+            Container(
+              height: Adapt.screenH() * 0.75,
               child: Swiper(
                 controller: _controller,
                 onIndexChanged: (index) {
@@ -74,7 +92,7 @@ class _GalleryState extends State<Gallery> {
                 },
                 itemCount: widget.photo.length,
                 pagination: SwiperPagination(
-                  alignment: Alignment(0.0, 0.9),
+                  alignment: Alignment(0.0, 1),
                   builder: SwiperPagination.dots,
                 ),
               ),
@@ -86,57 +104,56 @@ class _GalleryState extends State<Gallery> {
                 children: <Widget>[
                   Container(
                     width: Adapt.screenW() * 0.8,
-                    child: Text(
-                      widget.photo[_index].description ?? '',
-                      style: Theme.of(context)
+                    child: Html(
+                      data: widget.photo[_index].description ?? '',
+                      defaultTextStyle: Theme.of(context)
                           .textTheme
                           .subtitle2
                           .copyWith(color: Colors.white),
+                      onLinkTap: (url) {
+                        launchExternal(url);
+                      },
                     ),
                   ),
-                  Text(
-                    "${_index + 1}/${widget.photo.length}",
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle2
-                        .copyWith(color: Colors.white),
-                  )
                 ],
               ),
             ),
-            Container(
-              height: 70,
-              margin: EdgeInsets.only(bottom: 20),
-              child: ListView.builder(
-                controller: _listController,
-                padding: EdgeInsets.only(right: 20),
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.photo.length,
-                itemBuilder: (context, index) {
-                  final item = widget.photo[index];
-                  return GestureDetector(
-                    onTap: () {
-                      _onSelectImage(index);
-                    },
-                    child: Container(
-                      width: 70,
-                      margin: EdgeInsets.only(left: 20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: index == _index
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).dividerColor),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(8),
-                        ),
-                        image: DecorationImage(
-                          image: new CachedNetworkImageProvider(item.image),
-                          fit: BoxFit.cover,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: 70,
+                margin: EdgeInsets.only(bottom: 30),
+                child: ListView.builder(
+                  controller: _listController,
+                  padding: EdgeInsets.only(right: 20),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.photo.length,
+                  itemBuilder: (context, index) {
+                    final item = widget.photo[index];
+                    return GestureDetector(
+                      onTap: () {
+                        _onSelectImage(index);
+                      },
+                      child: Container(
+                        width: 70,
+                        margin: EdgeInsets.only(left: 20),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: index == _index
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).dividerColor),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(8),
+                          ),
+                          image: DecorationImage(
+                            image: new CachedNetworkImageProvider(item.image),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             )
           ],

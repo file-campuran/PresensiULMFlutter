@@ -49,7 +49,8 @@ class _FaqState extends State<Faq> {
 
   @override
   Widget build(BuildContext context) {
-    Query query = FirebaseFirestore.instance.collection('faq');
+    Query query =
+        FirebaseFirestore.instance.collection('faq').orderBy('priority');
 
     return Scaffold(
       appBar: AppBar(
