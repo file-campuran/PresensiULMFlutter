@@ -27,7 +27,7 @@ class Consumer {
 
   Consumer._internal();
 
-  final int timeout = Environment.API_TIMEOUT; //Seconds
+  final int timeout = Environment.apiTimeout; //Seconds
 
   int limits;
   Map<String, dynamic> orders;
@@ -47,11 +47,11 @@ class Consumer {
       // Application.preferences = await SharedPreferences.getInstance();
       BaseOptions options = new BaseOptions(
         headers: {
-          'AppId': Environment.API_ID,
-          'X-ApiKey': Environment.API_KEY,
+          'AppId': Environment.apiId,
+          'X-ApiKey': Environment.apiKey,
           'X-Token': UtilPreferences.getString(Preferences.accessToken),
         },
-        baseUrl: Environment.API_URL,
+        baseUrl: Environment.apiUrl,
         method: this._convertMethod(method),
         connectTimeout: timeout * 1000,
         receiveTimeout: timeout * 1000,
@@ -69,7 +69,20 @@ class Consumer {
       Response<Map<String, dynamic>> res =
           await dio.request(urlRequest, data: formData);
 
-      return ApiModel.fromJson(res.data);
+      ApiModel apiModel = ApiModel.fromJson(res.data);
+
+      if (apiModel.code == CODE.ERROR) {
+        return ApiModel.fromJson({
+          'code': 500,
+          "message": <String, dynamic>{
+            'title': ErrorApplicationTitle,
+            'content': apiModel.message,
+            "image": Warning
+          },
+        });
+      }
+
+      return apiModel;
     } on DioError catch (e) {
       final exception = MyException.getException(e);
       UtilLogger.log('EXCEPTION DIO', exception.toJson());

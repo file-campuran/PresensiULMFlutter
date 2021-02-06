@@ -27,7 +27,7 @@ class AppFacePainter extends CustomPainter {
 
     canvas.drawImage(image, Offset.zero, Paint());
     for (var i = 0; i < faces.length; i++) {
-      if (Application.remoteConfig.application.presensi.showFaceInformation) {
+      if (Application.remoteConfig.presensi.showFaceInformation) {
         String teks = '';
         String smliling = faces[i] != null
             ? faces[i].smilingProbability.toString().substring(0, 5)

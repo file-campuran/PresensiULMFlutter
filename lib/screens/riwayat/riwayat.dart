@@ -105,6 +105,7 @@ class _RiwayatState extends State<Riwayat> {
       } else if (result.code == CODE.TOKEN_EXPIRED) {
         BlocProvider.of<LoginBloc>(context).add(OnLogout());
       } else {
+        UtilLogger.log('RESULT', result.toJson());
         setState(() {
           _errorData = result.message;
         });
@@ -262,7 +263,7 @@ class _RiwayatState extends State<Riwayat> {
         return FractionallySizedBox(
           widthFactor: 0.5,
           child: Container(
-            padding: EdgeInsets.only(left: 15),
+            padding: EdgeInsets.only(left: 15, right: 15),
             child: AppPresensiItem(
               onPressed: _onPresensiDetail,
               item: item,
@@ -314,14 +315,18 @@ class _RiwayatState extends State<Riwayat> {
     }
 
     if (_errorData != null) {
-      return Center(
-        child: AppError(
-          title: _errorData['title'].toString(),
-          message: _errorData['content'].toString(),
-          image: _errorData['image'],
-          onPress: _loadData,
-          btnRefreshLoading: _btnLoading,
-        ),
+      return ListView(
+        children: [
+          Center(
+            child: AppError(
+              title: _errorData['title'].toString(),
+              message: _errorData['content'],
+              image: _errorData['image'],
+              onPress: _loadData,
+              btnRefreshLoading: _btnLoading,
+            ),
+          )
+        ],
       );
     }
 
@@ -383,8 +388,8 @@ class _RiwayatState extends State<Riwayat> {
           child: Padding(
             padding: EdgeInsets.only(
               top: 10,
-              left: _modeView == PresensiViewType.block ? 0 : 5,
-              right: _modeView == PresensiViewType.block ? 0 : 20,
+              // left: _modeView == PresensiViewType.block ? 0 : 5,
+              // right: _modeView == PresensiViewType.block ? 0 : 20,
               bottom: 15,
             ),
             child: _buildList(),

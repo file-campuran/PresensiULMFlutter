@@ -100,7 +100,7 @@ class PresensiRepository {
   }
 
   static Future<String> getPrivacyPolicy() async {
-    final result = await httpManager.get(url: Environment.PRIVACY_POLICY);
+    final result = await httpManager.get(url: Environment.privacyPolicy);
     return result;
   }
 

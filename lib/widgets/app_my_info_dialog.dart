@@ -34,6 +34,7 @@ Widget _buildWidget(dynamic message) {
   if (message is String) {
     return AppTextList(message);
   } else if (message['content'] != null) {
+    return AppTextList(message['content']);
     return AppInfo(
         message: message['content'],
         title: message['title'],

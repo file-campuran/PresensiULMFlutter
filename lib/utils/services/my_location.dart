@@ -41,7 +41,7 @@ class MyLocation {
 
   inAreaPresensi() {
     String result = 'Tidak dalam jangkauan area presensi';
-    for (var zone in Application.remoteConfig.application.presensi.zone) {
+    for (var zone in Application.remoteConfig.presensi.zone) {
       double distanceInMeters = Geolocator.distanceBetween(
           currentLocation.latitude,
           currentLocation.longitude,

@@ -491,8 +491,8 @@ class PresensiState extends State<Presensi> {
         decoration: new BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: new BorderRadius.only(
-              topLeft: const Radius.circular(18.0),
-              topRight: const Radius.circular(18.0)),
+              topLeft: const Radius.circular(16.0),
+              topRight: const Radius.circular(16.0)),
         ),
         child: Column(
           children: <Widget>[
@@ -608,37 +608,50 @@ class PresensiState extends State<Presensi> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      AppButton(
-                        onPressed: chooseFile,
-                        text: filePath == null
-                            ? Translate.of(context).translate('choose_file')
-                            : Translate.of(context).translate('change_file'),
-                        disableTouchWhenLoading: true,
+                      Flexible(
+                        flex: 2,
+                        child: AppButton(
+                          onPressed: chooseFile,
+                          text: filePath == null
+                              ? Translate.of(context).translate('choose_file')
+                              : Translate.of(context).translate('change_file'),
+                          disableTouchWhenLoading: true,
+                        ),
                       ),
                       SizedBox(
                         width: 10,
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.5,
-                        child: Text(
-                          filePath != null
-                              ? filePath.split("/")?.last
-                              : Translate.of(context)
-                                  .translate('choose_file_empty'),
-                          softWrap: true,
-                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                        ),
-                      )
+                      Expanded(
+                        flex: 5,
+                        child: filePath != null
+                            ? AppFilenameIcon(
+                                fileName: filePath.split("/")?.last,
+                                onTap: () {
+                                  print('ONTAO');
+                                  setState(() {
+                                    filePath = null;
+                                  });
+                                },
+                              )
+                            : Text(
+                                Translate.of(context)
+                                    .translate('choose_file_empty'),
+                                softWrap: true,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 12),
+                              ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 10),
                   Text(
-                    Application.remoteConfig.application.upload.max,
+                    Application.remoteConfig.presensi.upload.max,
                     style: TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                   Text(
-                    Application.remoteConfig.application.upload.mime,
+                    Application.remoteConfig.presensi.upload.mime,
                     style: TextStyle(color: Colors.grey, fontSize: 12),
                   ),
                 ],
@@ -677,10 +690,12 @@ class PresensiState extends State<Presensi> {
               title: 'Lokasi Sekarang',
               content: myAddress,
               icon: Icons.location_on),
-          _itemContent2(
-              title: 'Area Presensi',
-              content: myArea,
-              icon: Icons.radio_button_on_sharp),
+          if (Application.remoteConfig.presensi.zone.length != 0) ...[
+            _itemContent2(
+                title: 'Area Presensi',
+                content: myArea,
+                icon: Icons.radio_button_on_sharp),
+          ],
           // _itemContent2(
           //     onTap: () {
           //       _getLocation();
@@ -766,14 +781,26 @@ class PresensiState extends State<Presensi> {
   }
 
   Widget imagePreviewWidget() {
+    // return AspectRatio(
+    //   aspectRatio: 3 / 1,
+    //   child: FittedBox(
+    //     fit: BoxFit.cover,
+    //     child: Image.file(File(imagePath)),
+    //   ),
+    // );
     if (_image == null) {
-      UtilLogger.log('IMAGE PATH PREVIEW', imagePath);
-      return AspectRatio(
-        aspectRatio: 3 / 1,
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: Image.file(File(imagePath)),
-        ),
+      return Stack(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Image.file(File(imagePath), fit: BoxFit.cover),
+          ),
+          // Align(
+          //   alignment: Alignment.center,
+          //   child: Text('DETECTING FACE'),
+          // ),
+        ],
       );
     }
     return AspectRatio(

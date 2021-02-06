@@ -110,6 +110,7 @@ class _AppState extends State<App> {
                           } else if (auth is AuthenticationSuccess) {
                             return MainNavigation();
                           }
+                          return Container();
                         },
                       );
                     }
@@ -120,12 +121,12 @@ class _AppState extends State<App> {
                     if (app is ApplicationUpdateView) {
                       return Update(
                         message:
-                            'Aplikasi membutuhkan pembaharuan ke versi ${app.config.application.releaseVersion}',
+                            'Aplikasi membutuhkan pembaharuan ke versi ${app.config.update.releaseVersion}',
                         title: 'Pembaharuan',
                         isAndroid: Platform.isAndroid,
-                        linkIos: app.config.application.update.iosUrl,
-                        linkAndroid: app.config.application.update.androidUrl,
-                        news: app.config.application.update.news,
+                        linkIos: app.config.update.iosUrl,
+                        linkAndroid: app.config.update.androidUrl,
+                        news: app.config.update.news,
                       );
                     }
 

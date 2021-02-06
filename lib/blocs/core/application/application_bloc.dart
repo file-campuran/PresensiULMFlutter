@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -120,25 +121,48 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         yield ApplicationIntroView();
       }
 
-      if (UtilPreferences.containsKey(Preferences.remoteConfig)) {
-        final config = UtilPreferences.getString(Preferences.remoteConfig);
-        Application.remoteConfig = configModelFromJson(config);
-      } else {
-        Application.remoteConfig =
-            ConfigModel.fromJson(RemoteConfigs.defaultConfig);
-      }
+      try {
+        // Jika ada cache remote config
+        if (UtilPreferences.containsKey(Preferences.remoteConfig)) {
+          UtilLogger.log(
+              'MY CONFIG', UtilPreferences.getString(Preferences.remoteConfig));
+          final config = UtilPreferences.getString(Preferences.remoteConfig);
+          Application.remoteConfig = ConfigModel.fromJson(config);
+        } else {
+          // Jika tidak ada gunakan config default aplikasi
+          Application.remoteConfig =
+              ConfigModel.fromJson(RemoteConfigs.defaultConfig);
+        }
 
-      RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();
-      UtilPreferences.setString(
-          Preferences.remoteConfig, config.getString('config'));
-      Application.remoteConfig =
-          configModelFromJson(config.getString('config'));
-      UtilLogger.log('REMOTE CONFIG', Application.remoteConfig.toJson());
+        // Set Evnironment data
+        Environment.fromJson(Application.remoteConfig.environments.toJson());
 
-      // Cek Update Aplikasi
-      if (Application.remoteConfig.application.minVersion >
-          Environment.VERSION_CODE) {
-        yield ApplicationUpdateView(Application.remoteConfig);
+        // Request Environment ke database
+        RemoteConfig config = await FirebaseRemoteConfig.setupRemoteConfig();
+        final remoteData = {
+          "presensi": json.decode(config.getString('presensi')),
+          "update": json.decode(config.getString('update')),
+          "banner": json.decode(config.getString('banner')),
+          "environments": json.decode(Environment.DEBUG
+              ? config.getString('environments_dev')
+              : config.getString('environments')),
+        };
+
+        UtilPreferences.setString(
+            Preferences.remoteConfig, json.encode(remoteData));
+        Application.remoteConfig = ConfigModel.fromJson(remoteData);
+
+        // Set Evnironment data
+        Environment.fromJson(Application.remoteConfig.environments.toJson());
+
+        UtilLogger.log('REMOTE CONFIG', Application.remoteConfig.toJson());
+        // Cek Update Aplikasi
+        if (Application.remoteConfig.update.minVersion >
+            Environment.VERSION_CODE) {
+          yield ApplicationUpdateView(Application.remoteConfig);
+        }
+      } catch (e) {
+        UtilPreferences.remove(Preferences.remoteConfig);
       }
     }
 
@@ -157,4 +181,6 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       yield ApplicationSetupCompleted();
     }
   }
+
+  void setEnvironment() {}
 }

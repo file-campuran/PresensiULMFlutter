@@ -48,8 +48,7 @@ class Update extends StatelessWidget {
           style: TextStyle(
               // fontFamily: Constants.DEFAULT_FONT,
               fontWeight: FontWeight.w700,
-              fontSize: 20.5,
-              color: Colors.grey[800]),
+              fontSize: 20.5),
           textAlign: TextAlign.center,
         ),
       ),
@@ -61,8 +60,7 @@ class Update extends StatelessWidget {
         child: Text(
           message,
           style: TextStyle(
-              /* fontFamily: Constants.DEFAULT_FONT, */ color:
-                  Colors.grey[800]),
+              /* fontFamily: Constants.DEFAULT_FONT, */),
           textAlign: TextAlign.center,
         ),
       ),
@@ -97,8 +95,7 @@ class Update extends StatelessWidget {
                   children: news
                       .map((item) => Text(
                             item,
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[700]),
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
                           ))
                       .toList(),
                 )

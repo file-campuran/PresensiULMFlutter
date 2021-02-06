@@ -56,7 +56,7 @@ class _WebViewExampleState extends State<Panduan> {
                       //   isLoading = true;
                       // });
                     },
-                    initialUrl: Environment.GUIDE,
+                    initialUrl: Environment.guide,
                     javascriptMode: JavascriptMode.unrestricted,
                     onWebViewCreated: (WebViewController webViewController) {
                       _controller.complete(webViewController);

@@ -88,10 +88,9 @@ class PresensiModel {
       lokasi: json["lokasi"] ?? '',
       latitude: json["latitude"] != null ? double.parse(json["latitude"]) : 0,
       longitude: json["latitude"] != null ? double.parse(json["longitude"]) : 0,
-      fileGambar:
-          '${Environment.PRESENSI_IMAGE_URL}/${json["fileGambar"]}',
+      fileGambar: '${Environment.presensiImageUrl}/${json["fileGambar"]}',
       fileBerkas: json["fileBerkas"] != null
-          ? '${Environment.PRESENSI_FILE_URL}/${json["fileBerkas"]}'
+          ? '${Environment.presensiFileUrl}/${json["fileBerkas"]}'
           : null,
       deskripsiKinerja:
           json["deskripsiKinerja"] == 'null' || json["deskripsiKinerja"] == null

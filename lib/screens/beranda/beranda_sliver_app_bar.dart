@@ -132,7 +132,7 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                             ),
                             VerticalDivider(),
                             Icon(
-                              Icons.help,
+                              Icons.search,
                               color: Theme.of(context).primaryColor,
                             ),
                           ],

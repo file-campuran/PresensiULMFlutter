@@ -4,26 +4,42 @@ class Environment {
   static const bool DEBUG = !kReleaseMode;
 
   static const String APP_NAME = 'PRESENSI ULM';
-
-  // PRIMARY CONFIGS
-  static const String API_URL = 'http://192.168.43.247/api-siapps/public/api';
-  static const String API_KEY = '605dafe39ee0780e8cf2c829434eea99';
-  static const String API_ID = 'PresensiULM';
-  static const int API_TIMEOUT = kReleaseMode ? 20 : 10;
-
   static const String VERSION = '2.0.0 Beta.4.1.2021_B10';
   static const int VERSION_CODE = 11;
 
+  // PRIMARY CONFIGS
+  static String apiUrl = 'http://192.168.43.247/api-siapps/public/api';
+  static String apiKey = '605dafe39ee0780e8cf2c829434eea99';
+  static String apiId = 'PresensiULM';
+  static int apiTimeout = kReleaseMode ? 20 : 10;
+
   // APP SUPPPORT URL
-  static const PRESENSI_IMAGE_URL = 'https://presensi.ulm.ac.id/pwa/getImage';
-  static const PRESENSI_FILE_URL = 'https://presensi.ulm.ac.id/pwa/getFile';
-  static const PRIVACY_POLICY =
+  static String presensiImageUrl = 'https://presensi.ulm.ac.id/pwa/getImage';
+  static String presensiFileUrl = 'https://presensi.ulm.ac.id/pwa/getFile';
+  static String privacyPolicy =
       'https://simari.ulm.ac.id/privacy_policy_presensi.html';
-  static const GUIDE =
+  static String guide =
       'https://cdn01.ovo.id/homepage/public/assets/webview/panduan_ovo.html';
 
-  static const String namaCs = 'Muhammad Nebi Beri Muslim';
-  static const String noCs = '+6282149091899';
+  static String namaCs = 'Muhammad Nebi Beri Muslim';
+  static String noCs = '+6282149091899';
+
+  factory Environment.fromJson(Map<String, dynamic> json) {
+    Environment.apiKey = json['key'] ?? Environment.apiKey;
+    Environment.apiUrl = json['url'] ?? Environment.apiUrl;
+    Environment.apiId = json['id'] ?? Environment.apiId;
+    Environment.presensiImageUrl =
+        json['presensi_image_url'] ?? Environment.presensiImageUrl;
+    Environment.presensiFileUrl =
+        json['presensi_file_url'] ?? Environment.presensiFileUrl;
+    Environment.privacyPolicy =
+        json['privacy_policy_url'] ?? Environment.privacyPolicy;
+    Environment.guide = json['guide_url'] ?? Environment.guide;
+    Environment.namaCs = json['nama_cs'] ?? Environment.namaCs;
+    Environment.noCs = json['no_cs'] ?? Environment.noCs;
+
+    return null;
+  }
 
   ///Singleton factory
   static final Environment _instance = Environment._internal();

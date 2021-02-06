@@ -60,7 +60,7 @@ class _LocationState extends State<Location> {
     ];
 
     if (widget.withBlueZone) {
-      for (var item in Application.remoteConfig.application.presensi.zone) {
+      for (var item in Application.remoteConfig.presensi.zone) {
         circle.add(Circle(
           strokeWidth: 0,
           fillColor: Color.fromRGBO(0, 100, 255, 0.2),
