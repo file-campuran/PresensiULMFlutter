@@ -17,64 +17,69 @@ class Beranda extends StatefulWidget {
 }
 
 class _BerandaState extends State<Beranda> {
-  JadwalCubit _jadwalCubit;
+  JadwalListModel _jadwalData;
+  Map<String, dynamic> _infoData;
+  Map<String, dynamic> _errorData;
+  bool _btnLoading = false;
 
   @override
   void initState() {
-    // _loadData();
-    _jadwalCubit = BlocProvider.of<JadwalCubit>(context);
-    _jadwalCubit.initData();
+    _loadData();
     super.initState();
   }
 
-  ///Build list recent
-  Widget _buildListJadwal() {
-    return BlocBuilder<JadwalCubit, JadwalState>(builder: (_, state) {
-      if (state is JadwalInfo) {
-        return AppInfo(
-          title: state.info['title'].toString(),
-          message: state.info['content'].toString(),
-          image: state.info['type'].toString() == 'hari' ? '' : Images.Calendar,
-        );
-      } else if (state is JadwalLoaded) {
-        return Column(
-          children: state.data.list
-              .map(
-                (item) => AppTimmer(
-                  start: item.ruleStartTime,
-                  end: item.ruleEndTime,
-                  title: item.ruleStatus,
-                  timeLeft: item.timeLeft.toString(),
-                  isChecked: item.presensi != null,
-                  item: item.presensi != null
-                      ? AppPresensiItem(
-                          item: item.presensi,
-                          type: PresensiViewType.list,
-                          onPressed: (presensiModel) {
-                            Navigator.pushNamed(context, Routes.riwayatDetail,
-                                arguments: presensiModel);
-                          },
-                        )
-                      : null,
-                ),
-              )
-              .toList(),
-        );
-      } else if (state is JadwalInfo) {
-        return AppInfo(
-          title: state.info['title'].toString(),
-          message: state.info['content'].toString(),
-          image: state.info['type'].toString() == 'hari' ? '' : Images.Calendar,
-        );
-      } else if (state is JadwalError) {
-        return AppError(
-          title: state.error['title'].toString(),
-          message: state.error['content'].toString(),
-          image: state.error['image'],
-          onPress: () => _jadwalCubit.reload(),
-          btnRefreshLoading: state.isLoading,
-        );
+  ///Fetch API
+  Future<void> _loadData() async {
+    setState(() {
+      _btnLoading = true;
+    });
+    final ApiModel result = await PresensiRepository().getJadwal();
+    if (this.mounted) {
+      setState(() {
+        _btnLoading = false;
+      });
+      if (result.code == CODE.SUCCESS) {
+        setState(() {
+          _errorData = null;
+          _infoData = result.message;
+          _jadwalData = JadwalListModel.fromJson(result.data);
+        });
+      } else if (result.code == CODE.INFO) {
+        setState(() {
+          _errorData = null;
+          _infoData = result.message;
+        });
+      } else if (result.code == CODE.TOKEN_EXPIRED) {
+        BlocProvider.of<LoginBloc>(context).add(OnLogout());
+      } else {
+        setState(() {
+          _errorData = result.message;
+        });
       }
+    }
+  }
+
+  ///Build list recent
+  Widget _buildList() {
+    if (_errorData != null) {
+      return AppError(
+        title: _errorData['title'].toString(),
+        message: _errorData['content'].toString(),
+        image: _errorData['image'],
+        onPress: _loadData,
+        btnRefreshLoading: _btnLoading,
+      );
+    }
+
+    if (_infoData != null) {
+      return AppInfo(
+        title: _infoData['title'].toString(),
+        message: _infoData['content'].toString(),
+        image: _infoData['type'].toString() == 'hari' ? '' : Images.Calendar,
+      );
+    }
+
+    if (_jadwalData?.list == null) {
       return Column(
         children: List.generate(2, (index) => index).map(
           (item) {
@@ -85,7 +90,31 @@ class _BerandaState extends State<Beranda> {
           },
         ).toList(),
       );
-    });
+    }
+
+    return Column(
+      children: _jadwalData.list
+          .map(
+            (item) => AppTimmer(
+              start: item.ruleStartTime,
+              end: item.ruleEndTime,
+              title: item.ruleStatus,
+              timeLeft: item.timeLeft.toString(),
+              isChecked: item.presensi != null,
+              item: item.presensi != null
+                  ? AppPresensiItem(
+                      item: item.presensi,
+                      type: PresensiViewType.list,
+                      onPressed: (presensiModel) {
+                        Navigator.pushNamed(context, Routes.riwayatDetail,
+                            arguments: presensiModel);
+                      },
+                    )
+                  : null,
+            ),
+          )
+          .toList(),
+    );
   }
 
   @override
@@ -110,6 +139,12 @@ class _BerandaState extends State<Beranda> {
                 bottom: false,
                 child: Column(
                   children: <Widget>[
+                    // Container(
+                    //   margin: EdgeInsets.symmetric(
+                    //       horizontal: Dimens.cardMargin,
+                    //       vertical: Dimens.cardMargin),
+                    //   child: Announcement(title: 'Title', content: 'Content'),
+                    // ),
                     Container(
                       padding: EdgeInsets.only(
                         left: 20,
@@ -136,7 +171,7 @@ class _BerandaState extends State<Beranda> {
                     ),
                     Container(
                       padding: EdgeInsets.only(left: 20, right: 20),
-                      child: _buildListJadwal(),
+                      child: _buildList(),
                     ),
                   ],
                 ),

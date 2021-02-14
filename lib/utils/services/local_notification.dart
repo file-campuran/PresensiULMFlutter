@@ -58,7 +58,7 @@ class LocalNotification {
               id: id, title: title, body: body, payload: payload));
         });
     var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
       if (payload != null) {
@@ -72,12 +72,13 @@ class LocalNotification {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         sound: RawResourceAndroidNotificationSound('notification_sound'),
-        importance: Importance.Max,
-        priority: Priority.High,
+        importance: Importance.max,
+        priority: Priority.high,
         ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin
         .show(0, title, body, platformChannelSpecifics, payload: 'item x');
   }

@@ -6,6 +6,7 @@ class AppListTitle extends StatelessWidget {
   final VoidCallback onPressed;
   final bool border;
   final TextStyle textStyle;
+  final IconData icon;
 
   AppListTitle({
     Key key,
@@ -14,6 +15,7 @@ class AppListTitle extends StatelessWidget {
     this.onPressed,
     this.border = true,
     this.textStyle,
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -34,12 +36,22 @@ class AppListTitle extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 20, bottom: 20),
-              child: Text(
-                title,
-                style: textStyle ?? Theme.of(context).textTheme.subtitle1,
-              ),
+            Row(
+              children: [
+                if (icon != null) ...[
+                  Icon(icon),
+                  SizedBox(
+                    width: 5,
+                  ),
+                ],
+                Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 20),
+                  child: Text(
+                    title,
+                    style: textStyle ?? Theme.of(context).textTheme.subtitle1,
+                  ),
+                ),
+              ],
             ),
             trailing ?? Container()
           ],

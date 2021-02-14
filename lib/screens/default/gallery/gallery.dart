@@ -71,7 +71,7 @@ class _GalleryState extends State<Gallery> {
         child: Stack(
           children: <Widget>[
             Container(
-              height: Adapt.screenH() * 0.75,
+              height: Adapt.screenH() - 200,
               child: Swiper(
                 controller: _controller,
                 onIndexChanged: (index) {

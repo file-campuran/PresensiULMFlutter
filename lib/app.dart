@@ -25,6 +25,8 @@ class _AppState extends State<App> {
   NotificationBloc _notificationBloc;
   MessageCubit _messageCubit;
 
+  JadwalCubit _jadwalCubit;
+
   @override
   void initState() {
     ///Bloc business logic
@@ -41,6 +43,8 @@ class _AppState extends State<App> {
       notificationBloc: _notificationBloc,
       messageCubit: _messageCubit,
     );
+
+    _jadwalCubit = JadwalCubit();
     super.initState();
   }
 
@@ -53,6 +57,7 @@ class _AppState extends State<App> {
     _loginBloc.close();
     _notificationBloc.close();
     _messageCubit.close();
+    _jadwalCubit.close();
     super.dispose();
   }
 
@@ -80,6 +85,9 @@ class _AppState extends State<App> {
         ),
         BlocProvider<MessageCubit>(
           create: (context) => _messageCubit,
+        ),
+        BlocProvider<JadwalCubit>(
+          create: (context) => _jadwalCubit,
         ),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(

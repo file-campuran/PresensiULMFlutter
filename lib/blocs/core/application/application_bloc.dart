@@ -146,6 +146,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
           "environments": json.decode(config.getString(
               Environment.DEBUG ? 'environments_dev' : 'environments')),
         };
+        UtilLogger.log('ENVIRONMENT REMOTE USING',
+            Environment.DEBUG ? 'environments_dev' : 'environments');
 
         UtilPreferences.setString(
             Preferences.remoteConfig, json.encode(remoteData));

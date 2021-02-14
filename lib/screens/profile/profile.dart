@@ -82,6 +82,7 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                       children: <Widget>[
                         AppListTitle(
+                          icon: Icons.person_pin_rounded,
                           title: Translate.of(context).translate(
                             'edit_profile',
                           ),
@@ -97,6 +98,7 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                         AppListTitle(
+                          icon: Icons.help,
                           title: Translate.of(context).translate(
                             'guide',
                           ),
@@ -112,6 +114,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
+                          icon: Icons.settings,
                           title: Translate.of(context).translate('setting'),
                           onPressed: () {
                             _onNavigate(Routes.setting);
@@ -125,6 +128,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
+                          icon: Icons.phone_android_rounded,
                           title: Translate.of(context).translate('version'),
                           onPressed: () {
                             Fluttertoast.showToast(

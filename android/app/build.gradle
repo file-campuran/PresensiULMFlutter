@@ -33,7 +33,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -47,7 +47,7 @@ android {
     defaultConfig {
         applicationId "com.absen_online"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

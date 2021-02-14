@@ -9,24 +9,24 @@ class UtilLogger {
   static const String TAG = "PRESENSI";
 
   static log([String tag = TAG, dynamic msg, LogType log = LogType.INFO]) {
-    if (Environment.DEBUG) {
-      switch (log) {
-        case LogType.INFO:
-          developer.log('\x1b[32m $msg \x1b[0m', name: tag);
-          break;
+    // if (Environment.DEBUG) {
+    switch (log) {
+      case LogType.INFO:
+        developer.log('\x1b[32m $msg \x1b[0m', name: tag);
+        break;
 
-        case LogType.WARN:
-          developer.log('\x1b[35m $msg \x1b[0m', name: tag);
-          break;
+      case LogType.WARN:
+        developer.log('\x1b[35m $msg \x1b[0m', name: tag);
+        break;
 
-        case LogType.DANGER:
-          developer.log('\x1b[31m $msg \x1b[0m', name: tag);
-          break;
+      case LogType.DANGER:
+        developer.log('\x1b[31m $msg \x1b[0m', name: tag);
+        break;
 
-        default:
-          developer.log('\x1b[32m $msg \x1b[0m', name: tag);
-      }
+      default:
+        developer.log('\x1b[32m $msg \x1b[0m', name: tag);
     }
+    // }
   }
 
   static String convert(var data) {

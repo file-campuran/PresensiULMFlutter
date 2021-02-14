@@ -44,22 +44,21 @@ class AppInfo extends StatelessWidget {
   final String message;
   final String title;
   final String image;
-  final ViewMode mode;
 
-  const AppInfo(
-      {Key key,
-      @required this.message,
-      this.image,
-      this.mode = ViewMode.Asset,
-      this.title = ''})
-      : super(key: key);
+  // factory AppInfo.fromJson(Map<String, dynamic> json) => AppInfo(
+  //       message: json['message'],
+  //       title: json['title'],
+  //       image: json['image'],
+  //     );
+
+  AppInfo({@required this.message, this.image, this.title = ''});
+
   @override
   Widget build(BuildContext context) {
     return BlankPage(
       message: message,
       image: image,
       isLoading: false,
-      mode: mode,
       title: title,
     );
   }
