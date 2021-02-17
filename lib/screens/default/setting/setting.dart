@@ -178,7 +178,11 @@ class _SettingState extends State<Setting> {
                 margin: EdgeInsets.only(right: 10),
                 width: 16,
                 height: 16,
-                color: Theme.of(context).primaryColor,
+                // color: Theme.of(context).primaryColor,
+                child: Icon(
+                  Icons.palette_outlined,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
             AppListTitle(

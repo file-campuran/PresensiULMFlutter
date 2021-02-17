@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/configs/config.dart';
 
 class Location extends StatefulWidget {
@@ -88,12 +89,8 @@ class _LocationState extends State<Location> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          Translate.of(context).translate('location'),
-        ),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: Translate.of(context).translate('location'), context: context),
       body: Container(
         child: GoogleMap(
           initialCameraPosition: _initPosition,

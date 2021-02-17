@@ -161,14 +161,14 @@ class _MainNavigationState extends State<MainNavigation> {
         label: Translate.of(context).translate('home'),
       ),
       BottomNavigationBarItem(
+        icon: Icon(Icons.history),
+        label: Translate.of(context).translate('history'),
+      ),
+      BottomNavigationBarItem(
         icon: Icon(_selectedIndex == 1
             ? Icons.check_circle_outline
             : Icons.check_circle_outline_sharp),
         label: Translate.of(context).translate('presence'),
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.history),
-        label: Translate.of(context).translate('history'),
       ),
       BottomNavigationBarItem(
         label: Translate.of(context).translate('message'),
@@ -224,8 +224,8 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _widgetOptions = [
     Beranda(),
-    Presensi(),
     Riwayat(),
+    Presensi(),
     Message(),
     Profile()
   ];
@@ -245,6 +245,17 @@ class _MainNavigationState extends State<MainNavigation> {
       //     child: _widgetOptions.elementAt(_selectedIndex),
       //   ),
       //   onWillPop: onWillPop,
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     _onItemTapped(2);
+      //     // setState(() {});
+      //   },
+      //   child: Icon(_selectedIndex == 1
+      //       ? Icons.check_circle_outline
+      //       : Icons.check_circle_outline_sharp),
+      //   elevation: 4.0,
       // ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(

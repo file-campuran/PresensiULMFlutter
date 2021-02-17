@@ -33,9 +33,11 @@ class AppTimmer extends StatelessWidget {
     return Container(
         margin: const EdgeInsets.only(top: 7, bottom: 7),
         decoration: BoxDecoration(
-          color: Theme.of(context).cardColor.withOpacity(0.8),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Theme.of(context).cardColor.withOpacity(0.8)
+              : Colors.grey[50],
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.grey, width: 0.2),
+          // border: Border.all(color: Colors.grey, width: 0.2),
         ),
         child: Column(
           children: <Widget>[

@@ -35,7 +35,7 @@ class PastelOrange {
           accentColor: Color(0xfff3a80c),
           accentColorBrightness: Brightness.dark,
           canvasColor: Color(0xfffafafa),
-          scaffoldBackgroundColor: Color(0xfffafafa),
+          scaffoldBackgroundColor: Colors.white,
           bottomAppBarColor: Color(0xffffffff),
           cardColor: Color(0xffffffff),
           dividerColor: Color(0x1f000000),

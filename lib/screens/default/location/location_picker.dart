@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:absen_online/api/geocoder_repository.dart';
 import 'package:absen_online/widgets/widget.dart';
+import 'package:absen_online/utils/utils.dart';
 
 class LocationPicker extends StatefulWidget {
   @override
@@ -47,10 +48,9 @@ class _LocationPickerState extends State<LocationPicker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pilih Lokasi'),
-        centerTitle: true,
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: Translate.of(context).translate('select_location'),
+          context: context),
       body: Stack(
         children: <Widget>[
           GoogleMap(

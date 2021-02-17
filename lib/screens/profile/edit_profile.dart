@@ -124,10 +124,10 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(Translate.of(context).translate('edit_profile')),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          leading: BackButton(),
+          title: Translate.of(context).translate('edit_profile'),
+          context: context),
       body: SafeArea(
         child: Column(
           children: <Widget>[

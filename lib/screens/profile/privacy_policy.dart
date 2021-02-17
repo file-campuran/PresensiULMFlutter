@@ -51,8 +51,8 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         child: Html(
                           data: _privacyText,
-                          defaultTextStyle: TextStyle(
-                              color: Colors.grey[600], fontSize: 14.0),
+                          // defaultTextStyle: TextStyle(
+                          //     color: Colors.grey[600], fontSize: 14.0),
                           onLinkTap: (url) {
                             print(url);
                             launchExternal(url);

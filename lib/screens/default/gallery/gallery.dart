@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -45,26 +46,25 @@ class _GalleryState extends State<Gallery> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        brightness: Brightness.dark,
-        actions: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
-            child: Center(
-              child: Text(
-                "${_index + 1}/${widget.photo.length}",
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle2
-                    .copyWith(color: Colors.white),
+      backgroundColor: Color(0xff303030),
+      appBar: AppCustomAppBar.defaultAppBar(
+          leading: BackButton(),
+          title: Translate.of(context).translate(''),
+          actions: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Center(
+                child: Text(
+                  "${_index + 1}/${widget.photo.length}",
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2
+                      .copyWith(color: Colors.white),
+                ),
               ),
-            ),
-          )
-        ],
-      ),
+            )
+          ],
+          context: context),
       body: SafeArea(
         child: Stack(
           children: <Widget>[

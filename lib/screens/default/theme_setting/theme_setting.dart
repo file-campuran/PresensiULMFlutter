@@ -71,7 +71,11 @@ class _ThemeSettingState extends State<ThemeSetting> {
                                 Container(
                                   width: 24,
                                   height: 24,
-                                  color: item.color,
+                                  // color: item.color,
+                                  child: Icon(
+                                    Icons.palette_rounded,
+                                    color: item.color,
+                                  ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(left: 10),

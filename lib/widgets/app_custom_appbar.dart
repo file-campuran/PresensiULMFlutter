@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+final bool cleanStyle = true;
+
 class AppCustomAppBar {
   static AppBar defaultAppBar(
       {@required BuildContext context,
@@ -8,22 +10,28 @@ class AppCustomAppBar {
       List<Widget> actions,
       PreferredSizeWidget bottom}) {
     return AppBar(
-      actionsIconTheme: IconThemeData(
-          color: Theme.of(context).brightness == Brightness.light
-              ? Color(0xff303030)
-              : Colors.white),
-      iconTheme: IconThemeData(
-        color: Theme.of(context).brightness == Brightness.light
-            ? Color(0xff303030)
-            : Colors.white, //change your color here
-      ),
+      actionsIconTheme: cleanStyle
+          ? IconThemeData(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Color(0xff303030)
+                  : Colors.white)
+          : null,
+      iconTheme: cleanStyle
+          ? IconThemeData(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Color(0xff303030)
+                  : Colors.white, //change your color here
+            )
+          : null,
       centerTitle: false,
-      brightness: Theme.of(context).brightness,
+      brightness: cleanStyle ? Theme.of(context).brightness : null,
       leading: leading,
-      backgroundColor: Theme.of(context).brightness == Brightness.dark
-          ? Color(0xff303030)
-          : Colors.white,
-      elevation: 0,
+      backgroundColor: cleanStyle
+          ? Theme.of(context).brightness == Brightness.dark
+              ? Color(0xff303030)
+              : Colors.white
+          : null,
+      elevation: cleanStyle ? 0 : null,
       title: setTitleAppBar(
         context,
         title,
@@ -90,9 +98,11 @@ class AppCustomAppBar {
         style: TextStyle(
           // fontSize: 16.0,
           fontWeight: FontWeight.w600,
-          color: Theme.of(context).brightness == Brightness.light
-              ? Color(0xff303030)
-              : Colors.white,
+          color: cleanStyle
+              ? Theme.of(context).brightness == Brightness.light
+                  ? Color(0xff303030)
+                  : Colors.white
+              : null,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis);
