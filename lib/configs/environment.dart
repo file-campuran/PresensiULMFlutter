@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 class Environment {
   static const bool DEBUG = true;
 
@@ -8,7 +6,7 @@ class Environment {
   static const int VERSION_CODE = 11;
 
   // PRIMARY CONFIGS
-  static String apiUrl = 'http://192.168.43.247/api-siapps/public/api';
+  static String apiUrl = 'http://192.168.0.101/api-siapps/public/api';
   static String apiKey = '605dafe39ee0780e8cf2c829434eea99';
   static String apiId = 'PresensiULM';
   static int apiTimeout = !DEBUG ? 20 : 10;

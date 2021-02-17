@@ -206,6 +206,29 @@ class _RiwayatState extends State<Riwayat> {
       _indexLocation = index;
     });
 
+    _markers.forEach((key, value) {
+      MarkerId markerId = MarkerId(key.value);
+      Marker resetOld = _markers[markerId]
+          .copyWith(iconParam: BitmapDescriptor.defaultMarker);
+
+      //ACTIVE
+      if (key.value == _presensiList.list[index].id.toString()) {
+        resetOld = _markers[markerId].copyWith(
+          visibleParam: true,
+          // iconParam:
+          //     BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow),
+        );
+      } else {
+        resetOld = _markers[markerId].copyWith(
+          visibleParam: false,
+          // iconParam:
+          //     BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+        );
+      }
+
+      _markers[markerId] = resetOld;
+    });
+
     ///Camera animated
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
@@ -484,34 +507,31 @@ class _RiwayatState extends State<Riwayat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          Translate.of(context).translate('attendance_history'),
-        ),
-        actions: <Widget>[
-          Visibility(
-            visible: _presensiList?.list?.length != null,
-            child: IconButton(
-              icon: Icon(Icons.photo_library),
-              onPressed: _onPhotoPreview,
-            ),
-          )
-          // IconButton(
-          //   icon: Icon(Icons.search),
-          //   onPressed: _onSearch,
-          // ),
-          // Visibility(
-          //   visible: _presensiList?.list != null,
-          //   child: IconButton(
-          //     icon: Icon(
-          //       _pageType == PageType.map ? Icons.view_compact : Icons.map,
-          //     ),
-          //     onPressed: _onChangePageStyle,
-          //   ),
-          // )
-        ],
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: Translate.of(context).translate('attendance_history'),
+          actions: <Widget>[
+            Visibility(
+              visible: _presensiList?.list?.length != null,
+              child: IconButton(
+                icon: Icon(Icons.photo_library),
+                onPressed: _onPhotoPreview,
+              ),
+            )
+            // IconButton(
+            //   icon: Icon(Icons.search),
+            //   onPressed: _onSearch,
+            // ),
+            // Visibility(
+            //   visible: _presensiList?.list != null,
+            //   child: IconButton(
+            //     icon: Icon(
+            //       _pageType == PageType.map ? Icons.view_compact : Icons.map,
+            //     ),
+            //     onPressed: _onChangePageStyle,
+            //   ),
+            // )
+          ],
+          context: context),
       body: Column(
         children: <Widget>[
           SafeArea(

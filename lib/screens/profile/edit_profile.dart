@@ -6,7 +6,6 @@ import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/api/presensi.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class EditProfile extends StatefulWidget {
   final bool leading;
@@ -43,7 +42,7 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     super.initState();
     _userModel = Application.user;
-    print(_userModel.toJson());
+    // print(_userModel.toJson());
     _textAlamatController.text = _userModel.alamatRumah;
     _nomorPonsel.text = _userModel.noHp;
     _golonganDarah = _userModel.golDarah;
@@ -113,7 +112,11 @@ class _EditProfileState extends State<EditProfile> {
         serverValidate(apiModel.message);
       } else {
         appMyInfoDialog(
-            context: context, message: apiModel.message, title: 'Error');
+          context: context,
+          message: apiModel.message,
+          image: apiModel.message['image'],
+          title: 'Error',
+        );
       }
     }
   }
@@ -145,7 +148,7 @@ class _EditProfileState extends State<EditProfile> {
                         }
                         UtilLogger.log('ROUTE RESPONSE', result);
                       },
-                      child: Icon(Icons.location_on),
+                      child: Icon(Icons.location_on_outlined),
                     ),
                     title: Translate.of(context).translate(
                       'address',

@@ -37,7 +37,6 @@ class _ProfileState extends State<Profile> {
 
   ///Build profile UI
   Widget _buildProfile() {
-    print(Application.user.toJson());
     return AppUserInfo(
       user: Application.user,
       onPressed: () {},
@@ -52,13 +51,13 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //     statusBarColor: Colors.transparent,
+    //     statusBarIconBrightness: Brightness.light));
+
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          Translate.of(context).translate('profile'),
-        ),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: Translate.of(context).translate('profile'), context: context),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,7 +81,7 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                       children: <Widget>[
                         AppListTitle(
-                          icon: Icons.person_pin_rounded,
+                          icon: Icons.person_outline,
                           title: Translate.of(context).translate(
                             'edit_profile',
                           ),
@@ -98,7 +97,7 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                         AppListTitle(
-                          icon: Icons.help,
+                          icon: Icons.help_outline,
                           title: Translate.of(context).translate(
                             'guide',
                           ),
@@ -114,7 +113,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
-                          icon: Icons.settings,
+                          icon: Icons.settings_outlined,
                           title: Translate.of(context).translate('setting'),
                           onPressed: () {
                             _onNavigate(Routes.setting);
@@ -128,7 +127,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
-                          icon: Icons.phone_android_rounded,
+                          icon: Icons.phone_iphone_rounded,
                           title: Translate.of(context).translate('version'),
                           onPressed: () {
                             Fluttertoast.showToast(

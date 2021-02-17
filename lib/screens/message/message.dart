@@ -6,6 +6,7 @@ import 'package:html/parser.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 class Message extends StatefulWidget {
   Message({Key key}) : super(key: key);
@@ -31,9 +32,36 @@ class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          title: Text(Translate.of(context).translate('message')),
+      // appBar: AppBar(
+      //     centerTitle: true,
+      //     title: Text(Translate.of(context).translate('message')),
+      //     actions: <Widget>[
+      //       PopupMenuButton<int>(
+      //         itemBuilder: (context) => [
+      //           PopupMenuItem(
+      //             value: 1,
+      //             child: Text('Tandai sudah baca'),
+      //           ),
+      //           PopupMenuItem(
+      //             value: 0,
+      //             child: Text('Hapus'),
+      //           ),
+      //         ],
+      //         // initialValue: 1,
+      //         onCanceled: () {},
+      //         onSelected: (value) async {
+      //           if (value == 0) {
+      //             _messageCubit.markAll(value);
+      //           } else {
+      //             _messageCubit.markAll(value);
+      //           }
+      //         },
+      //         icon: Icon(Icons.more_horiz),
+      //       ),
+      //     ]),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: Translate.of(context).translate('message'),
+          context: context,
           actions: <Widget>[
             PopupMenuButton<int>(
               itemBuilder: (context) => [
@@ -58,6 +86,7 @@ class _MessageState extends State<Message> {
               icon: Icon(Icons.more_horiz),
             ),
           ]),
+
       body: _buildContent(),
     );
   }
@@ -129,7 +158,9 @@ class _MessageState extends State<Message> {
             itemCount: state.data.length,
             separatorBuilder: (context, index) {
               return Container(
-                  color: Theme.of(context).highlightColor, height: 1);
+                  margin: EdgeInsets.symmetric(horizontal: Dimens.cardMargin),
+                  color: Theme.of(context).highlightColor,
+                  height: 1);
             },
             itemBuilder: (context, index) {
               bool hasRead = state.data[index].readAt == null ||
@@ -151,22 +182,12 @@ class _MessageState extends State<Message> {
                               Padding(
                                 padding:
                                     EdgeInsets.only(top: hasRead ? 0.0 : 2.0),
-                                child: Icon(Icons.message_rounded,
+                                child: Icon(
+                                    hasRead
+                                        ? EvaIcons.messageCircleOutline
+                                        : EvaIcons.messageCircle,
                                     color: Theme.of(context).primaryColor),
                               ),
-                              hasRead
-                                  ? Container()
-                                  : Positioned(
-                                      right: 0.0,
-                                      child: Container(
-                                        width: 12.0,
-                                        height: 12.0,
-                                        decoration: new BoxDecoration(
-                                          color: Colors.red,
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    )
                             ],
                           )),
                       Expanded(
@@ -208,7 +229,7 @@ class _MessageState extends State<Message> {
                   if (state.data[index].readAt != 1) {
                     _messageCubit.markAsRead(state.data[index].id);
                   }
-                  Navigator.of(context).pushNamed(Routes.messageDetail,
+                  Navigator.pushNamed(context, Routes.messageDetail,
                       arguments: state.data[index]);
                 },
               );

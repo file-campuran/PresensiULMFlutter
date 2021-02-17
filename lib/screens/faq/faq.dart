@@ -53,10 +53,8 @@ class _FaqState extends State<Faq> {
         FirebaseFirestore.instance.collection('faq').orderBy('priority');
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Frequently Asked Question'),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: 'Frequently Asked Question', context: context),
       body: SafeArea(
         child: Column(
           children: <Widget>[

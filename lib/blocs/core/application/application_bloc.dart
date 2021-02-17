@@ -27,6 +27,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         super(InitialApplicationState());
 
   @override
+  // ignore: override_on_non_overriding_member
   ApplicationState get initialState => InitialApplicationState();
 
   @override

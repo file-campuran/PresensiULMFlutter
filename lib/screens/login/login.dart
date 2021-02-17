@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
+import 'package:absen_online/configs/config.dart';
 
 class Login extends StatefulWidget {
   Login({Key key}) : super(key: key);
@@ -184,7 +185,12 @@ class _LoginState extends State<Login> {
                     return BlocListener<LoginBloc, LoginState>(
                       listener: (context, loginListener) {
                         if (loginListener is LoginFail) {
-                          _showMessage(loginListener.message);
+                          appMyInfoDialog(
+                            context: context,
+                            message: loginListener.message,
+                            image: Images.Warning,
+                            title: 'Error',
+                          );
                         }
                       },
                       child: AppButton(

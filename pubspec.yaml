@@ -12,6 +12,7 @@ dependencies:
   # ICON
   cupertino_icons: ^1.0.0
   font_awesome_flutter: ^8.11.0
+  eva_icons_flutter: ^2.0.1
 
   # DB
   shared_preferences: ^0.5.7+2

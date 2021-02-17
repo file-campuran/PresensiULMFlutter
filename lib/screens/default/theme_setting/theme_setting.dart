@@ -33,12 +33,10 @@ class _ThemeSettingState extends State<ThemeSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          Translate.of(context).translate('theme'),
-        ),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          leading: BackButton(),
+          title: Translate.of(context).translate('theme'),
+          context: context),
       body: SafeArea(
         child: Column(
           children: <Widget>[

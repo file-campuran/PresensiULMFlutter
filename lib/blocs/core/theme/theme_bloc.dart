@@ -13,6 +13,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(InitialThemeState());
 
   @override
+  // ignore: override_on_non_overriding_member
   ThemeState get initialState => InitialThemeState();
 
   @override

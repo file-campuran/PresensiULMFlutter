@@ -61,10 +61,9 @@ class _LanguageSettingState extends State<LanguageSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(Translate.of(context).translate('change_language')),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: Translate.of(context).translate('change_language'),
+          context: context),
       body: SafeArea(
         child: Column(
           children: <Widget>[

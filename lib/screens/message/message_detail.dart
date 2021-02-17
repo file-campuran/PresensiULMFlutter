@@ -1,15 +1,9 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-// import 'package:esys_flutter_share/esys_flutter_share.dart' as fShare;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:html/parser.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/widgets/widget.dart';
 
 class MessageDetailScreen extends StatefulWidget {
   final MessageModel message;
@@ -24,35 +18,11 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: BackButton(),
-          centerTitle: true,
-          title: Text(Translate.of(context).translate('message')),
-        ),
+        appBar: AppCustomAppBar.defaultAppBar(
+            leading: BackButton(),
+            title: Translate.of(context).translate('message'),
+            context: context),
         body: _buildContent(context, widget.message));
-  }
-
-  _loadingText() {
-    List<Widget> widgets = [];
-
-    for (int i = 0; i < 4; i++) {
-      widgets.add(Container(
-        margin: EdgeInsets.only(bottom: 5.0),
-        width: MediaQuery.of(context).size.width,
-        height: 18.0,
-        color: Colors.grey,
-      ));
-    }
-
-    widgets.add(Container(
-      margin: EdgeInsets.only(bottom: 5.0),
-      width: MediaQuery.of(context).size.width / 2,
-      height: 18.0,
-      color: Colors.grey,
-    ));
-
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.start, children: widgets);
   }
 
   _buildContent(BuildContext context, MessageModel data) {
@@ -120,20 +90,20 @@ class _MessageDetailScreenState extends State<MessageDetailScreen> {
     );
   }
 
-  _bytesImageFromHtmlString(String htmlString) async {
-    try {
-      var document = parse(htmlString);
-      String urlImage =
-          document.getElementsByTagName('img')[0].attributes['src'];
-      var request = await HttpClient().getUrl(Uri.parse(urlImage));
-      var response = await request.close();
-      Uint8List bytes = await consolidateHttpClientResponseBytes(response);
-      return bytes;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
+  // _bytesImageFromHtmlString(String htmlString) async {
+  //   try {
+  //     var document = parse(htmlString);
+  //     String urlImage =
+  //         document.getElementsByTagName('img')[0].attributes['src'];
+  //     var request = await HttpClient().getUrl(Uri.parse(urlImage));
+  //     var response = await request.close();
+  //     Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+  //     return bytes;
+  //   } catch (e) {
+  //     print(e);
+  //     return null;
+  //   }
+  // }
 
   @override
   void dispose() {

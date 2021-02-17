@@ -9,7 +9,7 @@ import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 
@@ -26,9 +26,8 @@ class _MainNavigationState extends State<MainNavigation> {
   final _fcm = FirebaseMessaging();
   int _selectedIndex = 0;
   NotificationBloc _notificationBloc;
+  // ignore: unused_field
   MessageCubit _messageCubit;
-  // final Connectivity _connectivity = Connectivity();
-  // StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
@@ -36,46 +35,15 @@ class _MainNavigationState extends State<MainNavigation> {
     LocalNotification().init();
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
     _messageCubit = BlocProvider.of<MessageCubit>(context);
-    // _connectivitySubscription =
-    //     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     super.initState();
   }
 
   @override
   void dispose() {
-    // _connectivitySubscription.cancel();
     super.dispose();
   }
 
-  // Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-  //   switch (result) {
-  //     case ConnectivityResult.wifi:
-  //     case ConnectivityResult.mobile:
-  //       return Fluttertoast.showToast(
-  //           msg: 'Online',
-  //           toastLength: Toast.LENGTH_SHORT,
-  //           gravity: ToastGravity.TOP,
-  //           backgroundColor: Colors.green,
-  //           textColor: Colors.white,
-  //           fontSize: 16.0);
-  //       break;
-  //     case ConnectivityResult.none:
-  //       UtilLogger.log('NETWORK', result.toString(), LogType.INFO);
-  //       return Fluttertoast.showToast(
-  //           msg: "Check your internet connection",
-  //           toastLength: Toast.LENGTH_SHORT,
-  //           gravity: ToastGravity.TOP,
-  //           backgroundColor: Colors.red,
-  //           textColor: Colors.white,
-  //           fontSize: 16.0);
-  //       break;
-  //     default:
-  //       UtilLogger.log(
-  //           'NETWORK', 'Failed to get connectivity.', LogType.DANGER);
-  //       break;
-  //   }
-  // }
-
+  // ignore: unused_element
   static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
     final notification = message['data'];
 
@@ -147,7 +115,11 @@ class _MainNavigationState extends State<MainNavigation> {
       onResume: (Map<String, dynamic> message) async {
         _showNotif("onResume", message);
       },
-      // onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
+      onBackgroundMessage: Environment.DEBUG
+          ? null
+          : Platform.isIOS
+              ? null
+              : myBackgroundMessageHandler,
     );
     Application.pushToken = await _fcm.getToken();
     UtilLogger.log("MY TOKEN", Application.pushToken);
@@ -185,29 +157,25 @@ class _MainNavigationState extends State<MainNavigation> {
   List<BottomNavigationBarItem> _bottomBarItem(BuildContext context) {
     return [
       BottomNavigationBarItem(
-        icon: Icon(Icons.home),
-        title: Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('home')),
-        ),
+        icon: Icon(_selectedIndex == 0 ? EvaIcons.home : EvaIcons.homeOutline),
+        label: Translate.of(context).translate('home'),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.face_sharp),
-        title: Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('presence')),
-        ),
+        icon: Icon(_selectedIndex == 1
+            ? Icons.check_circle_outline
+            : Icons.check_circle_outline_sharp),
+        label: Translate.of(context).translate('presence'),
       ),
       BottomNavigationBarItem(
         icon: Icon(Icons.history),
-        title: Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('history')),
-        ),
+        label: Translate.of(context).translate('history'),
       ),
       BottomNavigationBarItem(
+        label: Translate.of(context).translate('message'),
         icon: new Stack(alignment: Alignment.center, children: <Widget>[
-          new Icon(Icons.message),
+          new Icon(_selectedIndex == 3
+              ? EvaIcons.messageCircle
+              : EvaIcons.messageCircleOutline),
           BlocBuilder<MessageCubit, MessageState>(
             builder: (context, state) {
               if (state is MessageData) {
@@ -222,6 +190,7 @@ class _MainNavigationState extends State<MainNavigation> {
                           width: 10,
                           height: 10,
                           decoration: BoxDecoration(
+                            border: Border.all(width: 0.5, color: Colors.white),
                             shape: BoxShape.circle,
                             color: Colors.redAccent,
                           ),
@@ -243,17 +212,12 @@ class _MainNavigationState extends State<MainNavigation> {
             },
           ),
         ]),
-        title: Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('message')),
-        ),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.account_circle),
-        title: Padding(
-          padding: EdgeInsets.only(top: 3),
-          child: Text(Translate.of(context).translate('account')),
-        ),
+        icon: Icon(_selectedIndex == 4
+            ? Icons.account_circle
+            : Icons.account_circle_outlined),
+        label: Translate.of(context).translate('account'),
       ),
     ];
   }

@@ -11,6 +11,7 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthBloc() : super(InitialAuthenticationState());
 
   @override
+  // ignore: override_on_non_overriding_member
   AuthenticationState get initialState => InitialAuthenticationState();
 
   @override

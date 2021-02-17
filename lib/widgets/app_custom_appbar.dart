@@ -1,17 +1,33 @@
 import 'package:flutter/material.dart';
-// import 'package:pikobar_flutter/constants/Dictionary.dart';
-// import 'package:pikobar_flutter/constants/FontsFamily.dart';
 
 class AppCustomAppBar {
   static AppBar defaultAppBar(
-      {Widget leading,
+      {@required BuildContext context,
+      Widget leading,
       @required String title,
       List<Widget> actions,
       PreferredSizeWidget bottom}) {
     return AppBar(
-      backgroundColor: Colors.white,
+      actionsIconTheme: IconThemeData(
+          color: Theme.of(context).brightness == Brightness.light
+              ? Color(0xff303030)
+              : Colors.white),
+      iconTheme: IconThemeData(
+        color: Theme.of(context).brightness == Brightness.light
+            ? Color(0xff303030)
+            : Colors.white, //change your color here
+      ),
+      centerTitle: false,
+      brightness: Theme.of(context).brightness,
       leading: leading,
-      title: setTitleAppBar(title),
+      backgroundColor: Theme.of(context).brightness == Brightness.dark
+          ? Color(0xff303030)
+          : Colors.white,
+      elevation: 0,
+      title: setTitleAppBar(
+        context,
+        title,
+      ),
       actions: actions,
       bottom: bottom,
     );
@@ -55,25 +71,28 @@ class AppCustomAppBar {
     );
   }
 
-  static AppBar bottomSearchAppBar(
-      {@required TextEditingController searchController,
-      @required String title,
-      @required String hintText,
-      ValueChanged<String> onChanged}) {
-    return AppBar(
-        backgroundColor: Colors.white,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(60.0),
-          child: buildSearchField(searchController, hintText, onChanged),
-        ),
-        title: AppCustomAppBar.setTitleAppBar(title));
-  }
+  // static AppBar bottomSearchAppBar(
+  //     {@required TextEditingController searchController,
+  //     @required String title,
+  //     @required String hintText,
+  //     ValueChanged<String> onChanged}) {
+  //   return AppBar(
+  //       backgroundColor: Colors.white,
+  //       bottom: PreferredSize(
+  //         preferredSize: Size.fromHeight(60.0),
+  //         child: buildSearchField(searchController, hintText, onChanged),
+  //       ),
+  //       title: AppCustomAppBar.setTitleAppBar(context, title));
+  // }
 
-  static Text setTitleAppBar(String title) {
+  static Text setTitleAppBar(BuildContext context, String title) {
     return Text(title,
         style: TextStyle(
-          fontSize: 16.0,
+          // fontSize: 16.0,
           fontWeight: FontWeight.w600,
+          color: Theme.of(context).brightness == Brightness.light
+              ? Color(0xff303030)
+              : Colors.white,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis);

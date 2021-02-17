@@ -133,22 +133,9 @@ class _NotificationListState extends State<NotificationList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        actions: [
-          // AppMyButton(
-          //   icon: Icons.ac_unit,
-          //   text: 'FORCE ADD',
-          //   loading: false,
-          //   onPress: () {
-          //     _notificationBloc.add(OnAddNotification('TITLE', 'MY MESSAGE'));
-          //   },
-          // ),
-        ],
-        title: Text(
-          Translate.of(context).translate('notification'),
-        ),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: Translate.of(context).translate('notification'),
+          context: context),
       body: SafeArea(
         child: SmartRefresher(
           enablePullDown: true,

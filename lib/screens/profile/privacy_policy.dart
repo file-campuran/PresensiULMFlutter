@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_html/flutter_html.dart';
@@ -35,10 +36,9 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(Translate.of(context).translate('privacy_policy')),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          title: Translate.of(context).translate('privacy_policy'),
+          context: context),
       body: SafeArea(
         child: Center(
           child: !_loading

@@ -16,6 +16,7 @@ class MyLocation {
   Geolocator geolocator = Geolocator();
   Position currentLocation;
 
+  // ignore: close_sinks
   StreamController<Position> _locationController = StreamController<Position>();
 
   Stream<Position> get locationStream => _locationController.stream;

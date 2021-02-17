@@ -6,8 +6,8 @@ abstract class MessageState {}
 class MessageInitial extends MessageState {}
 
 class MessageData extends MessageState {
-  int count = 0;
+  final int count;
   final List<MessageModel> data;
 
-  MessageData(this.data, this.count);
+  MessageData(this.data, [this.count = 0]);
 }

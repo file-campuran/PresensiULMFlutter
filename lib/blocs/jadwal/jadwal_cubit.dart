@@ -1,7 +1,5 @@
-import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/api/presensi.dart';
-import 'package:absen_online/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -15,7 +13,6 @@ class JadwalCubit extends Cubit<JadwalState> {
   bool isLoading = false;
 
   Future<dynamic> initData() async {
-    await Future.delayed(Duration(seconds: 2));
     if (data == null) {
       final ApiModel result = await PresensiRepository().getJadwal();
 

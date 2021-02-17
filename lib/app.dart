@@ -8,6 +8,7 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/main_navigation.dart';
 import 'package:absen_online/screens/screen.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:flutter/services.dart';
 
 class App extends StatefulWidget {
   @override
@@ -63,6 +64,9 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Theme.of(context).primaryColorBrightness));
     return MultiBlocProvider(
       providers: [
         BlocProvider<ApplicationBloc>(

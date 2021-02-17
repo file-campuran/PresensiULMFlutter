@@ -32,12 +32,10 @@ class _FontSettingState extends State<FontSetting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          Translate.of(context).translate('font'),
-        ),
-      ),
+      appBar: AppCustomAppBar.defaultAppBar(
+          leading: BackButton(),
+          title: Translate.of(context).translate('font'),
+          context: context),
       body: SafeArea(
         child: Column(
           children: <Widget>[

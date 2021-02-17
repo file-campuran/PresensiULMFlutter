@@ -9,6 +9,7 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
   LanguageBloc() : super(InitialLanguageState());
 
   @override
+  // ignore: override_on_non_overriding_member
   LanguageState get initialState => InitialLanguageState();
 
   @override

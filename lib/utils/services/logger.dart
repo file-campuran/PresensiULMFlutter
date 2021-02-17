@@ -1,6 +1,5 @@
 import 'dart:developer' as developer;
 import 'dart:convert';
-import 'package:absen_online/configs/config.dart';
 
 enum LogType { INFO, WARN, DANGER }
 enum ColorsHeader { RED, GREEN, PURPLE, YELLOW, DEFAULT }

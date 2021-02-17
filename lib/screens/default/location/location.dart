@@ -44,7 +44,7 @@ class _LocationState extends State<Location> {
       );
     }
 
-    List<Map<String, dynamic>> blueZoneExample = [
+    /* List<Map<String, dynamic>> blueZoneExample = [
       {
         'name': 'UNLAM BJB',
         'latitude': -3.4448526,
@@ -57,7 +57,7 @@ class _LocationState extends State<Location> {
         'longitude': 114.5846911,
         'radius': 800,
       },
-    ];
+    ]; */
 
     if (widget.withBlueZone) {
       for (var item in Application.remoteConfig.presensi.zone) {

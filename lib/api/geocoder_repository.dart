@@ -5,26 +5,30 @@ class GeocoderRepository {
     // await Future.delayed(Duration(seconds: 1));
 
     if (latitude != null) {
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(latitude, longitude);
+      try {
+        List<Placemark> placemarks =
+            await placemarkFromCoordinates(latitude, longitude);
 
-      if (placemarks != null && placemarks.isNotEmpty) {
-        final Placemark pos = placemarks[0];
-        final stringAddress = pos.thoroughfare +
-            ', ' +
-            pos.locality +
-            ', ' +
-            pos.subAdministrativeArea;
+        if (placemarks != null && placemarks.isNotEmpty) {
+          final Placemark pos = placemarks[0];
+          final stringAddress = pos.thoroughfare +
+              ', ' +
+              pos.locality +
+              ', ' +
+              pos.subAdministrativeArea;
 
-        return stringAddress;
-      } else {
-        throw Exception('Dictionary.somethingWrong');
+          return stringAddress;
+        } else {
+          return 'Terjadi kesalahan mengambil lokasi';
+        }
+      } catch (e) {
+        return 'Terjadi kesalahan mengambil lokasi';
       }
     }
   }
 
   Future getCity({double latitude, double longitude}) async {
-    // await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1));
 
     if (latitude != null) {
       List<Placemark> placemarks =

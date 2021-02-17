@@ -14,8 +14,8 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(context, shrinkOffset, overlapsContent) {
-    NotificationBloc _notificationBloc;
-    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+    // NotificationBloc _notificationBloc;
+    // _notificationBloc = BlocProvider.of<NotificationBloc>(context);
 
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -57,6 +57,8 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                                   width: 20,
                                   height: 20,
                                   decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 0.7, color: Colors.white),
                                     shape: BoxShape.circle,
                                     color: Colors.redAccent,
                                   ),

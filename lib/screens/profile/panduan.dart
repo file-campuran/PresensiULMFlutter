@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/configs/config.dart';
+import 'package:absen_online/widgets/widget.dart';
 
 class Panduan extends StatefulWidget {
   @override
@@ -24,60 +25,46 @@ class _WebViewExampleState extends State<Panduan> {
     return GestureDetector(
       onTap: () => Navigator.pop(context),
       child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            Translate.of(context).translate(
-              'guide',
-            ),
-          ),
-        ),
+        appBar: isLoading
+            ? AppCustomAppBar.defaultAppBar(
+                bottom: MyLinearProgressIndicator(
+                  backgroundColor: Colors.transparent,
+                ),
+                title: Translate.of(context).translate('guide'),
+                context: context)
+            : AppCustomAppBar.defaultAppBar(
+                title: Translate.of(context).translate('guide'),
+                context: context),
         // We're using a Builder here so we have a context that is below the Scaffold
         // to allow calling Scaffold.of(context) so we can show a snackbar.
         body: Builder(builder: (BuildContext context) {
-          // if (isLoading) {
-          //   return Center(child: ColorLoader());
-          // }
-
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Visibility(
-              //   visible: isLoading,
-              //   child: Center(child: ColorLoader()),
-              // ),
-              Visibility(
-                visible: true,
-                child: Expanded(
-                  child: WebView(
-                    onPageStarted: (String tes) {
-                      // setState(() {
-                      //   isLoading = true;
-                      // });
-                    },
-                    initialUrl: Environment.guide,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (WebViewController webViewController) {
-                      _controller.complete(webViewController);
-                    },
-                    javascriptChannels: <JavascriptChannel>[
-                      _toasterJavascriptChannel(context),
-                    ].toSet(),
-                    navigationDelegate: (NavigationRequest request) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      print('allowing navigation to $request');
-                      return NavigationDecision.navigate;
-                    },
-                    onPageFinished: (String url) {
-                      print('Page finished loading: $url');
-                      setState(() {
-                        isLoading = false;
-                      });
-                    },
-                  ),
+              Expanded(
+                child: WebView(
+                  initialUrl: Environment.guide,
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onWebViewCreated: (WebViewController webViewController) {
+                    _controller.complete(webViewController);
+                  },
+                  javascriptChannels: <JavascriptChannel>[
+                    _toasterJavascriptChannel(context),
+                  ].toSet(),
+                  navigationDelegate: (NavigationRequest request) {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    print('allowing navigation to $request');
+                    return NavigationDecision.navigate;
+                  },
+                  onPageFinished: (String url) {
+                    print('Page finished loading: $url');
+                    setState(() {
+                      isLoading = false;
+                    });
+                  },
                 ),
               ),
             ],
@@ -181,4 +168,26 @@ class NavigationControls extends StatelessWidget {
       },
     );
   }
+}
+
+const double _kMyLinearProgressIndicatorHeight = 6.0;
+
+class MyLinearProgressIndicator extends LinearProgressIndicator
+    implements PreferredSizeWidget {
+  MyLinearProgressIndicator({
+    Key key,
+    double value,
+    Color backgroundColor,
+    Animation<Color> valueColor,
+  }) : super(
+          key: key,
+          value: value,
+          backgroundColor: backgroundColor,
+          valueColor: valueColor,
+        ) {
+    preferredSize = Size(double.infinity, _kMyLinearProgressIndicatorHeight);
+  }
+
+  @override
+  Size preferredSize;
 }

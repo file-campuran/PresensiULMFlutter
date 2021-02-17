@@ -18,6 +18,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         super(InitialLoginState());
 
   @override
+  // ignore: override_on_non_overriding_member
   LoginState get initialState => InitialLoginState();
 
   @override

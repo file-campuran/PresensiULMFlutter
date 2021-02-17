@@ -78,7 +78,7 @@ class UtilPreferences {
   /*
    * Simpan access dan refresh token ke cache 
    */
-  static Future setToken({String accessToken, String refreshToken}) {
+  static void setToken({String accessToken, String refreshToken}) {
     if (accessToken != null) {
       Application.preferences.setString('accessToken', accessToken);
     }

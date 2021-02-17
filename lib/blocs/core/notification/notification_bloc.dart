@@ -10,6 +10,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   NotificationBloc() : super(InitialNotificationState());
 
   @override
+  // ignore: override_on_non_overriding_member
   NotificationState get initialState => InitialNotificationState();
   NotificationPageModel _notificationPage;
 

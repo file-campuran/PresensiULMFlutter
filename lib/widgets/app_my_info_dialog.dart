@@ -1,28 +1,122 @@
+import 'package:absen_online/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:absen_online/configs/config.dart';
+import 'package:flutter_svg/svg.dart';
 
-Future appMyInfoDialog(
-    {@required BuildContext context, String title, dynamic message}) {
-  return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title ?? 'Respon Server'),
-          content: SingleChildScrollView(
-            child: _buildWidget(message),
+void appMyInfoDialog({
+  @required BuildContext context,
+  String title,
+  dynamic message,
+  String image,
+  Function onTap,
+  String onTapText = 'understand',
+}) {
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    // backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(8.0),
+        topRight: Radius.circular(8.0),
+      ),
+    ),
+    isDismissible: false,
+    builder: (context) {
+      return SingleChildScrollView(
+        child: Container(
+          padding:
+              EdgeInsets.symmetric(vertical: 10, horizontal: Dimens.padding),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                width: 60,
+                height: 6,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3.0),
+                    color: Theme.of(context).highlightColor),
+              ),
+              if (image != null) ...[
+                SizedBox(height: Dimens.padding),
+                Center(
+                  child: SvgPicture.asset(
+                    image ?? Images.Warning,
+                    matchTextDirection: true,
+                    width: 160,
+                  ),
+                ),
+              ],
+              SizedBox(height: Dimens.padding),
+              Text(
+                title ?? 'Respon Server',
+                textAlign: TextAlign.start,
+                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: Dimens.padding),
+              _buildWidget(message),
+              SizedBox(height: 24.0),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: AppRoundedButton(
+                      title: Translate.of(context).translate('close'),
+                      textStyle: TextStyle(
+                          fontSize: 12.0, fontWeight: FontWeight.bold),
+                      borderSide:
+                          BorderSide(color: Theme.of(context).primaryColor),
+                      elevation: 0.0,
+                      color: Theme.of(context).canvasColor,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  if (onTap != null) ...[
+                    SizedBox(width: Dimens.padding),
+                    Expanded(
+                      child: AppRoundedButton(
+                        title: Translate.of(context).translate(onTapText),
+                        textStyle: TextStyle(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                        color: Theme.of(context).primaryColor,
+                        elevation: 0.0,
+                        onPressed: onTap,
+                      ),
+                    )
+                  ],
+                ],
+              ),
+              // SizedBox(height: 22),
+            ],
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      });
+        ),
+      );
+    },
+  );
+
+  // return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: false, // user must tap button!
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text(title ?? 'Respon Server'),
+  //         content: SingleChildScrollView(
+  //           child: _buildWidget(message),
+  //         ),
+  //         actions: <Widget>[
+  //           FlatButton(
+  //             child: Text('Close'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     });
 }
 
 Widget _buildWidget(dynamic message) {
@@ -32,13 +126,16 @@ Widget _buildWidget(dynamic message) {
   }
 
   if (message is String) {
-    return AppTextList(message);
+    return AppTextList(message, withIndicator: false);
   } else if (message['content'] != null) {
-    return AppTextList(message['content']);
-    return AppInfo(
-        message: message['content'],
-        title: message['title'],
-        image: Images.Warning);
+    return AppTextList(
+      message['content'],
+      withIndicator: true,
+    );
+    // return AppInfo(
+    //     message: message['content'],
+    //     title: message['title'],
+    //     image: Images.Warning);
   }
 
   return ListBody(

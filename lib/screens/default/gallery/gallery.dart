@@ -5,8 +5,6 @@ import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:html/dom.dart' as dom;
-import 'package:html/parser.dart';
 
 class Gallery extends StatefulWidget {
   final List<ImageModel> photo;

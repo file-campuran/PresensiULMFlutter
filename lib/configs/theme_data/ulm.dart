@@ -14,6 +14,7 @@ class Ulm {
     switch (isLight) {
       case true:
         return ThemeData(
+          appBarTheme: AppBarTheme(brightness: Brightness.dark),
           primarySwatch: MaterialColor(4294359873, {
             50: Color(0xfffef6e7),
             100: Color(0xfffdeece),
@@ -35,7 +36,7 @@ class Ulm {
           accentColor: Color(0xffff9f43),
           accentColorBrightness: Brightness.dark,
           canvasColor: Color(0xfffafafa),
-          scaffoldBackgroundColor: Color(0xfffafafa),
+          scaffoldBackgroundColor: Colors.white,
           bottomAppBarColor: Color(0xffffffff),
           cardColor: Color(0xffffffff),
           dividerColor: Color(0x1f000000),
