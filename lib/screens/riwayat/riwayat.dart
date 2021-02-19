@@ -338,18 +338,14 @@ class _RiwayatState extends State<Riwayat> {
     }
 
     if (_errorData != null) {
-      return ListView(
-        children: [
-          Center(
-            child: AppError(
-              title: _errorData['title'].toString(),
-              message: _errorData['content'],
-              image: _errorData['image'],
-              onPress: _loadData,
-              btnRefreshLoading: _btnLoading,
-            ),
-          )
-        ],
+      return Center(
+        child: AppError(
+          title: _errorData['title'].toString(),
+          message: _errorData['content'],
+          image: _errorData['image'],
+          onPress: _loadData,
+          btnRefreshLoading: _btnLoading,
+        ),
       );
     }
 

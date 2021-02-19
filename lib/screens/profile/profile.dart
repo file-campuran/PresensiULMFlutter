@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/gestures.dart';
@@ -81,7 +82,7 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                       children: <Widget>[
                         AppListTitle(
-                          icon: Icons.person_outline,
+                          icon: EvaIcons.personOutline,
                           title: Translate.of(context).translate(
                             'edit_profile',
                           ),
@@ -97,7 +98,7 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                         AppListTitle(
-                          icon: Icons.help_outline,
+                          icon: EvaIcons.questionMarkCircleOutline,
                           title: Translate.of(context).translate(
                             'guide',
                           ),
@@ -113,7 +114,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
-                          icon: Icons.settings_outlined,
+                          icon: EvaIcons.settingsOutline,
                           title: Translate.of(context).translate('setting'),
                           onPressed: () {
                             _onNavigate(Routes.setting);
@@ -127,7 +128,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
-                          icon: Icons.phone_iphone_rounded,
+                          icon: EvaIcons.smartphoneOutline,
                           title: Translate.of(context).translate('version'),
                           onPressed: () {
                             Fluttertoast.showToast(

@@ -63,6 +63,7 @@ dependencies:
   firebase_crashlytics: ^0.2.3+1
   firebase_remote_config: 0.4.3
   firebase_ml_vision: ^0.9.6+2
+  firebase_in_app_messaging: ^0.2.3
 
   # Networking
   dio: ^3.0.9

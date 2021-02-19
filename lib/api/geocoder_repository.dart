@@ -2,7 +2,7 @@ import 'package:geocoding/geocoding.dart';
 
 class GeocoderRepository {
   Future getAddress({double latitude, double longitude}) async {
-    // await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 1));
 
     if (latitude != null) {
       try {

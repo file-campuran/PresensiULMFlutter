@@ -6,6 +6,7 @@ import 'package:bloc/bloc.dart';
 import 'package:absen_online/blocs/core/authentication/bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
   AuthBloc() : super(InitialAuthenticationState());
@@ -77,6 +78,9 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
           await UtilPreferences.remove(Preferences.refreshToken);
       await UtilPreferences.remove(Preferences.accessToken);
       await UtilPreferences.remove(Preferences.user);
+
+      final _fcm = FirebaseMessaging();
+      _fcm.unsubscribeFromTopic(Application.user.role);
 
       ///Check result delete user
       if (deletePreferences) {

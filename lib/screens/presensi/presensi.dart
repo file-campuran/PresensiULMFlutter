@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:absen_online/widgets/widget.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:lottie/lottie.dart' hide Marker;
+// import 'package:lottie/lottie.dart' hide Marker;
 import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
@@ -97,6 +98,7 @@ class PresensiState extends State<Presensi> {
   // void didChangeDependencies() {
   //   super.didChangeDependencies();
   // }
+  JadwalCubit _jadwalCubit;
 
   @override
   void dispose() {
@@ -109,6 +111,9 @@ class PresensiState extends State<Presensi> {
   @override
   void initState() {
     super.initState();
+
+    _jadwalCubit = BlocProvider.of<JadwalCubit>(context);
+    _jadwalCubit.initData();
 
     setupCameras();
     _getLocation();
@@ -182,12 +187,14 @@ class PresensiState extends State<Presensi> {
       myArea = myLocation.inAreaPresensi();
       myAddress = await GeocoderRepository().getAddress(
           latitude: position.latitude, longitude: position.longitude);
-      setState(() {
-        myPosition = position;
-        latitude = position.latitude;
-        longitude = position.longitude;
-        isFakeGps = position.isMocked;
-      });
+      if (this.mounted) {
+        setState(() {
+          myPosition = position;
+          latitude = position.latitude;
+          longitude = position.longitude;
+          isFakeGps = position.isMocked;
+        });
+      }
     } else {
       setState(() {
         errorLocation.message =
@@ -203,40 +210,40 @@ class PresensiState extends State<Presensi> {
       _btnLoading = true;
     });
     PresensiRepository().getDetailPresensi().then((result) {
-      setState(() {
-        _btnLoading = false;
-      });
-      if (result.code == CODE.SUCCESS) {
+      if (this.mounted) {
         setState(() {
-          _errorData = null;
-          _infoPresensi = JadwalModel.fromJson(result.data);
+          _btnLoading = false;
         });
-      } else if (result.code == CODE.INFO) {
-        String title =
-            (result.message is String) ? 'Informasi' : result.message['title'];
-        String message = (result.message is String)
-            ? result.message
-            : result.message['content'];
-        setState(() {
-          _errorData = null;
-          _infoData = {
-            'title': title,
-            'content': message,
-            'image':
-                result.message is String ? Images.Document : Images.Calendar,
-          };
-        });
-      } else if (result.code == CODE.TOKEN_EXPIRED) {
-        BlocProvider.of<LoginBloc>(context).add(OnLogout());
-      } else {
-        setState(() {
-          _errorData = result.message;
-        });
+        if (result.code == CODE.SUCCESS) {
+          setState(() {
+            _errorData = null;
+            _infoPresensi = JadwalModel.fromJson(result.data);
+          });
+        } else if (result.code == CODE.INFO) {
+          String title = (result.message is String)
+              ? 'Informasi'
+              : result.message['title'];
+          String message = (result.message is String)
+              ? result.message
+              : result.message['content'];
+          setState(() {
+            _errorData = null;
+            _infoData = {
+              'title': title,
+              'content': message,
+              'image':
+                  result.message is String ? Images.Document : Images.Calendar,
+            };
+          });
+        } else if (result.code == CODE.TOKEN_EXPIRED) {
+          BlocProvider.of<LoginBloc>(context).add(OnLogout());
+        } else {
+          setState(() {
+            _errorData = result.message;
+          });
+        }
       }
     });
-    //        = value;
-    //       isRefreshLoading = false;
-    //     }));
   }
 
   Future<void> sendPresensi() async {
@@ -291,6 +298,7 @@ class PresensiState extends State<Presensi> {
         AnalyticsHelper.setLogEvent(Analytics.timmerPresensi,
             {'time_ms': (_endPresensi - _startPresensi)});
 
+        _jadwalCubit.data = null;
         setState(() {
           _infoData = {
             'title': 'Informasi',
@@ -516,11 +524,12 @@ class PresensiState extends State<Presensi> {
                 children: <Widget>[
                   Row(
                     children: [
-                      Lottie.asset(
-                        Images.Writting,
-                        width: 35,
-                        height: 35,
-                      ),
+                      // Lottie.asset(
+                      //   Images.Writting,
+                      //   width: 35,
+                      //   height: 35,
+                      // ),
+                      Icon(EvaIcons.bookOpenOutline),
                       SizedBox(
                         width: 10.0,
                       ),
@@ -1069,7 +1078,6 @@ class PresensiState extends State<Presensi> {
       'type': build.type,
       'isPhysicalDevice': build.isPhysicalDevice,
       'androidId': build.androidId,
-      'systemFeatures': build.systemFeatures,
     };
   }
 

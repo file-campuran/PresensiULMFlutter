@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/screens/screen.dart';
@@ -23,6 +24,7 @@ class MainNavigation extends StatefulWidget {
 }
 
 class _MainNavigationState extends State<MainNavigation> {
+  final FirebaseInAppMessaging firebaseInAppMsg = FirebaseInAppMessaging();
   final _fcm = FirebaseMessaging();
   int _selectedIndex = 0;
   NotificationBloc _notificationBloc;
@@ -32,6 +34,7 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   void initState() {
     _fcmHandle();
+
     LocalNotification().init();
     _notificationBloc = BlocProvider.of<NotificationBloc>(context);
     _messageCubit = BlocProvider.of<MessageCubit>(context);
@@ -102,6 +105,8 @@ class _MainNavigationState extends State<MainNavigation> {
 
   ///Support Notification listen
   void _fcmHandle() async {
+    firebaseInAppMsg.setAutomaticDataCollectionEnabled(true);
+
     if (Platform.isIOS) iOSPermission();
     // await Future.delayed(Duration(seconds: 2));
     _fcm.requestNotificationPermissions();
@@ -121,6 +126,9 @@ class _MainNavigationState extends State<MainNavigation> {
               ? null
               : myBackgroundMessageHandler,
     );
+    _fcm.subscribeToTopic('general');
+    _fcm.subscribeToTopic(Application.user.role);
+
     Application.pushToken = await _fcm.getToken();
     UtilLogger.log("MY TOKEN", Application.pushToken);
     PresensiRepository.setFirebaseToken();
@@ -157,17 +165,17 @@ class _MainNavigationState extends State<MainNavigation> {
   List<BottomNavigationBarItem> _bottomBarItem(BuildContext context) {
     return [
       BottomNavigationBarItem(
-        icon: Icon(_selectedIndex == 0 ? EvaIcons.home : EvaIcons.homeOutline),
+        icon: Icon(_selectedIndex == 0 ? EvaIcons.grid : EvaIcons.gridOutline),
         label: Translate.of(context).translate('home'),
       ),
       BottomNavigationBarItem(
-        icon: Icon(Icons.history),
+        icon: Icon(
+            _selectedIndex == 1 ? EvaIcons.layers : EvaIcons.layersOutline),
         label: Translate.of(context).translate('history'),
       ),
       BottomNavigationBarItem(
-        icon: Icon(_selectedIndex == 1
-            ? Icons.check_circle_outline
-            : Icons.check_circle_outline_sharp),
+        icon: Icon(
+            _selectedIndex == 2 ? EvaIcons.bookOpen : EvaIcons.bookOpenOutline),
         label: Translate.of(context).translate('presence'),
       ),
       BottomNavigationBarItem(
