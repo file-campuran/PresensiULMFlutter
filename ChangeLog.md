@@ -11,7 +11,10 @@
     - Add FAQ
     - Add Guide
     - Add Privacy Policy
-- Fix Bug :
-    - 
-- Todo
-    - Fix DIO Interceptor
+- Bug :
+    - DIO Interceptor Multipart On Refresh Token Error [DONE]
+    - FCM Background
+      * Notes
+        - Notification always work with [NOTIFICATION]
+        - Background Process App Not Work [iOS]
+        - Background Process App Work Only Send with [DATA] doesn't work with [NOTIFICATION] [ANDROID]

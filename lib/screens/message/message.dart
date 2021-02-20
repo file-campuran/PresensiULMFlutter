@@ -22,6 +22,7 @@ class _MessageState extends State<Message> {
   List<MessageModel> listMessage = [];
 
   MessageCubit _messageCubit;
+  bool showMarkAll = true;
 
   @override
   void initState() {
@@ -32,43 +33,12 @@ class _MessageState extends State<Message> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //     centerTitle: true,
-      //     title: Text(Translate.of(context).translate('message')),
-      //     actions: <Widget>[
-      //       PopupMenuButton<int>(
-      //         itemBuilder: (context) => [
-      //           PopupMenuItem(
-      //             value: 1,
-      //             child: Text('Tandai sudah baca'),
-      //           ),
-      //           PopupMenuItem(
-      //             value: 0,
-      //             child: Text('Hapus'),
-      //           ),
-      //         ],
-      //         // initialValue: 1,
-      //         onCanceled: () {},
-      //         onSelected: (value) async {
-      //           if (value == 0) {
-      //             _messageCubit.markAll(value);
-      //           } else {
-      //             _messageCubit.markAll(value);
-      //           }
-      //         },
-      //         icon: Icon(Icons.more_horiz),
-      //       ),
-      //     ]),
       appBar: AppCustomAppBar.defaultAppBar(
           title: Translate.of(context).translate('message'),
           context: context,
           actions: <Widget>[
             PopupMenuButton<int>(
               itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 1,
-                  child: Text('Tandai sudah baca'),
-                ),
                 PopupMenuItem(
                   value: 0,
                   child: Text('Hapus'),
@@ -86,9 +56,53 @@ class _MessageState extends State<Message> {
               icon: Icon(Icons.more_horiz),
             ),
           ]),
-
       body: _buildContent(),
+      floatingActionButton: _appBadge(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  Widget _appBadge() {
+    return BlocBuilder<MessageCubit, MessageState>(builder: (context, state) {
+      if (state is MessageData) {
+        if (state.count != 0) {
+          return Align(
+            alignment: FractionalOffset(0.5, 0.95),
+            child: InkWell(
+              onTap: () {
+                _messageCubit.markAll(1);
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        width: 0.5, color: Theme.of(context).primaryColor),
+                    color: Colors.white.withOpacity(0.9),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ]),
+                child: Text(
+                  Translate.of(context).translate('mark_all_read'),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          );
+        }
+      }
+
+      return Container();
+    });
   }
 
   String _parseHtmlString(String htmlString) {
@@ -102,9 +116,8 @@ class _MessageState extends State<Message> {
   _buildLoading() {
     return ListView.builder(
       itemCount: 5,
-      itemBuilder: (context, index) => Card(
+      itemBuilder: (context, index) => Container(
           margin: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-          elevation: 0.2,
           child: Container(
             margin: EdgeInsets.all(15.0),
             child: Row(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:absen_online/utils/utils.dart';
 
 class AppTextList extends StatelessWidget {
   final String text;
@@ -24,9 +25,10 @@ class AppTextList extends StatelessWidget {
         ],
         Flexible(
           child: Text(
-            text,
+            Translate.of(context).translate(text),
             overflow: TextOverflow.clip,
-            style: TextStyle(fontSize: 12.0, color: Colors.grey[600]),
+            style:
+                TextStyle(fontSize: 16.0, color: Theme.of(context).hintColor),
           ),
         )
       ],

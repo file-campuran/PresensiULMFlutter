@@ -38,4 +38,9 @@ class JadwalCubit extends Cubit<JadwalState> {
     isLoading = false;
     initData();
   }
+
+  reInit() async {
+    data = null;
+    emit(JadwalInitial());
+  }
 }

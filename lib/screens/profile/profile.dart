@@ -82,7 +82,7 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                       children: <Widget>[
                         AppListTitle(
-                          icon: EvaIcons.personOutline,
+                          icon: Icon(EvaIcons.personOutline),
                           title: Translate.of(context).translate(
                             'edit_profile',
                           ),
@@ -98,7 +98,7 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                         AppListTitle(
-                          icon: EvaIcons.questionMarkCircleOutline,
+                          icon: Icon(EvaIcons.questionMarkCircleOutline),
                           title: Translate.of(context).translate(
                             'guide',
                           ),
@@ -114,7 +114,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
-                          icon: EvaIcons.settingsOutline,
+                          icon: Icon(EvaIcons.settingsOutline),
                           title: Translate.of(context).translate('setting'),
                           onPressed: () {
                             _onNavigate(Routes.setting);
@@ -128,7 +128,7 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
-                          icon: EvaIcons.smartphoneOutline,
+                          icon: Icon(EvaIcons.smartphoneOutline),
                           title: Translate.of(context).translate('version'),
                           onPressed: () {
                             Fluttertoast.showToast(
@@ -177,6 +177,18 @@ class _ProfileState extends State<Profile> {
                         borderRadius: BorderRadius.circular(8)),
                     color: Colors.white,
                     onPressed: () {
+                      appMyInfoDialog(
+                          context: context,
+                          message: Translate.of(context)
+                              .translate('confirm_sign_out'),
+                          image: Images.Warning,
+                          title: Translate.of(context).translate('sign_out'),
+                          onTapText: 'OK',
+                          onTap: () {
+                            _logout();
+                            Navigator.of(context).pop();
+                          });
+                      return;
                       showDialog<void>(
                         context: context,
                         barrierDismissible: true, // user must tap button!

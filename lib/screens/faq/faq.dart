@@ -54,7 +54,8 @@ class _FaqState extends State<Faq> {
 
     return Scaffold(
       appBar: AppCustomAppBar.defaultAppBar(
-          title: 'Frequently Asked Question', context: context),
+          title: Translate.of(context).translate('help_center'),
+          context: context),
       body: SafeArea(
         child: Column(
           children: <Widget>[

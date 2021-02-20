@@ -3,6 +3,7 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'beranda_swiper.dart';
 import 'package:absen_online/blocs/bloc.dart';
+import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -58,7 +59,7 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                                   height: 20,
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                        width: 0.7, color: Colors.white),
+                                        width: 1, color: Colors.white),
                                     shape: BoxShape.circle,
                                     color: Colors.redAccent,
                                   ),
@@ -125,7 +126,7 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                'FAQ',
+                                Translate.of(context).translate('help_center'),
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle2

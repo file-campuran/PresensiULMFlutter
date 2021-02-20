@@ -6,7 +6,10 @@ class AppCustomAppBar {
   static AppBar defaultAppBar(
       {@required BuildContext context,
       Widget leading,
+      Color backgroundColor,
+      Brightness brightness,
       @required String title,
+      double elavation = 0,
       List<Widget> actions,
       PreferredSizeWidget bottom}) {
     return AppBar(
@@ -24,14 +27,14 @@ class AppCustomAppBar {
             )
           : null,
       centerTitle: false,
-      brightness: cleanStyle ? Theme.of(context).brightness : null,
+      brightness: brightness ?? Theme.of(context).brightness,
       leading: leading,
-      backgroundColor: cleanStyle
+      backgroundColor: backgroundColor == null
           ? Theme.of(context).brightness == Brightness.dark
               ? Color(0xff303030)
               : Colors.white
-          : null,
-      elevation: cleanStyle ? 0 : null,
+          : backgroundColor,
+      elevation: elavation,
       title: setTitleAppBar(
         context,
         title,

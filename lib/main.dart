@@ -60,7 +60,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  if (!Environment.DEBUG) {
+  if (!Environment.DEBUG || true) {
     runZonedGuarded(() {
       runApp(App());
     }, (error, stackTrace) {

@@ -5,6 +5,7 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/language.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 class Setting extends StatefulWidget {
   Setting({Key key}) : super(key: key);
@@ -131,6 +132,7 @@ class _SettingState extends State<Setting> {
           ),
           children: <Widget>[
             AppListTitle(
+              icon: Icon(EvaIcons.bellOutline),
               title: Translate.of(context).translate('notification'),
               trailing: Switch(
                 value: _receiveNotification,
@@ -147,6 +149,7 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
+              icon: Icon(EvaIcons.globeOutline),
               title: Translate.of(context).translate('language'),
               onPressed: () {
                 _onNavigate(Routes.changeLanguage);
@@ -170,6 +173,7 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
+              icon: Icon(Icons.palette_outlined),
               title: Translate.of(context).translate('theme'),
               onPressed: () {
                 _onNavigate(Routes.themeSetting);
@@ -186,6 +190,7 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
+              icon: Icon(EvaIcons.moonOutline),
               title: Translate.of(context).translate('dark_mode'),
               onPressed: _showDarkModeSetting,
               trailing: Row(
@@ -207,6 +212,7 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
+              icon: Icon(EvaIcons.textOutline),
               title: Translate.of(context).translate('font'),
               onPressed: () {
                 _onNavigate(Routes.fontSetting);

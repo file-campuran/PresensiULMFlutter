@@ -113,7 +113,6 @@ class PresensiState extends State<Presensi> {
     super.initState();
 
     _jadwalCubit = BlocProvider.of<JadwalCubit>(context);
-    _jadwalCubit.initData();
 
     setupCameras();
     _getLocation();
@@ -298,7 +297,7 @@ class PresensiState extends State<Presensi> {
         AnalyticsHelper.setLogEvent(Analytics.timmerPresensi,
             {'time_ms': (_endPresensi - _startPresensi)});
 
-        _jadwalCubit.data = null;
+        _jadwalCubit.reInit();
         setState(() {
           _infoData = {
             'title': 'Informasi',

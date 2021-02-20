@@ -6,7 +6,7 @@ class AppListTitle extends StatelessWidget {
   final VoidCallback onPressed;
   final bool border;
   final TextStyle textStyle;
-  final IconData icon;
+  final Widget icon;
 
   AppListTitle({
     Key key,
@@ -39,7 +39,7 @@ class AppListTitle extends StatelessWidget {
             Row(
               children: [
                 if (icon != null) ...[
-                  Icon(icon),
+                  icon,
                   SizedBox(
                     width: 5,
                   ),

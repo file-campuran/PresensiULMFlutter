@@ -86,6 +86,7 @@ class Images {
   static const String Warning = "assets/svg/warning.svg";
   static const String Working = "assets/svg/working.svg";
   static const String Empty = "assets/svg/empty.svg";
+  static const String Security = "assets/svg/security.svg";
 
   static const String ImageBg = "assets/images/image_bg.png";
   static const String ImageError = "assets/images/image_error.png";

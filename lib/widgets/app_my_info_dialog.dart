@@ -29,6 +29,7 @@ void appMyInfoDialog({
           padding:
               EdgeInsets.symmetric(vertical: 10, horizontal: Dimens.padding),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
@@ -44,18 +45,23 @@ void appMyInfoDialog({
                   child: SvgPicture.asset(
                     image ?? Images.Warning,
                     matchTextDirection: true,
-                    width: 160,
+                    width: 200,
                   ),
                 ),
               ],
-              SizedBox(height: Dimens.padding),
-              Text(
-                title ?? 'Respon Server',
-                textAlign: TextAlign.start,
-                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+              SizedBox(height: Dimens.padding + 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title ?? 'Respon Server',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: Dimens.padding),
+                  _buildWidget(message),
+                ],
               ),
-              SizedBox(height: Dimens.padding),
-              _buildWidget(message),
               SizedBox(height: 24.0),
               Row(
                 children: <Widget>[
@@ -79,9 +85,7 @@ void appMyInfoDialog({
                       child: AppRoundedButton(
                         title: Translate.of(context).translate(onTapText),
                         textStyle: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            fontWeight: FontWeight.bold, color: Colors.white),
                         color: Theme.of(context).primaryColor,
                         elevation: 0.0,
                         onPressed: onTap,
@@ -90,7 +94,7 @@ void appMyInfoDialog({
                   ],
                 ],
               ),
-              // SizedBox(height: 22),
+              SizedBox(height: 15),
             ],
           ),
         ),
@@ -120,6 +124,7 @@ void appMyInfoDialog({
 }
 
 Widget _buildWidget(dynamic message) {
+  UtilLogger.log('MESSAGE', message);
   List<String> error = [];
   if (message is Map) {
     message.forEach((k, v) => error.add('$v'));

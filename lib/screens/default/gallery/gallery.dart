@@ -49,6 +49,7 @@ class _GalleryState extends State<Gallery> {
       backgroundColor: Color(0xff303030),
       appBar: AppCustomAppBar.defaultAppBar(
           leading: BackButton(),
+          backgroundColor: Color(0xff303030),
           title: Translate.of(context).translate(''),
           actions: [
             Container(

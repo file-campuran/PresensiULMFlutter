@@ -13,6 +13,7 @@ import 'dart:io';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainNavigation extends StatefulWidget {
   MainNavigation({Key key}) : super(key: key);
@@ -48,51 +49,32 @@ class _MainNavigationState extends State<MainNavigation> {
 
   // ignore: unused_element
   static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
-    final notification = message['data'];
+    final notification =
+        message['data'].isEmpty ? message['notification'] : message['data'];
+    UtilLogger.log("onBackground", '$message');
+
+    Application.preferences = await SharedPreferences.getInstance();
 
     if (UtilPreferences.containsKey(Preferences.notification)) {
-      if (!notification.isEmpty) {
-        final notificationModel = NotificationModel.fromJson(
-          {
-            "id": new DateTime.now().millisecondsSinceEpoch,
-            "isRead": 0,
-            "title": notification['title'],
-            "content": notification['body'],
-          },
-        );
+      final notificationModel = NotificationModel.fromJson(
+        {
+          "id": new DateTime.now().millisecondsSinceEpoch,
+          "isRead": 0,
+          "title": notification['title'],
+          "content": notification['body'],
+        },
+      );
 
-        Database db = await DBProvider.db.database;
-        await db.insert(
-          'Notification',
-          notificationModel.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.ignore,
-        );
+      Database db = await DBProvider.db.database;
+      await db.insert(
+        'Notification',
+        notificationModel.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      );
 
-        LocalNotification().localNotifikasi(
-            title: notification['title'], body: notification['body']);
-      } else {
-        final notificationModel = NotificationModel.fromJson(
-          {
-            "id": new DateTime.now().millisecondsSinceEpoch,
-            "isRead": 0,
-            "title": message['notification']['title'],
-            "content": message['notification']['body'],
-          },
-        );
-
-        Database db = await DBProvider.db.database;
-        await db.insert(
-          'Notification',
-          notificationModel.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.ignore,
-        );
-        LocalNotification().localNotifikasi(
-            title: message['notification']['title'],
-            body: message['notification']['body']);
-      }
+      LocalNotification().localNotifikasi(
+          title: notification['title'], body: notification['body']);
     }
-
-    UtilLogger.log("onBackground", '$message');
   }
 
   void iOSPermission() {
@@ -135,22 +117,15 @@ class _MainNavigationState extends State<MainNavigation> {
   }
 
   void _showNotif(String log, Map<String, dynamic> message) {
-    final notification = message['data'];
+    final notification =
+        message['data'].isEmpty ? message['notification'] : message['data'];
     UtilLogger.log(log, '$message');
 
     if (UtilPreferences.containsKey(Preferences.notification)) {
-      if (!notification.isEmpty) {
-        _notificationBloc.add(
-            OnAddNotification(notification['title'], notification['body']));
-        LocalNotification().localNotifikasi(
-            title: notification['title'], body: notification['body']);
-      } else {
-        LocalNotification().localNotifikasi(
-            title: message['notification']['title'],
-            body: message['notification']['body']);
-        _notificationBloc.add(OnAddNotification(
-            message['notification']['title'], message['notification']['body']));
-      }
+      _notificationBloc
+          .add(OnAddNotification(notification['title'], notification['body']));
+      LocalNotification().localNotifikasi(
+          title: notification['title'], body: notification['body']);
     }
   }
 
@@ -195,19 +170,21 @@ class _MainNavigationState extends State<MainNavigation> {
                       alignment: Alignment.center,
                       children: [
                         Container(
-                          width: 10,
-                          height: 10,
+                          width: 13,
+                          height: 13,
                           decoration: BoxDecoration(
-                            border: Border.all(width: 0.5, color: Colors.white),
+                            border: Border.all(width: 1, color: Colors.white),
                             shape: BoxShape.circle,
                             color: Colors.redAccent,
                           ),
                         ),
-                        Text(
-                          state.count.toString(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 8,
+                        Container(
+                          child: Text(
+                            state.count.toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                       ],
