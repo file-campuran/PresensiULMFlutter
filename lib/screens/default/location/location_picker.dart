@@ -86,7 +86,8 @@ class _LocationPickerState extends State<LocationPicker> {
                           onPressed: () {
                             Navigator.pop(context, address);
                           },
-                          text: 'Pilih Lokasi',
+                          text: Translate.of(context)
+                              .translate('select_location'),
                           disableTouchWhenLoading: true,
                         ),
                       )

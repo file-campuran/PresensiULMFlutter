@@ -8,6 +8,29 @@
                     "path": "html/berita.html"
                 }
             }
+        },
+        "message": {
+            "1": {
+                "title": "Test 123",
+                "published_at": "2020-02-19 22:58",
+                "content": {
+                    "path": "html/berita.html"
+                }
+            },
+            "2": {
+                "title": "Test 123",
+                "published_at": "2020-02-19 22:58",
+                "content": {
+                    "path": "html/berita.html"
+                }
+            },
+            "3": {
+                "title": "Test 123",
+                "published_at": "2020-02-19 22:58",
+                "content": {
+                    "path": "html/berita.html"
+                }
+            }
         }
     }
 }

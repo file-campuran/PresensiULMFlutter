@@ -130,7 +130,9 @@ Widget _buildWidget(dynamic message) {
     message.forEach((k, v) => error.add('$v'));
   }
 
-  if (message is String) {
+  if (message is Widget) {
+    return message;
+  } else if (message is String) {
     return AppTextList(message, withIndicator: false);
   } else if (message['content'] != null) {
     return AppTextList(

@@ -21,4 +21,6 @@ class OnMarkReadNotification extends NotificationEvent {
   OnMarkReadNotification(this.id);
 }
 
+class OnMarkAllReadNotification extends NotificationEvent {}
+
 class OnGetCountNotification extends NotificationEvent {}

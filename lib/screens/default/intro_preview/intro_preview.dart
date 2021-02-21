@@ -34,7 +34,7 @@ class _IntroPreviewState extends State<IntroPreview> {
     ///List Intro view page model
     final List<PageViewModel> pages = [
       PageViewModel(
-        pageColor: Color(0xff93b7b0),
+        pageColor: Colors.red[400],
         bubble: Icon(
           Icons.shop,
           color: Colors.white,
@@ -60,7 +60,7 @@ class _IntroPreviewState extends State<IntroPreview> {
         ),
       ),
       PageViewModel(
-        pageColor: Color(0xff93b7b0),
+        pageColor: Colors.orange[400],
         bubble: Icon(
           Icons.phonelink,
           color: Colors.white,
@@ -82,12 +82,12 @@ class _IntroPreviewState extends State<IntroPreview> {
         titleTextStyle: Theme.of(context).textTheme.headline4,
         bodyTextStyle: Theme.of(context).textTheme.headline6,
         mainImage: Image.asset(
-          Images.Intro2,
+          Images.Intro3,
           fit: BoxFit.contain,
         ),
       ),
       PageViewModel(
-        pageColor: Color(0xff93b7b0),
+        pageColor: Colors.grey[400],
         bubble: Icon(
           Icons.home,
           color: Colors.white,
@@ -109,7 +109,7 @@ class _IntroPreviewState extends State<IntroPreview> {
         titleTextStyle: Theme.of(context).textTheme.headline4,
         bodyTextStyle: Theme.of(context).textTheme.headline6,
         mainImage: Image.asset(
-          Images.Intro3,
+          Images.Intro2,
           fit: BoxFit.contain,
         ),
       ),

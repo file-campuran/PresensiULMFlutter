@@ -34,28 +34,31 @@ class _MessageState extends State<Message> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppCustomAppBar.defaultAppBar(
-          title: Translate.of(context).translate('message'),
-          context: context,
-          actions: <Widget>[
-            PopupMenuButton<int>(
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 0,
-                  child: Text('Hapus'),
+        title: Translate.of(context).translate('message'),
+        context: context,
+        actions: Environment.DEBUG
+            ? <Widget>[
+                PopupMenuButton<int>(
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 0,
+                      child: Text('Hapus'),
+                    ),
+                  ],
+                  // initialValue: 1,
+                  onCanceled: () {},
+                  onSelected: (value) async {
+                    if (value == 0) {
+                      _messageCubit.markAll(value);
+                    } else {
+                      _messageCubit.markAll(value);
+                    }
+                  },
+                  icon: Icon(Icons.more_horiz),
                 ),
-              ],
-              // initialValue: 1,
-              onCanceled: () {},
-              onSelected: (value) async {
-                if (value == 0) {
-                  _messageCubit.markAll(value);
-                } else {
-                  _messageCubit.markAll(value);
-                }
-              },
-              icon: Icon(Icons.more_horiz),
-            ),
-          ]),
+              ]
+            : null,
+      ),
       body: _buildContent(),
       floatingActionButton: _appBadge(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -68,34 +71,11 @@ class _MessageState extends State<Message> {
         if (state.count != 0) {
           return Align(
             alignment: FractionalOffset(0.5, 0.95),
-            child: InkWell(
+            child: AppBadge(
+              title: Translate.of(context).translate('mark_all_read'),
               onTap: () {
                 _messageCubit.markAll(1);
               },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                        width: 0.5, color: Theme.of(context).primaryColor),
-                    color: Colors.white.withOpacity(0.9),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ]),
-                child: Text(
-                  Translate.of(context).translate('mark_all_read'),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
             ),
           );
         }

@@ -2,7 +2,7 @@ class Environment {
   static const bool DEBUG = false;
 
   static const String APP_NAME = 'Presensi ULM';
-  static const String VERSION = '2.0.0 Beta.4.1.2021_B10';
+  static const String VERSION = '2.0.0 Beta.4.1.2021_B11';
   static const int VERSION_CODE = 11;
 
   // PRIMARY CONFIGS

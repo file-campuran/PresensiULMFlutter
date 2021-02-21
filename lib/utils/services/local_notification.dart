@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/screens/screen.dart';
 import 'package:rxdart/rxdart.dart';
+import 'dart:convert';
 
 class ReceivedNotification {
   final int id;
@@ -31,18 +34,18 @@ class LocalNotification {
   NotificationAppLaunchDetails notificationAppLaunchDetails;
 
   // singleton boilerplate
-  static final LocalNotification _cameraServiceService =
+  static final LocalNotification _notificationServiceService =
       LocalNotification._internal();
 
   factory LocalNotification() {
-    return _cameraServiceService;
+    return _notificationServiceService;
   }
   // singleton boilerplate
   LocalNotification._internal();
 
-  void init() async {
+  void init(BuildContext context) async {
     // WidgetsFlutterBinding.ensureInitialized();
-
+    context = context;
     notificationAppLaunchDetails =
         await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
 
@@ -61,14 +64,15 @@ class LocalNotification {
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
+      UtilLogger.log('NOTIFICATION PAYLOAD', payload);
       if (payload != null) {
-        debugPrint('notification payload: ' + payload);
+        onSelectNotification(payload);
       }
       selectNotificationSubject.add(payload);
     });
   }
 
-  Future localNotifikasi({String title, String body}) async {
+  Future localNotifikasi({String title, String body, String payload}) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         sound: RawResourceAndroidNotificationSound('notification_sound'),
@@ -79,7 +83,15 @@ class LocalNotification {
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin
-        .show(0, title, body, platformChannelSpecifics, payload: 'item x');
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: payload,
+    );
   }
+
+  BuildContext context;
+  Future<void> onSelectNotification(String payload) async {}
 }

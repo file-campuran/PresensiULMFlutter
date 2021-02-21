@@ -96,5 +96,22 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
       yield NotificationData(_notificationPage);
     }
+
+    if (event is OnMarkAllReadNotification) {
+      _notificationPage.notification.forEach((element) {
+        element.isRead = 1;
+      });
+
+      Database db = await DBProvider.db.database;
+
+      await db.update(
+        'Notification',
+        {'isRead': 1},
+      );
+
+      _changeNotificationModel();
+
+      yield NotificationData(_notificationPage);
+    }
   }
 }

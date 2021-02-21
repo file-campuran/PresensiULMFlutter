@@ -97,22 +97,22 @@ class _ProfileState extends State<Profile> {
                             _onNavigate(Routes.editProfile);
                           },
                         ),
-                        AppListTitle(
-                          icon: Icon(EvaIcons.questionMarkCircleOutline),
-                          title: Translate.of(context).translate(
-                            'guide',
-                          ),
-                          onPressed: () {
-                            _onNavigate(Routes.panduan);
-                          },
-                          trailing: RotatedBox(
-                            quarterTurns: UtilLanguage.isRTL() ? 2 : 0,
-                            child: Icon(
-                              Icons.keyboard_arrow_right,
-                              textDirection: TextDirection.ltr,
-                            ),
-                          ),
-                        ),
+                        // AppListTitle(
+                        //   icon: Icon(EvaIcons.questionMarkCircleOutline),
+                        //   title: Translate.of(context).translate(
+                        //     'guide',
+                        //   ),
+                        //   onPressed: () {
+                        //     _onNavigate(Routes.panduan);
+                        //   },
+                        //   trailing: RotatedBox(
+                        //     quarterTurns: UtilLanguage.isRTL() ? 2 : 0,
+                        //     child: Icon(
+                        //       Icons.keyboard_arrow_right,
+                        //       textDirection: TextDirection.ltr,
+                        //     ),
+                        //   ),
+                        // ),
                         AppListTitle(
                           icon: Icon(EvaIcons.settingsOutline),
                           title: Translate.of(context).translate('setting'),
@@ -181,9 +181,10 @@ class _ProfileState extends State<Profile> {
                           context: context,
                           message: Translate.of(context)
                               .translate('confirm_sign_out'),
-                          image: Images.Warning,
+                          image: Images.Reading,
                           title: Translate.of(context).translate('sign_out'),
-                          onTapText: 'OK',
+                          onTapText:
+                              Translate.of(context).translate('sign_out'),
                           onTap: () {
                             _logout();
                             Navigator.of(context).pop();

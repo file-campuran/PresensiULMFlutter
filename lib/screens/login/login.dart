@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
         0: 'Operator Fakultas, jika anda seorang Dosen.',
         1: 'Admin Tenaga Kependidikan (Subbag Tenaga Kependidikan kepegawaian rektorat), jika anda seorang Tenaga Kependidikan.',
       },
-      // image: Images.Astrounot,
+      image: Images.ForgotPassword,
       title: Translate.of(context).translate('forgot_password'),
     );
     return;
@@ -209,7 +209,7 @@ class _LoginState extends State<Login> {
                             appMyInfoDialog(
                               context: context,
                               message: loginListener.message,
-                              image: Images.Warning,
+                              image: Images.BugFixing,
                               title: 'Error',
                             );
                           }

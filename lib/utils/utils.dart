@@ -20,5 +20,6 @@ export 'ui/hex_color.dart';
 export 'basic_utils.dart';
 export 'youtube_thumbnail.dart';
 export 'services/local_notification.dart';
+export 'services/firebase_notification.dart';
 export 'ui/adapt.dart';
 export 'services/analytics_helper.dart';

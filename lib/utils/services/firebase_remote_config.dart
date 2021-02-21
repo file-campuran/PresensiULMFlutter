@@ -52,23 +52,3 @@ class FirebaseRemoteConfig {
     return remoteConfig;
   }
 }
-
-// class ImageHeader {
-//   ImageHeader({
-//     this.name,
-//     this.image,
-//   });
-
-//   String name;
-//   String image;
-
-//   factory ImageHeader.fromJson(Map<String, dynamic> json) => ImageHeader(
-//         name: json["name"],
-//         image: json["image"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "name": name,
-//         "image": image,
-//       };
-// }

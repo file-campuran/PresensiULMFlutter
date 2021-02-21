@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/configs/config.dart';
 
 const String ErrorInternalTitle = 'error_internal_server';
 const String ErrorApplicationTitle = 'application_error';
@@ -25,7 +26,7 @@ class MyException {
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
               'content': ErrorSocket,
-              "image": Warning
+              "image": Images.Monitor
             },
           });
         }
@@ -38,7 +39,7 @@ class MyException {
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
               'content': ErrorFormat,
-              "image": Warning
+              "image": Images.LocationSearch
             },
           });
         }
@@ -51,7 +52,7 @@ class MyException {
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
               'content': ErrorHttp,
-              "image": Warning
+              "image": Images.Monitor
             },
           });
         }
@@ -65,7 +66,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': e.message.toString(),
-                "image": Warning
+                "image": Images.ServerStatus
               },
             });
           } else if (e.response.statusCode == 500) {
@@ -74,7 +75,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': e.response.data['message'],
-                "image": Warning
+                "image": Images.BugFixing
               },
             });
           } else if (e.response.statusCode == 401) {
@@ -83,7 +84,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': Error401,
-                "image": Warning
+                "image": Images.BugFixing
               },
             });
           } else if (e.response.statusCode == 403) {
@@ -92,7 +93,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': Error401,
-                "image": Warning
+                "image": Images.BugFixing
               },
             });
           } else if (e.response.statusCode == 404) {
@@ -101,7 +102,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': Error404,
-                "image": Warning
+                "image": Images.PageNotFound
               },
             });
           } else {
@@ -110,7 +111,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': e.message.toString(),
-                "image": Warning
+                "image": Images.ServerStatus
               },
             });
           }

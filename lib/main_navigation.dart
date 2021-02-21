@@ -1,19 +1,15 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/screens/screen.dart';
-import 'package:absen_online/utils/services/logger.dart';
 import 'package:absen_online/utils/utils.dart';
-import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/blocs/bloc.dart';
-import 'package:absen_online/models/model.dart';
+import 'package:absen_online/configs/config.dart';
+import 'package:absen_online/widgets/widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:io';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'dart:async';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class MainNavigation extends StatefulWidget {
   MainNavigation({Key key}) : super(key: key);
@@ -25,108 +21,67 @@ class MainNavigation extends StatefulWidget {
 }
 
 class _MainNavigationState extends State<MainNavigation> {
-  final FirebaseInAppMessaging firebaseInAppMsg = FirebaseInAppMessaging();
-  final _fcm = FirebaseMessaging();
   int _selectedIndex = 0;
-  NotificationBloc _notificationBloc;
-  // ignore: unused_field
-  MessageCubit _messageCubit;
+  String connectionStatus = 'Unknown';
+  final Connectivity _connectivity = Connectivity();
+  StreamSubscription<ConnectivityResult> _connectivitySubscription;
 
   @override
   void initState() {
-    _fcmHandle();
+    FirebaseNotification().initFirebaseNotification(context);
+    initConnectivity();
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
 
-    LocalNotification().init();
-    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
-    _messageCubit = BlocProvider.of<MessageCubit>(context);
     super.initState();
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initConnectivity() async {
+    ConnectivityResult result;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      result = await _connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return _updateConnectionStatus(result);
+  }
+
+  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+    UtilLogger.log('CONECTIVITY', result);
+    switch (result) {
+      case ConnectivityResult.wifi:
+      case ConnectivityResult.mobile:
+        // Navigator.of(context).pop();
+        break;
+      case ConnectivityResult.none:
+        appMyInfoDialog(
+          context: context,
+          message:
+              'Coba periksa apakah smartphone anda sudah terhubung ke jaringan seluler atau Wi-Fi',
+          image: Images.Working,
+          title: 'Yah, sepertinya anda tidak terhubung ke sambungan internet',
+        );
+        break;
+      default:
+        setState(() => connectionStatus = 'Failed to get connectivity.');
+        break;
+    }
   }
 
   @override
   void dispose() {
+    _connectivitySubscription.cancel();
     super.dispose();
-  }
-
-  // ignore: unused_element
-  static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
-    final notification =
-        message['data'].isEmpty ? message['notification'] : message['data'];
-    UtilLogger.log("onBackground", '$message');
-
-    Application.preferences = await SharedPreferences.getInstance();
-
-    if (UtilPreferences.containsKey(Preferences.notification)) {
-      final notificationModel = NotificationModel.fromJson(
-        {
-          "id": new DateTime.now().millisecondsSinceEpoch,
-          "isRead": 0,
-          "title": notification['title'],
-          "content": notification['body'],
-        },
-      );
-
-      Database db = await DBProvider.db.database;
-      await db.insert(
-        'Notification',
-        notificationModel.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.ignore,
-      );
-
-      LocalNotification().localNotifikasi(
-          title: notification['title'], body: notification['body']);
-    }
-  }
-
-  void iOSPermission() {
-    _fcm.requestNotificationPermissions(
-        IosNotificationSettings(sound: true, badge: true, alert: true));
-    _fcm.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-  }
-
-  ///Support Notification listen
-  void _fcmHandle() async {
-    firebaseInAppMsg.setAutomaticDataCollectionEnabled(true);
-
-    if (Platform.isIOS) iOSPermission();
-    // await Future.delayed(Duration(seconds: 2));
-    _fcm.requestNotificationPermissions();
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        _showNotif("onMessage", message);
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        _showNotif("onLunch", message);
-      },
-      onResume: (Map<String, dynamic> message) async {
-        _showNotif("onResume", message);
-      },
-      onBackgroundMessage: Environment.DEBUG
-          ? null
-          : Platform.isIOS
-              ? null
-              : myBackgroundMessageHandler,
-    );
-    _fcm.subscribeToTopic('general');
-    _fcm.subscribeToTopic(Application.user.role);
-
-    Application.pushToken = await _fcm.getToken();
-    UtilLogger.log("MY TOKEN", Application.pushToken);
-    PresensiRepository.setFirebaseToken();
-  }
-
-  void _showNotif(String log, Map<String, dynamic> message) {
-    final notification =
-        message['data'].isEmpty ? message['notification'] : message['data'];
-    UtilLogger.log(log, '$message');
-
-    if (UtilPreferences.containsKey(Preferences.notification)) {
-      _notificationBloc
-          .add(OnAddNotification(notification['title'], notification['body']));
-      LocalNotification().localNotifikasi(
-          title: notification['title'], body: notification['body']);
-    }
   }
 
   ///On change tab bottom menu
@@ -219,29 +174,7 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     Adapt.initContext(context);
 
-    // LocalNotification().localNotifikasi(title: "TETEL", body: "BODE");
     return Scaffold(
-      // body: WillPopScope(
-      //   child: AnimatedSwitcher(
-      //     duration: const Duration(milliseconds: 500),
-      //     transitionBuilder: (Widget child, Animation<double> animation) {
-      //       return FadeTransition(child: child, opacity: animation);
-      //     },
-      //     child: _widgetOptions.elementAt(_selectedIndex),
-      //   ),
-      //   onWillPop: onWillPop,
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     _onItemTapped(2);
-      //     // setState(() {});
-      //   },
-      //   child: Icon(_selectedIndex == 1
-      //       ? Icons.check_circle_outline
-      //       : Icons.check_circle_outline_sharp),
-      //   elevation: 4.0,
-      // ),
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomBarItem(context),
@@ -269,3 +202,26 @@ class _MainNavigationState extends State<MainNavigation> {
     return Future.value(true);
   }
 }
+
+// BODY SCAFFOLD ANIMATED ON CHANGE PAGE
+// body: WillPopScope(
+//   child: AnimatedSwitcher(
+//     duration: const Duration(milliseconds: 500),
+//     transitionBuilder: (Widget child, Animation<double> animation) {
+//       return FadeTransition(child: child, opacity: animation);
+//     },
+//     child: _widgetOptions.elementAt(_selectedIndex),
+//   ),
+//   onWillPop: onWillPop,
+// ),
+// floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+// floatingActionButton: FloatingActionButton(
+//   onPressed: () {
+//     _onItemTapped(2);
+//     // setState(() {});
+//   },
+//   child: Icon(_selectedIndex == 1
+//       ? Icons.check_circle_outline
+//       : Icons.check_circle_outline_sharp),
+//   elevation: 4.0,
+// ),

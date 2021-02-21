@@ -89,9 +89,11 @@ class _NotificationListState extends State<NotificationList> {
                   item: item,
                   onPressed: () {
                     _notificationBloc.add(OnMarkReadNotification(item.id));
-                    _showDialog(item.content);
-                    // Navigator.pushNamed(context, Routes.detailNotification,
-                    //     arguments: item);
+                    return appMyInfoDialog(
+                      context: context,
+                      message: item.content,
+                      title: item.title,
+                    );
                   },
                   border: state.data.notification.length - 1 != index,
                 ),
@@ -170,6 +172,29 @@ class _NotificationListState extends State<NotificationList> {
           child: _buildList(),
         ),
       ),
+      floatingActionButton: _appBadge(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  Widget _appBadge() {
+    return BlocBuilder<NotificationBloc, NotificationState>(
+        builder: (context, state) {
+      if (state is NotificationData) {
+        if (state.data.count != 0) {
+          return Align(
+            alignment: FractionalOffset(0.5, 0.95),
+            child: AppBadge(
+              title: Translate.of(context).translate('mark_all_read'),
+              onTap: () {
+                _notificationBloc.add(OnMarkAllReadNotification());
+              },
+            ),
+          );
+        }
+      }
+
+      return Container();
+    });
   }
 }

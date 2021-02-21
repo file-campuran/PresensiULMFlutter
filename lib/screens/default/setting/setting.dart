@@ -40,82 +40,62 @@ class _SettingState extends State<Setting> {
 
   ///Show notification received
   Future<void> _showDarkModeSetting() async {
-    setState(() {
-      _darkOption = AppTheme.darkThemeOption;
-    });
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(Translate.of(context).translate('dark_mode')),
-          content: StatefulBuilder(
-            builder: (context, setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    CheckboxListTile(
-                      title: Text(
-                        Translate.of(context).translate(
-                          UtilTheme.exportLangTheme(DarkOption.dynamic),
-                        ),
-                      ),
-                      value: _darkOption == DarkOption.dynamic,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _darkOption = DarkOption.dynamic;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: Text(
-                        Translate.of(context).translate(
-                          UtilTheme.exportLangTheme(DarkOption.alwaysOn),
-                        ),
-                      ),
-                      value: _darkOption == DarkOption.alwaysOn,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _darkOption = DarkOption.alwaysOn;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: Text(
-                        Translate.of(context).translate(
-                          UtilTheme.exportLangTheme(DarkOption.alwaysOff),
-                        ),
-                      ),
-                      value: _darkOption == DarkOption.alwaysOff,
-                      onChanged: (bool value) {
-                        setState(() {
-                          _darkOption = DarkOption.alwaysOff;
-                        });
-                      },
-                    ),
-                  ],
+    return appMyInfoDialog(
+        context: context,
+        message: StatefulBuilder(
+          builder: (BuildContext context, setState) => Column(
+            children: <Widget>[
+              CheckboxListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                title: Text(
+                  Translate.of(context).translate(
+                    UtilTheme.exportLangTheme(DarkOption.dynamic),
+                  ),
                 ),
-              );
-            },
+                value: _darkOption == DarkOption.dynamic,
+                onChanged: (bool value) {
+                  setState(() {
+                    _darkOption = DarkOption.dynamic;
+                  });
+                },
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                title: Text(
+                  Translate.of(context).translate(
+                    UtilTheme.exportLangTheme(DarkOption.alwaysOn),
+                  ),
+                ),
+                value: _darkOption == DarkOption.alwaysOn,
+                onChanged: (bool value) {
+                  setState(() {
+                    _darkOption = DarkOption.alwaysOn;
+                  });
+                },
+              ),
+              CheckboxListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                title: Text(
+                  Translate.of(context).translate(
+                    UtilTheme.exportLangTheme(DarkOption.alwaysOff),
+                  ),
+                ),
+                value: _darkOption == DarkOption.alwaysOff,
+                onChanged: (bool value) {
+                  setState(() {
+                    _darkOption = DarkOption.alwaysOff;
+                  });
+                },
+              ),
+            ],
           ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text(Translate.of(context).translate('close')),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            RaisedButton(
-              child: Text(Translate.of(context).translate('apply')),
-              onPressed: () {
-                _onChangeDarkOption();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+        ),
+        title: Translate.of(context).translate('dark_mode'),
+        onTapText: Translate.of(context).translate('apply'),
+        onTap: () {
+          _onChangeDarkOption();
+          Navigator.of(context).pop();
+        });
   }
 
   @override
