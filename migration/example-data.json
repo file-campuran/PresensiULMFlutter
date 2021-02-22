@@ -1,12 +1,45 @@
 {
     "__collections__": {
-        "faq": {
-            "1": {
-                "title": "Test 123",
-                "priority": 9,
-                "content": {
-                    "path": "html/berita.html"
-                }
+        "HvoqSBN8RsWcWZz36969": {
+            "title": "Manual Pengunaan Presensi",
+            "priority": 1,
+            "content": {
+                "path": "html/manual.html"
+            }
+        },
+        "IA9u2xaSP2YjCN2LhYgs": {
+            "title": "Mengatasi GPS tidak akurat",
+            "priority": 5,
+            "content": {
+                "path": "html/akurasi_gps.html"
+            }
+        },
+        "X6ybNw1w7wtHPh3SX0RJ": {
+            "title": "GPS gagal mendeteksi lokasi",
+            "priority": 3,
+            "content": {
+                "path": "html/gagal_mendeteksi_lokasi.html"
+            }
+        },
+        "kdUDv6XIsYqzEqx1euYb": {
+            "title": "Mengaktifkan izin akses kamera, GPS dan Penyimpanan (Android)",
+            "priority": 2,
+            "content": {
+                "path": "html/izin_akses_android.html"
+            }
+        },
+        "tQv9OO1k8QeGsOsN4Gwh": {
+            "title": "Mengaktifkan izin akses kamera, GPS dan Penyimpanan (iOS)",
+            "priority": 2,
+            "content": {
+                "path": "html/izin_akses_ios.html"
+            }
+        },
+        "yW7wzQW2D4qV7TZexZLL": {
+            "title": "Kamera tampilan hitam",
+            "priority": 4,
+            "content": {
+                "path": "html/kamera_hitam.html"
             }
         },
         "message": {
