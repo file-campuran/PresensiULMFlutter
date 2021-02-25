@@ -84,6 +84,7 @@ class PresensiState extends State<Presensi> {
 
   Size imageSize;
   Face faceDetected;
+  FaceListModel faceModel;
 
   bool _btnLoading = false;
   bool _btnCameraLoading = false;
@@ -256,6 +257,9 @@ class PresensiState extends State<Presensi> {
     dataPresensi['deviceIsIos'] = Platform.isIOS ? 1 : 0;
     // dataPresensi['isEmulator'] = !isRealDevice;
     dataPresensi['deviceInfo'] = jsonEncode(deviceInfo);
+    dataPresensi['faceData'] = faceModel.toString();
+
+    UtilLogger.log('DATA PRESENSIS', dataPresensi);
     // dataPresensi['face_data'] = _faces;
 
     final fileGambarName = imagePath.split("/").last + '.jpg';
@@ -268,7 +272,6 @@ class PresensiState extends State<Presensi> {
       contentType: MediaType("*", "*"),
     );
 
-    UtilLogger.log('DATA PRESENSI', dataPresensi['fileGambar']);
     if (filePath != null) {
       final fileBerkasName = filePath.split("/").last;
       UtilLogger.log('FILE BERKAS', fileBerkasName);
@@ -930,6 +933,12 @@ class PresensiState extends State<Presensi> {
     UtilLogger.log('END DETECT FACE IMAGE', "$calculateTime ms");
     AnalyticsHelper.setLogEvent(
         Analytics.timmerFaceDetection, {'time_ms': calculateTime});
+
+    // Change Face Object to String model
+    try {
+      faceModel = FaceListModel.fromJson(faces);
+      UtilLogger.log('FACES', faceModel.toString());
+    } catch (e) {}
 
     setState(() {
       // imagePath = fileRaw.path;

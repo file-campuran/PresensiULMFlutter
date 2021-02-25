@@ -95,7 +95,7 @@ class _NotificationListState extends State<NotificationList> {
                       title: item.title,
                     );
                   },
-                  border: state.data.notification.length - 1 != index,
+                  border: false, //state.data.notification.length - 1 != index,
                 ),
                 background: Container(
                   alignment: Alignment.center,

@@ -9,3 +9,4 @@ export 'presensi/model_api.dart';
 export 'presensi/model_token.dart';
 export 'presensi/model_presensi.dart';
 export 'presensi/model_jadwal.dart';
+export 'presensi/model_face.dart';

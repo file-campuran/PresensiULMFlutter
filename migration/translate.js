@@ -2,6 +2,7 @@ const got = require('got');
 const { HttpsProxyAgent } = require('hpagent');
 
 let proxy = null;
+proxy = 'http:/122.155.165.191:3128';
 let tkk = '429175.1243284773';
 let config = {};
 

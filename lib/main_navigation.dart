@@ -176,6 +176,46 @@ class _MainNavigationState extends State<MainNavigation> {
 
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(top: 20, bottom: 5),
+        child: SizedBox(
+          height: 50,
+          width: 50,
+          child: FloatingActionButton(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            onPressed: () {
+              _onItemTapped(2);
+            },
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white, width: 4),
+                shape: BoxShape.circle,
+                boxShadow: [BoxShadow(color: Colors.white, blurRadius: 1.5)],
+                gradient: LinearGradient(
+                  begin: const Alignment(0.1, 0.9),
+                  end: const Alignment(0.1, -0.1),
+                  colors: [
+                    Colors.white,
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColor,
+                  ],
+                ),
+              ),
+              child: Icon(
+                _selectedIndex == 2
+                    ? EvaIcons.bookOpen
+                    : EvaIcons.bookOpenOutline,
+                color: Colors.white,
+                size: 32,
+              ),
+            ),
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomBarItem(context),
         currentIndex: _selectedIndex,

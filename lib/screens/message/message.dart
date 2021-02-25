@@ -153,7 +153,7 @@ class _MessageState extends State<Message> {
               return Container(
                   margin: EdgeInsets.symmetric(horizontal: Dimens.cardMargin),
                   color: Theme.of(context).highlightColor,
-                  height: 1);
+                  height: 0);
             },
             itemBuilder: (context, index) {
               bool hasRead = state.data[index].readAt == null ||
