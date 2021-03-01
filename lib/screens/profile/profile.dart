@@ -6,7 +6,6 @@ import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key key}) : super(key: key);
@@ -131,11 +130,7 @@ class _ProfileState extends State<Profile> {
                           icon: Icon(EvaIcons.smartphoneOutline),
                           title: Translate.of(context).translate('version'),
                           onPressed: () {
-                            Fluttertoast.showToast(
-                                msg:
-                                    Translate.of(context).translate('version') +
-                                        ' ' +
-                                        Environment.VERSION);
+                            _onNavigate(Routes.version);
                           },
                           trailing: Row(
                             children: <Widget>[

@@ -100,5 +100,6 @@
     "mark_all_read": " Mark read all ",
     "help_center": " Help Center ",
     "select_location": " Select Location ",
-    "there_is_no": " None "
+    "there_is_no": " None ",
+    "update": "Check Update"
 }

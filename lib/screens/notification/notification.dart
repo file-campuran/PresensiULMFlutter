@@ -39,27 +39,6 @@ class _NotificationListState extends State<NotificationList> {
     _controller.refreshCompleted();
   }
 
-  _showDialog(String message) {
-    return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: SingleChildScrollView(
-              child: Text(message),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Close'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
-  }
-
   ///Build list
   Widget _buildList() {
     return BlocBuilder<NotificationBloc, NotificationState>(

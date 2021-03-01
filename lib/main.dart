@@ -1,7 +1,7 @@
 import 'package:absen_online/widgets/template/index.dart';
 import 'package:bloc/bloc.dart';
 import 'dart:async';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -57,6 +57,10 @@ class AppBlocObserver extends BlocObserver {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

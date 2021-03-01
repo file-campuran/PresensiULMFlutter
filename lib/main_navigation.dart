@@ -175,7 +175,10 @@ class _MainNavigationState extends State<MainNavigation> {
     Adapt.initContext(context);
 
     return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: WillPopScope(
+        child: _widgetOptions.elementAt(_selectedIndex),
+        onWillPop: onWillPop,
+      ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(top: 20, bottom: 5),
         child: SizedBox(
@@ -194,9 +197,9 @@ class _MainNavigationState extends State<MainNavigation> {
                 border: Border.all(color: Colors.white, width: 4),
                 shape: BoxShape.circle,
                 boxShadow: [BoxShadow(color: Colors.white, blurRadius: 1.5)],
-                gradient: LinearGradient(
-                  begin: const Alignment(0.1, 0.9),
-                  end: const Alignment(0.1, -0.1),
+                gradient: RadialGradient(
+                  center: Alignment(0, 0),
+                  focal: Alignment(0, 0),
                   colors: [
                     Colors.white,
                     Theme.of(context).primaryColor,

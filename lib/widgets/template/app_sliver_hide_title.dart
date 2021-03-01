@@ -8,9 +8,6 @@ class AppSliverHideTitle extends StatelessWidget {
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light));
 
-    double appBarPadding = 50;
-    double expandedHeight = 150;
-
     Brightness brightness = Brightness.dark;
     Color backgroundColor =
         brightness == Brightness.dark ? Color(0xff303030) : Colors.white;

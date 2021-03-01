@@ -11,6 +11,7 @@ export 'default/setting/setting.dart';
 export 'default/theme_setting/theme_setting.dart';
 export 'default/splash_screen/splash_screen.dart';
 export 'default/update/update.dart';
+export 'default/version/version.dart';
 export 'profile/edit_profile.dart';
 export 'presensi/presensi.dart';
 export 'beranda/beranda.dart';

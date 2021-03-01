@@ -19,6 +19,7 @@ class Routes {
   static const String notification = "/notification";
   static const String detailNotification = "/detailNotification";
   static const String messageDetail = "/messageDetail";
+  static const String version = "/version";
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -143,6 +144,13 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) {
             return Faq();
+          },
+        );
+
+      case version:
+        return MaterialPageRoute(
+          builder: (context) {
+            return Version();
           },
         );
 

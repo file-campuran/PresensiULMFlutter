@@ -63,7 +63,7 @@ class _BerandaState extends State<Beranda> {
         return AppInfo(
           title: state.info['title'].toString(),
           message: state.info['content'].toString(),
-          image: state.info['type'].toString() == 'hari' ? '' : Images.Calendar,
+          image: state.info['type'].toString() == 'hari' ? Images.Calendar : Images.Calendar,
         );
       } else if (state is JadwalError) {
         return AppError(
