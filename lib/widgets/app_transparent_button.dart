@@ -22,11 +22,10 @@ class AppTransparentButton extends StatelessWidget {
       child: Container(
         width: size,
         height: size,
-        padding: const EdgeInsets.all(16.0),
         child: !isLoading
             ? Icon(
                 icon,
-                size: size / 2.5,
+                size: size / 2.2,
                 color: Colors.white,
               )
             : CircularProgressIndicator(),

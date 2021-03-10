@@ -20,6 +20,7 @@ class Routes {
   static const String detailNotification = "/detailNotification";
   static const String messageDetail = "/messageDetail";
   static const String version = "/version";
+  static const String hariLibur = "/hariLibur";
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -34,6 +35,13 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) {
             return Panduan();
+          },
+        );
+
+      case hariLibur:
+        return MaterialPageRoute(
+          builder: (context) {
+            return HariLibur();
           },
         );
 

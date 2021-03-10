@@ -18,10 +18,13 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   LoginBloc _loginBloc;
+  JadwalCubit _jadwalCubit;
 
   @override
   void initState() {
     _loginBloc = BlocProvider.of<LoginBloc>(context);
+    _jadwalCubit = BlocProvider.of<JadwalCubit>(context);
+
     super.initState();
   }
 
@@ -32,6 +35,7 @@ class _ProfileState extends State<Profile> {
 
   ///On logout
   Future<void> _logout() async {
+    _jadwalCubit.reInit();
     _loginBloc.add(OnLogout());
   }
 

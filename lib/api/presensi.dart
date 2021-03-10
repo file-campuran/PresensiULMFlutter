@@ -27,6 +27,15 @@ class PresensiRepository {
         .execute(url: '/presensi/absen');
   }
 
+  Future<ApiModel> getEvent() async {
+    return await Consumer()
+        .orderBy({'tanggal': 'DESC'}).execute(url: '/presensi/event');
+  }
+
+  Future<ApiModel> getHariKerja() async {
+    return await Consumer().execute(url: '/presensi/hari_libur');
+  }
+
   // Simpan presensi
   Future<ApiModel> setPresensi(Map<String, dynamic> formDatas) async {
     UserModel _userModel =

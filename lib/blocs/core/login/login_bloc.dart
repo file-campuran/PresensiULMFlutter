@@ -49,7 +49,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               await PresensiRepository().getBiodata(parse.user.username);
 
           if (biodata.code == CODE.SUCCESS) {
-            biodata.data['role'] = parse.user.role;
+            biodata.data['role'] = biodata.message;
+            // biodata.data['role'] = parse.user.role;
             final UserModel user = UserModel.fromJson(biodata.data);
             Application.user = user;
             UtilPreferences.setString(Preferences.user, user.toString());

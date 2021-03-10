@@ -25,9 +25,9 @@ Aplikasi Presensi Berbasis Mobile adalah aplikasi yang digunakan oleh tenaga pen
 # 
 # 
 
-## **BUG**
+<!-- ## **BUG**
 - [x] DIO Interceptor Multipart On Refresh Token Error
-- [x] FCM Background Android [Only with data]
+- [x] FCM Background Android [Only with data] -->
 
 
 [ULM logo]: https://presensi.ulm.ac.id/assets/static/media/logo-unlam.503632fb.png

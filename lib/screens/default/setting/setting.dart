@@ -111,23 +111,23 @@ class _SettingState extends State<Setting> {
             top: 15,
           ),
           children: <Widget>[
-            AppListTitle(
-              icon: Icon(EvaIcons.bellOutline),
-              title: Translate.of(context).translate('notification'),
-              trailing: Switch(
-                value: _receiveNotification,
-                onChanged: (value) {
-                  setState(() {
-                    _receiveNotification = value;
-                    if (value) {
-                      UtilPreferences.setBool(Preferences.notification, true);
-                    } else {
-                      UtilPreferences.remove(Preferences.notification);
-                    }
-                  });
-                },
-              ),
-            ),
+            // AppListTitle(
+            //   icon: Icon(EvaIcons.bellOutline),
+            //   title: Translate.of(context).translate('notification'),
+            //   trailing: Switch(
+            //     value: _receiveNotification,
+            //     onChanged: (value) {
+            //       setState(() {
+            //         _receiveNotification = value;
+            //         if (value) {
+            //           UtilPreferences.setBool(Preferences.notification, true);
+            //         } else {
+            //           UtilPreferences.remove(Preferences.notification);
+            //         }
+            //       });
+            //     },
+            //   ),
+            // ),
             AppListTitle(
               icon: Icon(EvaIcons.globeOutline),
               title: Translate.of(context).translate('language'),

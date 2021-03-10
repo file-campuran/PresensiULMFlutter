@@ -121,14 +121,14 @@ class _MessageState extends State<Message> {
                             width: MediaQuery.of(context).size.width,
                             height: 20.0,
                             margin: EdgeInsets.only(top: 10.0, bottom: 5.0),
-                            color: Colors.grey[300]),
+                            color: Theme.of(context).highlightColor),
                       ),
                       AppSkeleton(
                         child: Container(
                             width: MediaQuery.of(context).size.width,
                             height: 20.0,
                             margin: EdgeInsets.only(bottom: 5.0),
-                            color: Colors.grey[300]),
+                            color: Theme.of(context).highlightColor),
                       ),
                       AppSkeleton(
                           width: MediaQuery.of(context).size.width - 250,

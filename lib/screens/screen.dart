@@ -24,3 +24,4 @@ export 'login/login.dart';
 export 'profile/panduan.dart';
 export 'profile/profile.dart';
 export 'profile/privacy_policy.dart';
+export 'hari_libur/hari_libur.dart';

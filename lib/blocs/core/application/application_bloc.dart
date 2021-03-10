@@ -116,7 +116,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
       if (hasReview) {
         ///Become app
-        yield ApplicationSetupCompleted();
+        // yield ApplicationSetupCompleted();
       } else {
         ///Pending preview intro
         yield ApplicationIntroView();
@@ -154,6 +154,11 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
             Preferences.remoteConfig, json.encode(remoteData));
         Application.remoteConfig = ConfigModel.fromJson(remoteData);
 
+        if (hasReview) {
+          ///Become app
+          yield ApplicationSetupCompleted();
+        }
+
         // Set Evnironment data
         Environment.fromJson(Application.remoteConfig.environments.toJson());
 
@@ -164,6 +169,10 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
           yield ApplicationUpdateView(Application.remoteConfig);
         }
       } catch (e) {
+        if (hasReview) {
+          ///Become app
+          yield ApplicationSetupCompleted();
+        }
         UtilPreferences.remove(Preferences.remoteConfig);
       }
     }

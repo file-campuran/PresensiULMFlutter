@@ -95,7 +95,8 @@ class _MainNavigationState extends State<MainNavigation> {
   List<BottomNavigationBarItem> _bottomBarItem(BuildContext context) {
     return [
       BottomNavigationBarItem(
-        icon: Icon(_selectedIndex == 0 ? EvaIcons.grid : EvaIcons.gridOutline),
+        icon: Icon(
+            _selectedIndex == 0 ? EvaIcons.calendar : EvaIcons.calendarOutline),
         label: Translate.of(context).translate('home'),
       ),
       BottomNavigationBarItem(
@@ -201,7 +202,7 @@ class _MainNavigationState extends State<MainNavigation> {
                   center: Alignment(0, 0),
                   focal: Alignment(0, 0),
                   colors: [
-                    Colors.white,
+                    // Colors.white,
                     Theme.of(context).primaryColor,
                     Theme.of(context).primaryColor,
                   ],
