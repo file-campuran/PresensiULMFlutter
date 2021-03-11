@@ -95,36 +95,65 @@ class _HariLiburState extends State<HariLibur> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                    margin: EdgeInsets.only(right: 10.0, top: 5.0),
-                    child: AppSkeleton(
-                      width: 24.0,
-                      height: 24.0,
-                    )),
+                AppSkeleton(
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10.0, top: 0.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Theme.of(context).highlightColor,
+                    ),
+                    width: 24.0,
+                    height: 24.0,
+                  ),
+                ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       AppSkeleton(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Theme.of(context).highlightColor,
+                          ),
                           width: MediaQuery.of(context).size.width,
-                          height: 20.0),
-                      AppSkeleton(
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 20.0,
-                            margin: EdgeInsets.only(top: 10.0, bottom: 5.0),
-                            color: Theme.of(context).highlightColor),
+                          height: 20.0,
+                          margin: EdgeInsets.only(bottom: 5.0),
+                        ),
                       ),
                       AppSkeleton(
                         child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 20.0,
-                            margin: EdgeInsets.only(bottom: 5.0),
-                            color: Theme.of(context).highlightColor),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Theme.of(context).highlightColor,
+                          ),
+                          width: MediaQuery.of(context).size.width,
+                          height: 20.0,
+                          margin: EdgeInsets.only(top: 10.0, bottom: 5.0),
+                        ),
                       ),
                       AppSkeleton(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Theme.of(context).highlightColor,
+                          ),
+                          width: MediaQuery.of(context).size.width,
+                          height: 20.0,
+                          margin: EdgeInsets.only(bottom: 5.0),
+                        ),
+                      ),
+                      AppSkeleton(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Theme.of(context).highlightColor,
+                          ),
                           width: MediaQuery.of(context).size.width - 250,
-                          height: 15.0),
+                          height: 15.0,
+                          margin: EdgeInsets.only(bottom: 5.0),
+                        ),
+                      ),
                     ],
                   ),
                 ),

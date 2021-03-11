@@ -81,9 +81,16 @@ class _BerandaState extends State<Beranda> {
       return Column(
         children: List.generate(2, (index) => index).map(
           (item) {
-            return Padding(
-              padding: EdgeInsets.only(bottom: 15),
-              child: AppPresensiItem(type: PresensiViewType.small),
+            return AppSkeleton(
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 7),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: Theme.of(context).highlightColor,
+                ),
+                width: double.infinity,
+                height: 100,
+              ),
             );
           },
         ).toList(),

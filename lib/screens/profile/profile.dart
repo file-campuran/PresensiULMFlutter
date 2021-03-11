@@ -61,7 +61,7 @@ class _ProfileState extends State<Profile> {
 
     return Scaffold(
       appBar: AppCustomAppBar.defaultAppBar(
-          title: Translate.of(context).translate('profile'), context: context),
+          title: Translate.of(context).translate('account'), context: context),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

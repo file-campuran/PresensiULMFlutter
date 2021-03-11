@@ -9,7 +9,7 @@ Aplikasi Presensi Berbasis Mobile adalah aplikasi yang digunakan oleh tenaga pen
 ## **ChangeLog**
 ###### *Version 2.0.0 Beta.B11 [2/27/2021]*
 ### **Whats New**
-- Flutter SDK
+- New UI
 - Face Detection
 - Presensi Location
 - Theme Support
@@ -18,8 +18,10 @@ Aplikasi Presensi Berbasis Mobile adalah aplikasi yang digunakan oleh tenaga pen
   2. English
 - Dark Mode Support
 - Add Guide
+- Add Hari Libur
 - Location Picker
 - Refresh Location
+- Reveal User Fake Gps and Root / Jailbreak
 
 # 
 # 

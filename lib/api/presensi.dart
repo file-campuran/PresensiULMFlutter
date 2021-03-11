@@ -29,6 +29,7 @@ class PresensiRepository {
 
   Future<ApiModel> getEvent() async {
     return await Consumer()
+        .limit(20)
         .orderBy({'tanggal': 'DESC'}).execute(url: '/presensi/event');
   }
 

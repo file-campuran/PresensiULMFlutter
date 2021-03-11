@@ -87,7 +87,7 @@
     "page_not_found": "Halaman tidak ditemukan",
     "was_error_the_server": "Terjadi kesalahan di server",
     "redirect": "Halaman dialihkan",
-    "cant_connect_server": "Tidak terhubung ke server",
+    "cant_connect_server": "Tidak terhubung ke server, coba periksa paket data atau Wi-Fi anda",
     "slide1_title": "Presensi ULM",
     "slide1_content": "Digunakan oleh tenaga pendidik dan tenaga kependidikan (dosen)",
     "slide2_title": "Kepegawaian",

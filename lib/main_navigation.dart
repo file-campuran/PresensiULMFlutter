@@ -176,8 +176,18 @@ class _MainNavigationState extends State<MainNavigation> {
     Adapt.initContext(context);
 
     return Scaffold(
+      // body: WillPopScope(
+      //   child: _widgetOptions.elementAt(_selectedIndex),
+      //   onWillPop: onWillPop,
+      // ),
       body: WillPopScope(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(child: child, opacity: animation);
+          },
+          child: _widgetOptions.elementAt(_selectedIndex),
+        ),
         onWillPop: onWillPop,
       ),
       floatingActionButton: Padding(
@@ -198,14 +208,13 @@ class _MainNavigationState extends State<MainNavigation> {
                 border: Border.all(color: Colors.white, width: 4),
                 shape: BoxShape.circle,
                 boxShadow: [BoxShadow(color: Colors.white, blurRadius: 1.5)],
-                gradient: RadialGradient(
-                  center: Alignment(0, 0),
-                  focal: Alignment(0, 0),
+                gradient: LinearGradient(
                   colors: [
-                    // Colors.white,
                     Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColor.withOpacity(0.5),
                   ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
               child: Icon(

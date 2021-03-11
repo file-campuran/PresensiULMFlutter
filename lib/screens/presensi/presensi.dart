@@ -471,6 +471,7 @@ class PresensiState extends State<Presensi> {
         right: 20.0,
         bottom: 20,
         child: FloatingActionButton(
+          heroTag: 'sendPresensi',
           child: !isSendPresensi
               ? Icon(Icons.save, color: Colors.white)
               : CupertinoActivityIndicator(),

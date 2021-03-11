@@ -25,114 +25,72 @@ class Routes {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case privacyPolicy:
-        return MaterialPageRoute(
-          builder: (context) {
-            return PrivacyPolicy();
-          },
-        );
+        return CustomRoutes(page: PrivacyPolicy());
 
       case panduan:
-        return MaterialPageRoute(
-          builder: (context) {
-            return Panduan();
-          },
-        );
+        return CustomRoutes(page: Panduan());
 
       case hariLibur:
-        return MaterialPageRoute(
-          builder: (context) {
-            return HariLibur();
-          },
-        );
+        return CustomRoutes(page: HariLibur());
 
       case notification:
-        return MaterialPageRoute(
-          builder: (context) {
-            return NotificationList();
-          },
-        );
+        return CustomRoutes(page: NotificationList());
 
       case detailNotification:
         final args = settings.arguments;
 
-        return MaterialPageRoute(
-          builder: (context) {
-            return DetailNotification(
-              item: args,
-            );
-          },
-        );
+        return CustomRoutes(
+            page: DetailNotification(
+          item: args,
+        ));
 
       case riwayatDetail:
         final args = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) {
-            return RiwayatDetail(
-              item: args,
-            );
-          },
-        );
+        return CustomRoutes(
+            page: RiwayatDetail(
+          item: args,
+        ));
 
       case editProfile:
         final leading = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) {
-            return EditProfile(leading: leading);
-          },
-        );
+        return CustomRoutes(page: EditProfile(leading: leading));
 
       case changeLanguage:
-        return MaterialPageRoute(
-          builder: (context) {
-            return LanguageSetting();
-          },
-        );
+        return CustomRoutes(page: LanguageSetting());
 
       case themeSetting:
-        return MaterialPageRoute(
-          builder: (context) {
-            return ThemeSetting();
-          },
-        );
+        return CustomRoutes(page: ThemeSetting());
 
       case setting:
-        return MaterialPageRoute(
-          builder: (context) {
-            return Setting();
-          },
-        );
+        return CustomRoutes(page: Setting());
 
       case fontSetting:
-        return MaterialPageRoute(
-          builder: (context) {
-            return FontSetting();
-          },
-        );
+        return CustomRoutes(page: FontSetting());
 
       case location:
         final location = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) => Location(
+        return CustomRoutes(
+          page: Location(
             location: location,
           ),
         );
 
       case locationPicker:
-        return MaterialPageRoute(
-          builder: (context) => LocationPicker(),
+        return CustomRoutes(
+          page: LocationPicker(),
         );
 
       case gallery:
         final photo = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) => Gallery(photo: photo),
+        return CustomRoutes(
+          page: Gallery(photo: photo),
           fullscreenDialog: true,
         );
 
       case photoPreview:
         final Map<String, dynamic> params = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) => PhotoPreview(
+        return CustomRoutes(
+          page: PhotoPreview(
             galleryList: params['photo'],
             initialIndex: params['index'],
           ),
@@ -141,39 +99,29 @@ class Routes {
 
       case messageDetail:
         final args = settings.arguments;
-        return MaterialPageRoute(
-          builder: (context) => MessageDetailScreen(
+        return CustomRoutes(
+          page: MessageDetailScreen(
             message: args,
           ),
           fullscreenDialog: true,
         );
 
       case faq:
-        return MaterialPageRoute(
-          builder: (context) {
-            return Faq();
-          },
-        );
+        return CustomRoutes(page: Faq());
 
       case version:
-        return MaterialPageRoute(
-          builder: (context) {
-            return Version();
-          },
-        );
+        return CustomRoutes(page: Version());
 
       default:
-        return MaterialPageRoute(
-          builder: (context) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Text("Not Found"),
-              ),
-              body: Center(
-                child: Text('No path for ${settings.name}'),
-              ),
-            );
-          },
+        return CustomRoutes(
+          page: Scaffold(
+            appBar: AppBar(
+              title: Text("Not Found"),
+            ),
+            body: Center(
+              child: Text('No path for ${settings.name}'),
+            ),
+          ),
         );
     }
   }
@@ -186,4 +134,29 @@ class Routes {
   }
 
   Routes._internal();
+}
+
+class CustomRoutes extends PageRouteBuilder {
+  final Widget page;
+  final bool fullscreenDialog;
+  CustomRoutes({this.page, this.fullscreenDialog = false})
+      : super(
+          fullscreenDialog: fullscreenDialog,
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
 }
