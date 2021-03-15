@@ -37,6 +37,10 @@ class PresensiRepository {
     return await Consumer().execute(url: '/presensi/hari_libur');
   }
 
+  Future<ApiModel> getPengumuman() async {
+    return await Consumer().execute(url: '/presensi/pengumuman');
+  }
+
   // Simpan presensi
   Future<ApiModel> setPresensi(Map<String, dynamic> formDatas) async {
     UserModel _userModel =

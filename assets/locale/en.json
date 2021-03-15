@@ -102,5 +102,6 @@
     "select_location": " Select Location ",
     "there_is_no": " None ",
     "update": "Check Update",
-    "day_off": "Day Off"
+    "day_off": "Day Off",
+    "announcement": "Announcement"
 }

@@ -46,9 +46,18 @@ class DBProvider {
       date TEXT
       )""";
 
+  static final String _createTablePengumuman = """CREATE TABLE Pengumuman (
+      id TEXT PRIMARY KEY,
+      isRead INTEGER,
+      judul TEXT,
+      konten TEXT,
+      tgl TEXT,
+      )""";
+
   Future<void> _onCreate(Database db, int version) async {
     await db.execute(_createTableMessages);
     await db.execute(_createTableNotificaton);
+    await db.execute(_createTablePengumuman);
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
@@ -58,6 +67,8 @@ class DBProvider {
         await db.execute(_createTableMessages);
         await db.execute("DROP TABLE IF EXISTS Notification");
         await db.execute(_createTableNotificaton);
+        await db.execute("DROP TABLE IF EXISTS Pengumuman");
+        await db.execute(_createTablePengumuman);
       } catch (e) {
         print("Update v3 error : ${e.toString()}");
       }

@@ -1,5 +1,5 @@
 class Environment {
-  static const bool DEBUG = false;
+  static const bool DEBUG = true;
 
   static const String APP_NAME = 'Presensi ULM';
   static const String VERSION = '2.0.0 Beta.B11';

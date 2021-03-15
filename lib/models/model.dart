@@ -12,3 +12,4 @@ export 'presensi/model_jadwal.dart';
 export 'presensi/model_face.dart';
 export 'presensi/model_event.dart';
 export 'presensi/model_hari_kerja.dart';
+export 'presensi/model_pengumuman.dart';

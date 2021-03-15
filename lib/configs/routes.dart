@@ -19,6 +19,7 @@ class Routes {
   static const String notification = "/notification";
   static const String detailNotification = "/detailNotification";
   static const String messageDetail = "/messageDetail";
+  static const String pengumumanDetail = "/pengumumanDetail";
   static const String version = "/version";
   static const String hariLibur = "/hariLibur";
 
@@ -101,6 +102,15 @@ class Routes {
         final args = settings.arguments;
         return CustomRoutes(
           page: MessageDetailScreen(
+            message: args,
+          ),
+          fullscreenDialog: true,
+        );
+
+      case pengumumanDetail:
+        final args = settings.arguments;
+        return CustomRoutes(
+          page: PengumumanDetailScreen(
             message: args,
           ),
           fullscreenDialog: true,

@@ -110,14 +110,14 @@ class _MainNavigationState extends State<MainNavigation> {
         label: Translate.of(context).translate('presence'),
       ),
       BottomNavigationBarItem(
-        label: Translate.of(context).translate('message'),
+        label: Translate.of(context).translate('announcement'),
         icon: new Stack(alignment: Alignment.center, children: <Widget>[
           new Icon(_selectedIndex == 3
-              ? EvaIcons.messageCircle
-              : EvaIcons.messageCircleOutline),
-          BlocBuilder<MessageCubit, MessageState>(
+              ? Icons.notifications_active_outlined
+              : Icons.notifications_active),
+          BlocBuilder<PengumumanCubit, PengumumanState>(
             builder: (context, state) {
-              if (state is MessageData) {
+              if (state is PengumumanData) {
                 if (state.count != 0) {
                   return new Positioned(
                     top: 0.0,
@@ -167,7 +167,7 @@ class _MainNavigationState extends State<MainNavigation> {
     Beranda(),
     Riwayat(),
     Presensi(),
-    Message(),
+    Pengumuman(),
     Profile()
   ];
 

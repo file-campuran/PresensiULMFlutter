@@ -109,7 +109,7 @@ class _RiwayatDetailState extends State<RiwayatDetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Alamat',
+                          'Lokasi Presensi',
                           style: Theme.of(context).textTheme.caption,
                         ),
                         address != ''

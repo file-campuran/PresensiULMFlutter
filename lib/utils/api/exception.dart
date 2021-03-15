@@ -74,7 +74,9 @@ class MyException {
               'code': 500,
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
-                'content': e.response.data['message'],
+                'content': e.response.data.isEmpty
+                    ? e.message
+                    : e.response.data['message'],
                 "image": Images.BugFixing
               },
             });

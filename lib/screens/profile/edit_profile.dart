@@ -99,6 +99,7 @@ class _EditProfileState extends State<EditProfile> {
       setState(() {
         _loading = false;
       });
+      UtilLogger.log('BIODATA', apiModel);
       if (apiModel.code == CODE.SUCCESS) {
         _userModel.golDarah = _golonganDarah;
         _userModel.noHp = _nomorPonsel.text;

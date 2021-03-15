@@ -16,14 +16,16 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   final LanguageBloc languageBloc;
   final NotificationBloc notificationBloc;
   final MessageCubit messageCubit;
+  final PengumumanCubit pengumumanCubit;
 
-  ApplicationBloc({
-    @required this.authBloc,
-    @required this.themeBloc,
-    @required this.languageBloc,
-    @required this.notificationBloc,
-    @required this.messageCubit,
-  })  : assert(authBloc != null),
+  ApplicationBloc(
+      {@required this.authBloc,
+      @required this.themeBloc,
+      @required this.languageBloc,
+      @required this.notificationBloc,
+      @required this.messageCubit,
+      @required this.pengumumanCubit})
+      : assert(authBloc != null),
         super(InitialApplicationState());
 
   @override
@@ -111,8 +113,9 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       );
 
       // Read Notification
-      notificationBloc.add(OnReadDataNotification());
-      messageCubit.readMessage();
+      pengumumanCubit.readMessage();
+      // notificationBloc.add(OnReadDataNotification());
+      // messageCubit.readMessage();
 
       if (hasReview) {
         ///Become app
