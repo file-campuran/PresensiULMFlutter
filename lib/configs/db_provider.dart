@@ -51,7 +51,7 @@ class DBProvider {
       isRead INTEGER,
       judul TEXT,
       konten TEXT,
-      tgl TEXT,
+      tgl TEXT
       )""";
 
   Future<void> _onCreate(Database db, int version) async {

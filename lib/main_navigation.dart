@@ -113,8 +113,8 @@ class _MainNavigationState extends State<MainNavigation> {
         label: Translate.of(context).translate('announcement'),
         icon: new Stack(alignment: Alignment.center, children: <Widget>[
           new Icon(_selectedIndex == 3
-              ? Icons.notifications_active_outlined
-              : Icons.notifications_active),
+              ? EvaIcons.messageCircle
+              : EvaIcons.messageCircleOutline),
           BlocBuilder<PengumumanCubit, PengumumanState>(
             builder: (context, state) {
               if (state is PengumumanData) {

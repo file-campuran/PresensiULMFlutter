@@ -29,7 +29,7 @@ class PengumumanModel {
   factory PengumumanModel.fromJson(Map<String, dynamic> json) =>
       PengumumanModel(
         id: json["id"],
-        isRead: json["isRead"],
+        isRead: json["isRead"] ?? 0,
         tgl: json["tgl"],
         judul: json["judul"],
         konten: json["konten"],
@@ -45,7 +45,7 @@ class PengumumanModel {
 
   String humanDate() {
     try {
-      return unixTimeStampToDateDocs(
+      return unixTimeStampToDateTime(
           DateTime.parse(tgl).millisecondsSinceEpoch);
     } catch (e) {
       return 'Invalid Date';

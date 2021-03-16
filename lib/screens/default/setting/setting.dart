@@ -31,6 +31,7 @@ class _SettingState extends State<Setting> {
   ///On Change Dark Option
   void _onChangeDarkOption() {
     _themeBloc.add(ChangeTheme(darkOption: _darkOption));
+    setState(() {});
   }
 
   ///On navigation
@@ -177,7 +178,7 @@ class _SettingState extends State<Setting> {
                 children: <Widget>[
                   Text(
                     Translate.of(context).translate(
-                      UtilTheme.exportLangTheme(AppTheme.darkThemeOption),
+                      UtilTheme.exportLangTheme(_darkOption),
                     ),
                     style: Theme.of(context).textTheme.bodyText1,
                   ),

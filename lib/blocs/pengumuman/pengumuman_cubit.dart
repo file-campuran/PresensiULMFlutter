@@ -15,12 +15,21 @@ class PengumumanCubit extends Cubit<PengumumanState> {
   int countNotRead = 0;
 
   void readMessage() async {
-    // await clearLocalData();
     if (listMessage.isEmpty) {
-      final apiModel = await PresensiRepository().getPengumuman();
-      UtilLogger.log('API MODEL', apiModel.toJson());
+      loadData();
+
+      ApiModel apiModel;
+      final lastDate = await getLastDate();
+
+      if (lastDate.isNotEmpty) {
+        apiModel =
+            await PresensiRepository().getPengumuman(startDate: lastDate);
+      } else {
+        apiModel = await PresensiRepository().getPengumuman();
+      }
+
       if (apiModel.code == CODE.SUCCESS) {
-        apiModel.data['rows'].forEach((model) async {
+        await apiModel.data['rows'].forEach((model) async {
           PengumumanModel pengumumanModel = PengumumanModel.fromJson(model);
           await Application.db.insert(
             'Pengumuman',
@@ -30,27 +39,25 @@ class PengumumanCubit extends Cubit<PengumumanState> {
         });
         loadData();
       }
-      // FirebaseFirestore.instance
-      //     .collection('message')
-      //     .orderBy('tgl', descending: true)
-      //     .get()
-      //     .then((QuerySnapshot querySnapshot) {
-      //   listMessage = [];
-      //   querySnapshot.docs.forEach((element) async {
-      //     Map<String, dynamic> model = element.data();
-      //     model['id'] = element.id;
-      //     PengumumanModel pengumumanModel = PengumumanModel.fromJson(model);
-      //     await Application.db.insert(
-      //       'Pengumuman',
-      //       pengumumanModel.toJson(),
-      //       conflictAlgorithm: ConflictAlgorithm.ignore,
-      //     );
-      //   });
-      //   loadData();
-      // });
     } else {
-      loadData();
+      // loadData();
     }
+  }
+
+  /*
+   * Ambil waktu terakhir pemberitahuan
+   */
+  Future<String> getLastDate() async {
+    var res = await Application.db
+        .rawQuery('SELECT * FROM Pengumuman ORDER BY tgl DESC limit 1');
+
+    if (res.isNotEmpty) {
+      UtilLogger.log('DATA FIRST', res[0]);
+      final data = PengumumanModel.fromJson(res[0]);
+      return data.tgl;
+    }
+
+    return '';
   }
 
   void loadData() async {

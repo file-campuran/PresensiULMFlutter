@@ -10,6 +10,7 @@ Aplikasi Presensi Berbasis Mobile adalah aplikasi yang digunakan oleh tenaga pen
 ###### *Version 2.0.0 Beta.B11 [2/27/2021]*
 ### **Whats New**
 - New UI
+- Pengumuman
 - Face Detection
 - Presensi Location
 - Theme Support

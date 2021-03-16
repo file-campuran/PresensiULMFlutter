@@ -173,6 +173,9 @@ class Consumer {
       case '>=':
         splitValue = '[gte]';
         break;
+      case '>':
+        splitValue = '[gt]';
+        break;
       case '<':
         splitValue = '[lt]';
         break;

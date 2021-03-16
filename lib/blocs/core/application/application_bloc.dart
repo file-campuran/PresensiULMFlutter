@@ -113,7 +113,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       );
 
       // Read Notification
-      pengumumanCubit.readMessage();
+      // pengumumanCubit.readMessage();
       // notificationBloc.add(OnReadDataNotification());
       // messageCubit.readMessage();
 

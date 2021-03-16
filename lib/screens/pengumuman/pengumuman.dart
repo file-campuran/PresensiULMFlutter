@@ -7,6 +7,7 @@ import 'package:absen_online/models/model.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Pengumuman extends StatefulWidget {
   Pengumuman({Key key}) : super(key: key);
@@ -23,12 +24,19 @@ class _PengumumanState extends State<Pengumuman> {
 
   PengumumanCubit _pengumumanCubit;
   bool showMarkAll = true;
+  final _controller = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     _pengumumanCubit = BlocProvider.of<PengumumanCubit>(context);
     _pengumumanCubit.readMessage();
     super.initState();
+  }
+
+  ///On load more
+  Future<void> _onLoading() async {
+    await Future.delayed(Duration(seconds: 1));
+    _controller.loadComplete();
   }
 
   @override
@@ -60,10 +68,47 @@ class _PengumumanState extends State<Pengumuman> {
               ]
             : null,
       ),
-      body: _buildContent(),
+      body: SafeArea(
+        child: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: false,
+          onRefresh: _onRefresh,
+          controller: _controller,
+          header: ClassicHeader(
+            idleText: Translate.of(context).translate('pull_down_refresh'),
+            refreshingText: Translate.of(context).translate('refreshing'),
+            completeText: Translate.of(context).translate('refresh_completed'),
+            releaseText: Translate.of(context).translate('release_to_refresh'),
+            refreshingIcon: SizedBox(
+              width: 16.0,
+              height: 16.0,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          ),
+          footer: ClassicFooter(
+            loadingText: Translate.of(context).translate('loading'),
+            canLoadingText: Translate.of(context).translate(
+              'release_to_load_more',
+            ),
+            idleText: Translate.of(context).translate('pull_to_load_more'),
+            loadStyle: LoadStyle.ShowWhenLoading,
+            loadingIcon: SizedBox(
+              width: 16.0,
+              height: 16.0,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          ),
+          child: _buildContent(),
+        ),
+      ),
       floatingActionButton: _appBadge(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
+
+  Future<void> _onRefresh() async {
+    _pengumumanCubit.loadData();
+    _controller.refreshCompleted();
   }
 
   Widget _appBadge() {
@@ -95,6 +140,7 @@ class _PengumumanState extends State<Pengumuman> {
     return parsedString;
   }
 
+  List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
   _buildLoading() {
     return ListView.builder(
       itemCount: 5,
@@ -177,24 +223,28 @@ class _PengumumanState extends State<Pengumuman> {
     return BlocBuilder<PengumumanCubit, PengumumanState>(
       builder: (_, state) {
         if (state is PengumumanData) {
-          return ListView.separated(
+          if (state.data.length == 0) {
+            return AppInfo(
+              title: 'INFO',
+              message: Translate.of(context).translate('there_is_no') +
+                  ' ' +
+                  Translate.of(context).translate('announcement'),
+              image: Images.Empty,
+            );
+          }
+
+          return ListView.builder(
             controller: _scrollController,
             itemCount: state.data.length,
-            separatorBuilder: (context, index) {
-              return Container(
-                  margin: EdgeInsets.symmetric(horizontal: Dimens.cardMargin),
-                  color: Theme.of(context).highlightColor,
-                  height: 0);
-            },
             itemBuilder: (context, index) {
               bool hasRead = state.data[index].isRead == null ||
                       state.data[index].isRead == 0
                   ? false
                   : true;
 
-              return GestureDetector(
+              return InkWell(
                 child: Container(
-                  // color: Theme.of(context).dialogBackgroundColor,
+                  color: Theme.of(context).dialogBackgroundColor,
                   padding: EdgeInsets.all(10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,8 +258,8 @@ class _PengumumanState extends State<Pengumuman> {
                                     EdgeInsets.only(top: hasRead ? 0.0 : 2.0),
                                 child: Icon(
                                     hasRead
-                                        ? Icons.notifications_active_outlined
-                                        : Icons.notifications_active,
+                                        ? EvaIcons.messageCircleOutline
+                                        : EvaIcons.messageCircle,
                                     color: Theme.of(context).primaryColor),
                               ),
                             ],

@@ -109,6 +109,7 @@ class DioLoggingInterceptors extends InterceptorsWrapper {
 
   @override
   Future onError(DioError dioError) async {
+    // UtilLogger.log('DIO ERROR', dioError.error);
     print('\n');
     print(
         "┌${UtilLogger.color(" [ Begin Error ] ", ColorsHeader.RED)}────────────────────────────────────────────────────────────────────────");

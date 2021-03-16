@@ -18,13 +18,16 @@ class Beranda extends StatefulWidget {
 
 class _BerandaState extends State<Beranda> {
   JadwalCubit _jadwalCubit;
+  PengumumanCubit _pengumumanCubit;
   final _controller = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     // _loadData();
+    _pengumumanCubit = BlocProvider.of<PengumumanCubit>(context);
     _jadwalCubit = BlocProvider.of<JadwalCubit>(context);
     _jadwalCubit.initData();
+    _pengumumanCubit.readMessage();
     super.initState();
   }
 
@@ -156,6 +159,45 @@ class _BerandaState extends State<Beranda> {
                   bottom: false,
                   child: Column(
                     children: <Widget>[
+                      BlocBuilder<PengumumanCubit, PengumumanState>(
+                        builder: (_, state) {
+                          if (state is PengumumanData) {
+                            if (state.data.isNotEmpty) {
+                              final datas = state.data
+                                  .where((e) => e.isRead == 0)
+                                  .toList();
+
+                              if (datas.isNotEmpty) {
+                                return Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 20),
+                                  child: AppAnnouncement(
+                                    title: datas[0].judul,
+                                    content: datas[0].konten,
+                                    date: datas[0].humanDate(),
+                                    onTap: () {
+                                      if (datas[0].isRead != 1) {
+                                        _pengumumanCubit
+                                            .markAsRead(datas[0].id);
+                                      }
+                                      Navigator.pushNamed(
+                                          context, Routes.pengumumanDetail,
+                                          arguments: datas[0]);
+                                    },
+                                    onNext: () {
+                                      if (datas[0].isRead != 1) {
+                                        _pengumumanCubit
+                                            .markAsRead(datas[0].id);
+                                      }
+                                    },
+                                  ),
+                                );
+                              }
+                            }
+                          }
+                          return Container();
+                        },
+                      ),
                       Container(
                         padding: EdgeInsets.only(
                           left: 20,
