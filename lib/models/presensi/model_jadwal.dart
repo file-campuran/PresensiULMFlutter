@@ -58,7 +58,12 @@ class JadwalModel {
   PresensiModel presensi;
 
   factory JadwalModel.fromJson(Map<String, dynamic> json) => JadwalModel(
-        timeLeft: sisaWaktu(json["ruleStartTime"], json["ruleEndTime"]),
+        timeLeft: sisaWaktu(
+            json["jamServer"] != null
+                ? DateTime.parse(json["jamServer"])
+                : DateTime.now(),
+            json["ruleStartTime"],
+            json["ruleEndTime"]),
         ruleId: json["ruleId"],
         ruleRole: json["ruleRole"],
         ruleStatus: json["ruleStatus"],

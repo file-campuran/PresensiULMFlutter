@@ -1,4 +1,5 @@
 import 'package:absen_online/widgets/app_presensi_item.dart';
+import 'package:absen_online/configs/config.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -42,7 +43,8 @@ class AppTimmer extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              padding: EdgeInsets.symmetric(
+                  horizontal: Dimens.padding, vertical: Dimens.padding),
               child: Container(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,

@@ -55,7 +55,7 @@ class DBProvider {
       )""";
 
   Future<void> _onCreate(Database db, int version) async {
-    await db.execute(_createTableMessages);
+    // await db.execute(_createTableMessages);
     await db.execute(_createTableNotificaton);
     await db.execute(_createTablePengumuman);
   }
@@ -63,8 +63,8 @@ class DBProvider {
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 3) {
       try {
-        await db.execute("DROP TABLE IF EXISTS Messages");
-        await db.execute(_createTableMessages);
+        // await db.execute("DROP TABLE IF EXISTS Messages");
+        // await db.execute(_createTableMessages);
         await db.execute("DROP TABLE IF EXISTS Notification");
         await db.execute(_createTableNotificaton);
         await db.execute("DROP TABLE IF EXISTS Pengumuman");

@@ -43,11 +43,9 @@ class AppAnnouncement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: (MediaQuery.of(context).size.width),
-      margin: EdgeInsets.only(left: 5, right: 5),
-      decoration: BoxDecoration(
-          color: Color(0xffFFF3CC), borderRadius: BorderRadius.circular(8.0)),
       child: Material(
         color: Color(0xffFFF3CC),
+        borderRadius: BorderRadius.circular(8.0),
         child: InkWell(
           borderRadius: BorderRadius.circular(8.0),
           onTap: onNext,
@@ -96,11 +94,16 @@ class AppAnnouncement extends StatelessWidget {
                       SizedBox(height: 10),
 
                       ///Set Text content & url if actionUrl is not empty
-                      Text(
-                        _parseHtmlString(content),
-                        maxLines: 3,
-                        overflow: TextOverflow.clip,
-                        style: TextStyle(fontSize: 14.0),
+                      Container(
+                        height: 50,
+                        child: Text(
+                          _parseHtmlString(content),
+                          maxLines: 3,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 14.0, color: Colors.grey[900]),
+                        ),
                       ),
                       SizedBox(height: 15),
                       Row(
@@ -109,7 +112,7 @@ class AppAnnouncement extends StatelessWidget {
                           InkWell(
                             onTap: onTap,
                             child: Text(
-                              Translate.of(context).translate('more'),
+                              Translate.of(context).translate('mark_read'),
                               style: TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold),

@@ -34,7 +34,7 @@ class PresensiRepository {
   }
 
   Future<ApiModel> getHariKerja() async {
-    return await Consumer().execute(url: '/presensi/hari_libur');
+    return await Consumer().limit(7).execute(url: '/presensi/hari_libur');
   }
 
   Future<ApiModel> getPengumuman({String startDate = null}) async {

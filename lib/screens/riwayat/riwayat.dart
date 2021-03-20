@@ -91,7 +91,7 @@ class _RiwayatState extends State<Riwayat> {
         } else {
           setState(() {
             _errorData = null;
-            _pageType = PageType.map;
+            // _pageType = PageType.map;
             _presensiList = listProduct;
             _initPosition = CameraPosition(
               target: LatLng(
@@ -587,24 +587,28 @@ class _RiwayatState extends State<Riwayat> {
                     children: <Widget>[
                       Visibility(
                         visible: _presensiList?.list != null,
-                        child: IconButton(
-                          icon: Icon(
-                            _pageType == PageType.map
-                                ? Icons.view_compact
-                                : Icons.map,
+                        child: InkWell(
+                          onTap: _onChangePageStyle,
+                          child: Row(
+                            children: [
+                              Icon(
+                                _pageType == PageType.map
+                                    ? Icons.view_compact
+                                    : Icons.map,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 20, left: 20),
+                                child: Text(
+                                  _pageType == PageType.map
+                                      ? Translate.of(context).translate('list')
+                                      : Translate.of(context).translate('map'),
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                              )
+                            ],
                           ),
-                          onPressed: _onChangePageStyle,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 20, left: 20),
-                        child: Text(
-                          _pageType == PageType.map
-                              ? Translate.of(context).translate('list')
-                              : Translate.of(context).translate('map'),
-                          style: Theme.of(context).textTheme.subtitle2,
-                        ),
-                      )
                     ],
                   )
                 ],

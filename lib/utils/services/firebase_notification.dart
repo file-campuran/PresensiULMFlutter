@@ -94,11 +94,11 @@ class FirebaseNotification {
       onResume: (Map<String, dynamic> message) async {
         _showNotif("onResume", message);
       },
-      // onBackgroundMessage: Environment.DEBUG
-      //     ? null
-      //     : Platform.isIOS
-      //         ? null
-      //         : myBackgroundMessageHandler,
+      onBackgroundMessage: Environment.DEBUG
+          ? null
+          : Platform.isIOS
+              ? null
+              : myBackgroundMessageHandler,
     );
     _firebaseMessaging.subscribeToTopic('general');
     _firebaseMessaging.subscribeToTopic(Application.user.role);
@@ -120,8 +120,8 @@ class FirebaseNotification {
 
     if (UtilPreferences.containsKey(Preferences.notification)) {
       if (!notification.isEmpty) {
-        // _notificationBloc.add(
-        //     OnAddNotification(notification['title'], notification['body']));
+        _notificationBloc.add(
+            OnAddNotification(notification['title'], notification['body']));
         LocalNotification().localNotifikasi(
           title: notification['title'],
           body: notification['body'],

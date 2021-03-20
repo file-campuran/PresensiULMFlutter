@@ -244,7 +244,7 @@ class _PengumumanState extends State<Pengumuman> {
 
               return InkWell(
                 child: Container(
-                  color: Theme.of(context).dialogBackgroundColor,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   padding: EdgeInsets.all(10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,

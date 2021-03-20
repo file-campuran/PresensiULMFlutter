@@ -3,8 +3,10 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'beranda_swiper.dart';
 import 'package:absen_online/blocs/bloc.dart';
+import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -29,54 +31,134 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
         ),
 
         //NOTIFICATION
+        // SafeArea(
+        //   child: Container(
+        //     margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        //     child: Align(
+        //       alignment: Alignment.topRight,
+        //       child: Stack(
+        //         children: <Widget>[
+        //           AppTransparentButton(
+        //             size: 50,
+        //             icon: FontAwesomeIcons.bell,
+        //             onTap: () {
+        //               Navigator.of(context).pushNamed(Routes.notification);
+        //             },
+        //           ),
+        //           Positioned(
+        //             top: 0.0,
+        //             right: 0.0,
+        //             child: BlocBuilder<NotificationBloc, NotificationState>(
+        //               builder: (context, state) {
+        //                 if (state is NotificationData) {
+        //                   if (state.data.count != 0) {
+        //                     return Stack(
+        //                       alignment: Alignment.center,
+        //                       children: [
+        //                         Container(
+        //                           width: 20,
+        //                           height: 20,
+        //                           decoration: BoxDecoration(
+        //                             border: Border.all(
+        //                                 width: 1, color: Colors.white),
+        //                             shape: BoxShape.circle,
+        //                             color: Colors.redAccent,
+        //                           ),
+        //                         ),
+        //                         Text(
+        //                           state.data.count.toString(),
+        //                           style: TextStyle(
+        //                             color: Colors.white,
+        //                             fontSize: 8,
+        //                           ),
+        //                         ),
+        //                       ],
+        //                     );
+        //                   }
+        //                   return Container();
+        //                 }
+        //                 return Container();
+        //               },
+        //             ),
+        //           )
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
         SafeArea(
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Align(
               alignment: Alignment.topRight,
-              child: Stack(
-                children: <Widget>[
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
                   AppTransparentButton(
                     size: 50,
-                    icon: FontAwesomeIcons.bell,
+                    icon: EvaIcons.calendarOutline,
                     onTap: () {
-                      Navigator.of(context).pushNamed(Routes.notification);
+                      Navigator.of(context).pushNamed(Routes.hariLibur);
                     },
                   ),
-                  Positioned(
-                    top: 0.0,
-                    right: 0.0,
-                    child: BlocBuilder<NotificationBloc, NotificationState>(
-                      builder: (context, state) {
-                        if (state is NotificationData) {
-                          if (state.data.count != 0) {
-                            return Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  width: 20,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.redAccent,
-                                  ),
-                                ),
-                                Text(
-                                  state.data.count.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 8,
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                          return Container();
-                        }
-                        return Container();
-                      },
+                  SizedBox(width: 5),
+                  Container(
+                    height: 50,
+                    // color: Colors.red,
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: Stack(
+                        children: <Widget>[
+                          AppTransparentButton(
+                            size: 50,
+                            icon: FontAwesomeIcons.bell,
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(Routes.notification);
+                            },
+                          ),
+                          Positioned(
+                            top: 0.0,
+                            right: 0.0,
+                            child: BlocBuilder<NotificationBloc,
+                                NotificationState>(
+                              builder: (context, state) {
+                                if (state is NotificationData) {
+                                  if (state.data.count != 0) {
+                                    return Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          width: 20,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 1, color: Colors.white),
+                                            shape: BoxShape.circle,
+                                            color: Colors.redAccent,
+                                          ),
+                                        ),
+                                        Text(
+                                          state.data.count.toString(),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 8,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                  return Container();
+                                }
+                                return Container();
+                              },
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -123,7 +205,7 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                           children: <Widget>[
                             Expanded(
                               child: Text(
-                                'FAQ',
+                                Translate.of(context).translate('help_center'),
                                 style: Theme.of(context)
                                     .textTheme
                                     .subtitle2

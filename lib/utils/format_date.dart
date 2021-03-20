@@ -67,8 +67,8 @@ String unixTimeStampToTimeAgo(int millisecond) {
   }
 }
 
-String sisaWaktu(String start, String end) {
-  final DateTime now = DateTime.now();
+String sisaWaktu(DateTime jamSekarang, String start, String end) {
+  final DateTime now = jamSekarang;
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   final String formatted = formatter.format(now);
   var dateString = (DateTime.parse(formatted + ' ' + end));

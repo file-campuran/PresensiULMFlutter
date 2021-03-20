@@ -24,7 +24,7 @@ class _AppState extends State<App> {
   AuthBloc _authBloc;
   LoginBloc _loginBloc;
   NotificationBloc _notificationBloc;
-  MessageCubit _messageCubit;
+  // MessageCubit _messageCubit;
   PengumumanCubit _pengumumanCubit;
 
   JadwalCubit _jadwalCubit;
@@ -36,7 +36,7 @@ class _AppState extends State<App> {
     _languageBloc = LanguageBloc();
     _themeBloc = ThemeBloc();
     _authBloc = AuthBloc();
-    _messageCubit = MessageCubit();
+    // _messageCubit = MessageCubit();
     _pengumumanCubit = PengumumanCubit();
     _loginBloc = LoginBloc(authBloc: _authBloc);
     _applicationBloc = ApplicationBloc(
@@ -44,7 +44,7 @@ class _AppState extends State<App> {
       themeBloc: _themeBloc,
       languageBloc: _languageBloc,
       notificationBloc: _notificationBloc,
-      messageCubit: _messageCubit,
+      // messageCubit: _messageCubit,
       pengumumanCubit: _pengumumanCubit,
     );
 
@@ -60,7 +60,7 @@ class _AppState extends State<App> {
     _authBloc.close();
     _loginBloc.close();
     _notificationBloc.close();
-    _messageCubit.close();
+    // _messageCubit.close();
     _pengumumanCubit.close();
     _jadwalCubit.close();
     super.dispose();
@@ -91,9 +91,9 @@ class _AppState extends State<App> {
         BlocProvider<NotificationBloc>(
           create: (context) => _notificationBloc,
         ),
-        BlocProvider<MessageCubit>(
-          create: (context) => _messageCubit,
-        ),
+        // BlocProvider<MessageCubit>(
+        //   create: (context) => _messageCubit,
+        // ),
         BlocProvider<PengumumanCubit>(
           create: (context) => _pengumumanCubit,
         ),

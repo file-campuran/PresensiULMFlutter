@@ -52,7 +52,7 @@ class PengumumanCubit extends Cubit<PengumumanState> {
         .rawQuery('SELECT * FROM Pengumuman ORDER BY tgl DESC limit 1');
 
     if (res.isNotEmpty) {
-      UtilLogger.log('DATA FIRST', res[0]);
+      // UtilLogger.log('DATA FIRST', res[0]);
       final data = PengumumanModel.fromJson(res[0]);
       return data.tgl;
     }

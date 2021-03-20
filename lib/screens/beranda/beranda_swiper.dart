@@ -26,9 +26,22 @@ class HomeSwipe extends StatelessWidget {
           );
         },
         itemBuilder: (BuildContext context, int index) {
-          return CachedNetworkImage(
-            fit: BoxFit.cover,
-            imageUrl: images[index].image,
+          return Container(
+            margin: EdgeInsets.symmetric(
+                vertical: Dimens.padding, horizontal: Dimens.padding),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Container(
+              // margin: EdgeInsets.only(bottom: 25),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: images[index].image,
+                ),
+              ),
+            ),
           );
         },
         autoplayDelay: 3000,
@@ -36,7 +49,7 @@ class HomeSwipe extends StatelessWidget {
         autoplay: true,
         itemCount: images.length,
         pagination: SwiperPagination(
-          alignment: Alignment(0.0, 0.4),
+          alignment: Alignment(0, .9),
           builder: SwiperPagination.dots,
         ),
       );

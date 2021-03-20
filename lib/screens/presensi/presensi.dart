@@ -262,15 +262,17 @@ class PresensiState extends State<Presensi> {
     UtilLogger.log('DATA PRESENSIS', dataPresensi);
     // dataPresensi['face_data'] = _faces;
 
-    final fileGambarName = imagePath.split("/").last + '.jpg';
-    UtilLogger.log('FILE GAMBAR', fileGambarName);
-    UtilLogger.log('FILE GAMBAR PATH', imagePath);
+    try {
+      final fileGambarName = imagePath.split("/").last + '.jpg';
+      UtilLogger.log('FILE GAMBAR', fileGambarName);
+      UtilLogger.log('FILE GAMBAR PATH', imagePath);
 
-    dataPresensi['fileGambar'] = MultipartFileExtended.fromFileSync(
-      imagePath,
-      filename: fileGambarName,
-      contentType: MediaType("*", "*"),
-    );
+      dataPresensi['fileGambar'] = MultipartFileExtended.fromFileSync(
+        imagePath,
+        filename: fileGambarName,
+        contentType: MediaType("*", "*"),
+      );
+    } catch (e) {}
 
     if (filePath != null) {
       final fileBerkasName = filePath.split("/").last;
@@ -466,27 +468,27 @@ class PresensiState extends State<Presensi> {
   }
 
   Widget _buttonSendPresensi() {
-    if (imagePath != null) {
-      return Positioned(
-        right: 20.0,
-        bottom: 20,
-        child: FloatingActionButton(
-          heroTag: 'sendPresensi',
-          child: !isSendPresensi
-              ? Icon(Icons.save, color: Colors.white)
-              : CupertinoActivityIndicator(),
-          onPressed: () {
-            if (!isSendPresensi) {
-              sendPresensi();
-            }
-          },
-          backgroundColor:
-              isSendPresensi ? Colors.grey : Theme.of(context).primaryColor,
-        ),
-      );
-    }
+    // if (imagePath != null) {
+    return Positioned(
+      right: 20.0,
+      bottom: 20,
+      child: FloatingActionButton(
+        heroTag: 'sendPresensi',
+        child: !isSendPresensi
+            ? Icon(Icons.save, color: Colors.white)
+            : CupertinoActivityIndicator(),
+        onPressed: () {
+          if (!isSendPresensi) {
+            sendPresensi();
+          }
+        },
+        backgroundColor:
+            isSendPresensi ? Colors.grey : Theme.of(context).primaryColor,
+      ),
+    );
+    // }
 
-    return Container();
+    // return Container();
   }
 
   /*
@@ -837,7 +839,16 @@ class PresensiState extends State<Presensi> {
       );
     }
 
-    return AspectRatio(aspectRatio: 3 / 1, child: CameraPreview(controller));
+    return AspectRatio(
+      aspectRatio: 3 / 1,
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height - 150,
+            child: CameraPreview(controller)),
+      ),
+    );
   }
 
   CameraDescription cameraDescription(CameraLensDirection lensDirection) {

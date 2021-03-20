@@ -10,7 +10,7 @@ class AppBadge extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border:
@@ -18,9 +18,9 @@ class AppBadge extends StatelessWidget {
             color: Colors.white.withOpacity(0.9),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: Colors.grey.withOpacity(0.3),
                 spreadRadius: 2,
-                blurRadius: 5,
+                blurRadius: 3,
                 offset: Offset(0, 3), // changes position of shadow
               ),
             ]),
