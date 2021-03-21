@@ -27,12 +27,12 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
           elevation: 0,
           actions: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 7),
+              padding: EdgeInsets.symmetric(horizontal: 7),
               child: Row(
                 children: [
                   InkWell(
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 7),
+                      padding: EdgeInsets.symmetric(horizontal: 7),
                       child: Icon(
                         EvaIcons.calendarOutline,
                         color: Theme.of(context).brightness == Brightness.dark
@@ -46,7 +46,7 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                   ),
                   InkWell(
                     child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 7),
+                        padding: EdgeInsets.symmetric(horizontal: 7),
                         child: Stack(
                           children: [
                             Center(
@@ -104,7 +104,7 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                   ),
                   InkWell(
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 7),
+                      padding: EdgeInsets.symmetric(horizontal: 7),
                       child: Icon(
                         EvaIcons.search,
                         color: Theme.of(context).brightness == Brightness.dark
@@ -148,10 +148,10 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 60;
+  double get maxExtent => 56;
 
   @override
-  double get minExtent => 60;
+  double get minExtent => 56;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;

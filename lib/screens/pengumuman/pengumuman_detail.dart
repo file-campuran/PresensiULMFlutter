@@ -19,9 +19,7 @@ class _PengumumanDetailScreenState extends State<PengumumanDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppCustomAppBar.defaultAppBar(
-            leading: BackButton(),
-            title: Translate.of(context).translate('announcement'),
-            context: context),
+            leading: BackButton(), title: '', context: context),
         body: _buildContent(context, widget.message));
   }
 

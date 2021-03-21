@@ -38,6 +38,7 @@ class JadwalModel {
     this.ruleStatus,
     this.ruleStartTime,
     this.ruleEndTime,
+    this.tanggalManusia,
     this.ruleCreateAt,
     this.ruleUpdateAt,
     this.ruleIsUploadFile,
@@ -51,6 +52,7 @@ class JadwalModel {
   String ruleStatus;
   String ruleStartTime;
   String ruleEndTime;
+  String tanggalManusia;
   DateTime ruleCreateAt;
   DateTime ruleUpdateAt;
   bool ruleIsUploadFile;
@@ -69,6 +71,8 @@ class JadwalModel {
         ruleStatus: json["ruleStatus"],
         ruleStartTime: json["ruleStartTime"],
         ruleEndTime: json["ruleEndTime"],
+        tanggalManusia:
+            unixTimeStampToDateDocs(DateTime.now().millisecondsSinceEpoch),
         ruleCreateAt: DateTime.parse(json["ruleCreateAt"]),
         ruleUpdateAt: DateTime.parse(json["ruleUpdateAt"]),
         ruleIsUploadFile: json["ruleIsUploadFile"] == '1',

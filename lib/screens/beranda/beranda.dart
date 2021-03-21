@@ -47,6 +47,7 @@ class _BerandaState extends State<Beranda> {
           children: state.data.list
               .map(
                 (item) => AppTimmer(
+                  tanggal: item.tanggalManusia,
                   start: item.ruleStartTime,
                   end: item.ruleEndTime,
                   title: item.ruleStatus,
@@ -55,7 +56,7 @@ class _BerandaState extends State<Beranda> {
                   item: item.presensi != null
                       ? AppPresensiItem(
                           item: item.presensi,
-                          type: PresensiViewType.list,
+                          type: PresensiViewType.gird,
                           onPressed: (presensiModel) {
                             Navigator.pushNamed(context, Routes.riwayatDetail,
                                 arguments: presensiModel);
@@ -94,7 +95,7 @@ class _BerandaState extends State<Beranda> {
                   color: Theme.of(context).highlightColor,
                 ),
                 width: double.infinity,
-                height: 100,
+                height: 120,
               ),
             );
           },
@@ -170,7 +171,7 @@ class _BerandaState extends State<Beranda> {
                         if (images.isNotEmpty) ...[
                           Container(
                               width: MediaQuery.of(context).size.width,
-                              height: 250,
+                              height: 220,
                               child: HomeSwipe(images: images, height: 300)),
                         ],
                         SizedBox(
@@ -189,8 +190,8 @@ class _BerandaState extends State<Beranda> {
                                     children: [
                                       Container(
                                         padding: EdgeInsets.only(
-                                          left: 20,
-                                          right: 20,
+                                          left: Dimens.padding,
+                                          right: Dimens.padding,
                                           bottom: 5,
                                         ),
                                         child: Row(
@@ -217,7 +218,8 @@ class _BerandaState extends State<Beranda> {
                                       ),
                                       Container(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 5),
+                                            horizontal: Dimens.padding,
+                                            vertical: 5),
                                         child: AppAnnouncement(
                                           title: datas[0].judul,
                                           content: datas[0].konten,
@@ -252,8 +254,8 @@ class _BerandaState extends State<Beranda> {
                         ),
                         Container(
                           padding: EdgeInsets.only(
-                            left: 20,
-                            right: 20,
+                            left: Dimens.padding,
+                            right: Dimens.padding,
                             bottom: 5,
                           ),
                           child: Row(
@@ -275,8 +277,10 @@ class _BerandaState extends State<Beranda> {
                           ),
                         ),
                         Container(
-                          padding:
-                              EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                          padding: EdgeInsets.only(
+                              left: Dimens.padding,
+                              right: Dimens.padding,
+                              bottom: 20),
                           child: _buildListJadwal(),
                         ),
                       ],

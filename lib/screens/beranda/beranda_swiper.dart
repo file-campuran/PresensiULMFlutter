@@ -44,7 +44,7 @@ class HomeSwipe extends StatelessWidget {
             ),
           );
         },
-        autoplayDelay: 3000,
+        autoplayDelay: 5000,
         autoplayDisableOnInteraction: false,
         autoplay: true,
         itemCount: images.length,

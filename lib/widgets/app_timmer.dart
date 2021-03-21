@@ -1,6 +1,7 @@
 import 'package:absen_online/widgets/app_presensi_item.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:flutter/material.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:intl/intl.dart';
 
 class AppTimmer extends StatelessWidget {
@@ -9,6 +10,7 @@ class AppTimmer extends StatelessWidget {
   final String end;
   final String timeLeft;
   final String text;
+  final String tanggal;
   final bool isChecked;
   final AppPresensiItem item;
 
@@ -27,6 +29,7 @@ class AppTimmer extends StatelessWidget {
     this.end = '00:00',
     this.timeLeft = "5 jam 35 menit",
     this.item,
+    this.tanggal,
   }) : super(key: key);
 
   @override
@@ -35,7 +38,7 @@ class AppTimmer extends StatelessWidget {
         margin: const EdgeInsets.only(top: 7, bottom: 7),
         decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.dark
-              ? Theme.of(context).cardColor.withOpacity(0.8)
+              ? Theme.of(context).cardColor.withOpacity(1)
               : Colors.grey[50],
           borderRadius: BorderRadius.circular(10),
           // border: Border.all(color: Colors.grey, width: 0.2),
@@ -59,19 +62,14 @@ class AppTimmer extends StatelessWidget {
                             Text(
                               toBeginningOfSentenceCase(title) + '  ',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 13),
+                                  fontWeight: FontWeight.bold, fontSize: 17),
                             ),
-                            // Icon(
-                            //   Icons.notification_important,
-                            //   size: 16,
-                            //   color: Colors.green,
-                            // ),
                           ],
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            Icon(Icons.check_circle,
+                            Icon(EvaIcons.checkmarkCircle2,
                                 size: 25,
                                 color: isChecked ? Colors.green : Colors.grey)
                           ],
@@ -79,50 +77,71 @@ class AppTimmer extends StatelessWidget {
                       ],
                     ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              "Mulai",
-                              style: TextStyle(fontSize: 9),
+                              'Tanggal',
+                              maxLines: 1,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption
+                                  .copyWith(fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              start,
-                              style: TextStyle(fontSize: 9, color: Colors.grey),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(EvaIcons.calendarOutline,
+                                    size: 13,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .caption
+                                        .color),
+                                SizedBox(width: 2),
+                                Text(
+                                  tanggal,
+                                  maxLines: 1,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        SizedBox(width: 4),
-                        Container(
-                          height: 7,
-                          width: 7,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.grey),
-                        ),
-                        Text(
-                          ' - - - - - - - - - - ',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Container(
-                          height: 7,
-                          width: 7,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.green),
-                        ),
-                        SizedBox(width: 4),
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text(
-                              "Selesai",
-                              style: TextStyle(fontSize: 9),
+                              'Pukul',
+                              maxLines: 1,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption
+                                  .copyWith(fontWeight: FontWeight.w600),
                             ),
-                            Text(
-                              end,
-                              style: TextStyle(fontSize: 9, color: Colors.grey),
+                            SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(EvaIcons.clockOutline,
+                                    size: 13,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .caption
+                                        .color),
+                                SizedBox(width: 2),
+                                Text(
+                                  "$start s.d $end",
+                                  maxLines: 1,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption
+                                      .copyWith(fontWeight: FontWeight.w600),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -145,7 +164,7 @@ class AppTimmer extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(3),
                                       color: Theme.of(context)
                                           .primaryColor
-                                          .withOpacity(0.2),
+                                          .withOpacity(0.15),
                                     ),
                                     child: Text(
                                         timeLeft == 'null'
@@ -153,7 +172,7 @@ class AppTimmer extends StatelessWidget {
                                             : 'Sisa waktu',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            fontSize: 9,
+                                            fontSize: 11,
                                             color: Theme.of(context)
                                                 .primaryColor)),
                                   ),

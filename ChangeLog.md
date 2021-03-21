@@ -23,6 +23,7 @@ Aplikasi Presensi Berbasis Mobile adalah aplikasi yang digunakan oleh tenaga pen
 - Location Picker
 - Refresh Location
 - Reveal User Fake Gps and Root / Jailbreak
+- Notification History (*iOS Background Unsupported*)
 
 # 
 # 

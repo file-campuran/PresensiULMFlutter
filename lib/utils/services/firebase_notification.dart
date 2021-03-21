@@ -47,12 +47,14 @@ class FirebaseNotification {
           },
         );
 
-        Database db = await DBProvider.db.database;
-        await db.insert(
-          'Notification',
-          notificationModel.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.ignore,
-        );
+        if (notification['ignore'] == null) {
+          Database db = await DBProvider.db.database;
+          await db.insert(
+            'Notification',
+            notificationModel.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.ignore,
+          );
+        }
 
         LocalNotification().localNotifikasi(
             title: notification['title'], body: notification['body']);
@@ -94,7 +96,7 @@ class FirebaseNotification {
       onResume: (Map<String, dynamic> message) async {
         _showNotif("onResume", message);
       },
-      onBackgroundMessage: Environment.DEBUG
+      onBackgroundMessage: Environment.DEBUG || false
           ? null
           : Platform.isIOS
               ? null
@@ -120,8 +122,10 @@ class FirebaseNotification {
 
     if (UtilPreferences.containsKey(Preferences.notification)) {
       if (!notification.isEmpty) {
-        _notificationBloc.add(
-            OnAddNotification(notification['title'], notification['body']));
+        if (notification['ignore'] == null) {
+          _notificationBloc.add(
+              OnAddNotification(notification['title'], notification['body']));
+        }
         LocalNotification().localNotifikasi(
           title: notification['title'],
           body: notification['body'],

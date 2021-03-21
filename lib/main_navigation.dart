@@ -95,8 +95,7 @@ class _MainNavigationState extends State<MainNavigation> {
   List<BottomNavigationBarItem> _bottomBarItem(BuildContext context) {
     return [
       BottomNavigationBarItem(
-        icon: Icon(
-            _selectedIndex == 0 ? EvaIcons.calendar : EvaIcons.calendarOutline),
+        icon: Icon(_selectedIndex == 0 ? EvaIcons.home : EvaIcons.homeOutline),
         label: Translate.of(context).translate('home'),
       ),
       BottomNavigationBarItem(
