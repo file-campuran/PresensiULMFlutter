@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:io';
 
 class ReceivedNotification {
   final int id;
@@ -70,12 +73,38 @@ class LocalNotification {
     });
   }
 
-  Future localNotifikasi({String title, String body, String payload}) async {
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
+  _downloadAndSaveFile(String url, String fileName) async {
+    var directory = await getApplicationDocumentsDirectory();
+    var filePath = '${directory.path}/$fileName';
+    var response = await http.get(url);
+    var file = File(filePath);
+    await file.writeAsBytes(response.bodyBytes);
+    return filePath;
+  }
+
+  Future localNotifikasi(
+      {String title, String body, String image, String payload}) async {
+    var bigPictureStyleInformation;
+
+    if (image != null) {
+      var attachmentPicturePath =
+          await _downloadAndSaveFile(image, 'attachment_img.jpg');
+
+      bigPictureStyleInformation = BigPictureStyleInformation(
+        FilePathAndroidBitmap(attachmentPicturePath),
+        contentTitle: title,
+        htmlFormatContentTitle: true,
+        summaryText: body,
+        htmlFormatSummaryText: true,
+      );
+    }
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails('presensi',
+        'Presensi ULM', 'Presensi tenaga kependidikan dan tenaga pendidik',
         sound: RawResourceAndroidNotificationSound('notification_sound'),
         importance: Importance.max,
         priority: Priority.high,
+        styleInformation: bigPictureStyleInformation ?? null,
         ticker: 'ticker');
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(

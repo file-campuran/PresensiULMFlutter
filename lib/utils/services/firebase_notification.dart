@@ -43,6 +43,7 @@ class FirebaseNotification {
             "isRead": 0,
             "title": notification['title'],
             "content": notification['body'],
+            "image": notification['image'],
             "payload": notification['payload'],
           },
         );
@@ -57,7 +58,9 @@ class FirebaseNotification {
         }
 
         LocalNotification().localNotifikasi(
-            title: notification['title'], body: notification['body']);
+            title: notification['title'],
+            image: notification['image'],
+            body: notification['body']);
       }
     }
   }
@@ -96,7 +99,7 @@ class FirebaseNotification {
       onResume: (Map<String, dynamic> message) async {
         _showNotif("onResume", message);
       },
-      onBackgroundMessage: Environment.DEBUG || false
+      onBackgroundMessage: Environment.DEBUG && false
           ? null
           : Platform.isIOS
               ? null
@@ -123,12 +126,14 @@ class FirebaseNotification {
     if (UtilPreferences.containsKey(Preferences.notification)) {
       if (!notification.isEmpty) {
         if (notification['ignore'] == null) {
-          _notificationBloc.add(
-              OnAddNotification(notification['title'], notification['body']));
+          _notificationBloc.add(OnAddNotification(
+              notification['title'], notification['body'],
+              image: notification['image']));
         }
         LocalNotification().localNotifikasi(
           title: notification['title'],
           body: notification['body'],
+          image: notification['image'],
           payload: notification['payload'],
         );
       }

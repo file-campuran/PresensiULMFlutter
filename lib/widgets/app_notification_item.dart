@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AppNotificationItem extends StatelessWidget {
   final NotificationModel item;
@@ -89,11 +90,11 @@ class AppNotificationItem extends StatelessWidget {
               : null,
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              width: 48,
-              height: 48,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: item.isRead == 0
@@ -102,6 +103,7 @@ class AppNotificationItem extends StatelessWidget {
               ),
               child: Icon(
                 FontAwesomeIcons.bell,
+                size: 20,
                 color: Colors.white,
               ),
             ),
@@ -114,6 +116,7 @@ class AppNotificationItem extends StatelessWidget {
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Expanded(
                           child: Text(
@@ -135,29 +138,39 @@ class AppNotificationItem extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: 3),
                     ),
-                    // Html(
-                    //   useRichText: false,
-                    //   data: item.content
-                    //       .substring(0, 60)
-                    //       .replaceAll('\n', '</br>'),
-                    //   showImages: false,
-                    //   defaultTextStyle: Theme.of(context)
-                    //       .textTheme
-                    //       .caption
-                    //       .copyWith(fontWeight: FontWeight.w500),
-                    //   customTextAlign: (dom.Node node) {
-                    //     return TextAlign.left;
-                    //   },
-                    // ),
                     Text(
                       item.content ?? '',
-                      maxLines: 1,
+                      maxLines: 3,
                       style: Theme.of(context)
                           .textTheme
                           .caption
                           .copyWith(fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
-                    )
+                    ),
+                    if (item.image != null) ...[
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: Dimens.padding),
+                        width: double.infinity,
+                        height: 150,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: InkWell(
+                            onTap: () {
+                              List<ImageModel> image = [
+                                ImageModel(0, item.image, item.content)
+                              ];
+                              Navigator.pushNamed(context, Routes.photoPreview,
+                                  arguments: {'photo': image, 'index': 1});
+                              print('INKWELL');
+                            },
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: item.image,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),

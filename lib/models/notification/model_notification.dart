@@ -7,6 +7,7 @@ class NotificationModel {
   final String id;
   int isRead;
   final String title;
+  final String image;
   final String content;
   final DateTime date;
 
@@ -14,6 +15,7 @@ class NotificationModel {
     this.id,
     this.isRead,
     this.title,
+    this.image,
     this.content,
     this.date,
   });
@@ -23,6 +25,7 @@ class NotificationModel {
         id: json["id"].toString(),
         isRead: json["isRead"] ?? 0,
         title: json["title"],
+        image: json["image"] ?? null,
         content: json["content"] ?? '',
         date: json['date'] != null
             ? DateTime.tryParse(json['date'])
@@ -34,6 +37,7 @@ class NotificationModel {
       'id': id,
       'isRead': isRead,
       'title': title,
+      'image': image,
       'content': content,
       'date': date.toString(),
     };

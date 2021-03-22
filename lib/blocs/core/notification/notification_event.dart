@@ -5,8 +5,9 @@ class OnReadDataNotification extends NotificationEvent {}
 class OnAddNotification extends NotificationEvent {
   final String title;
   final String content;
+  final String image;
 
-  OnAddNotification(this.title, this.content);
+  OnAddNotification(this.title, this.content, {this.image});
 }
 
 class OnRemoveNotification extends NotificationEvent {

@@ -55,6 +55,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
           "isRead": 0,
           "title": event.title,
           "content": event.content,
+          "image": event.image,
         },
       );
 

@@ -86,7 +86,7 @@ class _NotificationListState extends State<NotificationList> {
                       Icon(
                         Icons.delete,
                         color: Colors.white,
-                      )
+                      ),
                     ],
                   ),
                 ),

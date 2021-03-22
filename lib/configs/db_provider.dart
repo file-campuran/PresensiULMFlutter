@@ -42,6 +42,7 @@ class DBProvider {
       id TEXT PRIMARY KEY,
       isRead INTEGER,
       title TEXT,
+      image TEXT,
       content TEXT,
       date TEXT
       )""";
