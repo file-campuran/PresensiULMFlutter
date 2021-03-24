@@ -133,7 +133,7 @@ class _HariLiburState extends State<HariLibur> {
           // padding: EdgeInsets.symmetric(horizontal: Dimens.padding),
           child: Wrap(
             runAlignment: WrapAlignment.center,
-            children: [1, 2, 3, 4, 5, 6, 7]
+            children: List.generate(7, (index) => index)
                 .map((dummy) => _hariKerjaLoading())
                 .toList(),
           ),

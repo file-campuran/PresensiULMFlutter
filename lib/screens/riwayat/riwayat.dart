@@ -320,9 +320,14 @@ class _RiwayatState extends State<Riwayat> {
   void _onPhotoPreview() {
     Navigator.pushNamed(
       context,
-      Routes.gallery,
-      arguments: imageModel,
+      Routes.photoPreview,
+      arguments: {'photo': imageModel, 'index': 0},
     );
+    // Navigator.pushNamed(
+    //   context,
+    //   Routes.gallery,
+    //   arguments: imageModel,
+    // );
   }
 
   ///Widget build Content

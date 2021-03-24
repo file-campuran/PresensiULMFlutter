@@ -21,8 +21,8 @@ class HomeSwipe extends StatelessWidget {
         onTap: (_) {
           Navigator.pushNamed(
             context,
-            Routes.gallery,
-            arguments: images,
+            Routes.photoPreview,
+            arguments: {'photo': images, 'index': 0},
           );
         },
         itemBuilder: (BuildContext context, int index) {
