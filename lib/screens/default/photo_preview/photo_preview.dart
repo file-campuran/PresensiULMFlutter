@@ -56,6 +56,18 @@ class _PhotoPreviewState extends State<PhotoPreview> {
         centerTitle: true,
         backgroundColor: Colors.black,
         brightness: Brightness.dark,
+        actions: [
+          Container(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              "${Translate.of(context).translate('image')} ${currentIndex + 1}",
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2
+                  .copyWith(color: Colors.white, fontWeight: FontWeight.w500),
+            ),
+          )
+        ],
       ),
       body: Stack(
         alignment: Alignment.bottomRight,
@@ -68,16 +80,34 @@ class _PhotoPreviewState extends State<PhotoPreview> {
             onPageChanged: onPageChanged,
             scrollDirection: Axis.horizontal,
           ),
-          Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              "${Translate.of(context).translate('image')} ${currentIndex + 1}",
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle2
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.w500),
+          Positioned(
+            bottom: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.all(20.0),
+                  decoration: new BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(6)),
+                    gradient: new LinearGradient(
+                      end: const Alignment(0.0, -1),
+                      begin: const Alignment(0.0, 0.1),
+                      colors: <Color>[
+                        const Color(0x8A000000),
+                        Colors.black12.withOpacity(0.0)
+                      ],
+                    ),
+                  ),
+                  child: Text(
+                    "${widget.galleryList[currentIndex].description ?? ''}",
+                    style: Theme.of(context).textTheme.subtitle2.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.w500),
+                  ),
+                ),
+              ],
             ),
-          )
+          ),
         ],
       ),
     );

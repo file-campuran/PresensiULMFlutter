@@ -5,10 +5,11 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/blocs/bloc.dart';
-import 'package:absen_online/models/model.dart';
 import 'dart:io';
-import 'dart:async';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+// import 'package:absen_online/models/model.dart';
+// import 'dart:async';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseNotification {
   ///Singleton factory
@@ -23,47 +24,47 @@ class FirebaseNotification {
   final _firebaseMessaging = FirebaseMessaging();
 
   // ignore: unused_element
-  static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
-    dynamic notification;
-    if (Platform.isAndroid) {
-      notification =
-          message['data'].isEmpty ? message['notification'] : message['data'];
-    } else {
-      notification = message['aps']['alert'];
-    }
-    UtilLogger.log("onBackground", '$message');
+  // static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  //   dynamic notification;
+  //   if (Platform.isAndroid) {
+  //     notification =
+  //         message['data'].isEmpty ? message['notification'] : message['data'];
+  //   } else {
+  //     notification = message['aps']['alert'];
+  //   }
+  //   UtilLogger.log("onBackground", '$message');
 
-    Application.preferences = await SharedPreferences.getInstance();
+  //   Application.preferences = await SharedPreferences.getInstance();
 
-    if (UtilPreferences.containsKey(Preferences.notification)) {
-      if (!notification.isEmpty) {
-        final notificationModel = NotificationModel.fromJson(
-          {
-            "id": new DateTime.now().millisecondsSinceEpoch,
-            "isRead": 0,
-            "title": notification['title'],
-            "content": notification['body'],
-            "image": notification['image'],
-            "payload": notification['payload'],
-          },
-        );
+  //   if (UtilPreferences.containsKey(Preferences.notification)) {
+  //     if (!notification.isEmpty) {
+  //       final notificationModel = NotificationModel.fromJson(
+  //         {
+  //           "id": new DateTime.now().millisecondsSinceEpoch,
+  //           "isRead": 0,
+  //           "title": notification['title'],
+  //           "content": notification['body'],
+  //           "image": notification['image'],
+  //           "payload": notification['payload'],
+  //         },
+  //       );
 
-        if (notification['ignore'] == null) {
-          Database db = await DBProvider.db.database;
-          await db.insert(
-            'Notification',
-            notificationModel.toJson(),
-            conflictAlgorithm: ConflictAlgorithm.ignore,
-          );
-        }
+  //       if (notification['ignore'] == null) {
+  //         Database db = await DBProvider.db.database;
+  //         await db.insert(
+  //           'Notification',
+  //           notificationModel.toJson(),
+  //           conflictAlgorithm: ConflictAlgorithm.ignore,
+  //         );
+  //       }
 
-        LocalNotification().localNotifikasi(
-            title: notification['title'],
-            image: notification['image'],
-            body: notification['body']);
-      }
-    }
-  }
+  //       LocalNotification().localNotifikasi(
+  //           title: notification['title'],
+  //           image: notification['image'],
+  //           body: notification['body']);
+  //     }
+  //   }
+  // }
 
   void _iOSPermission() {
     _firebaseMessaging.requestNotificationPermissions(
@@ -91,19 +92,20 @@ class FirebaseNotification {
     _firebaseMessaging.requestNotificationPermissions();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        _showNotif("onMessage", message);
+        _showNotif("onMessage", message,
+            showLocalNotif: true, context: context);
       },
       onLaunch: (Map<String, dynamic> message) async {
-        _showNotif("onLunch", message);
+        _showNotif("onLunch", message, context: context);
       },
       onResume: (Map<String, dynamic> message) async {
-        _showNotif("onResume", message);
+        _showNotif("onResume", message, context: context);
       },
-      onBackgroundMessage: Environment.DEBUG && false
-          ? null
-          : Platform.isIOS
-              ? null
-              : myBackgroundMessageHandler,
+      // onBackgroundMessage: Environment.DEBUG && false
+      //     ? null
+      //     : Platform.isIOS
+      //         ? null
+      //         : myBackgroundMessageHandler,
     );
     _firebaseMessaging.subscribeToTopic('general');
     _firebaseMessaging.subscribeToTopic(Application.user.role);
@@ -113,7 +115,8 @@ class FirebaseNotification {
     PresensiRepository.setFirebaseToken();
   }
 
-  void _showNotif(String log, Map<String, dynamic> message) {
+  void _showNotif(String log, Map<String, dynamic> message,
+      {bool showLocalNotif: false, BuildContext context}) {
     dynamic notification;
     if (Platform.isAndroid) {
       notification =
@@ -130,12 +133,22 @@ class FirebaseNotification {
               notification['title'], notification['body'],
               image: notification['image']));
         }
-        LocalNotification().localNotifikasi(
-          title: notification['title'],
-          body: notification['body'],
-          image: notification['image'],
-          payload: notification['payload'],
-        );
+
+        if (showLocalNotif) {
+          LocalNotification().localNotifikasi(
+            title: notification['title'],
+            body: notification['body'],
+            image: notification['image'],
+            payload: notification['payload'],
+          );
+        } else {
+          String payload = notification['payload'];
+          if (payload.isNotEmpty) {
+            dynamic routes = json.decode(payload);
+            UtilLogger.log('ROUTES', routes);
+            Navigator.of(context).pushNamed(routes['route']);
+          }
+        }
       }
     }
   }

@@ -77,6 +77,11 @@ class PengumumanCubit extends Cubit<PengumumanState> {
     loadData();
   }
 
+  reload() async {
+    listMessage = [];
+    readMessage();
+  }
+
   /*
    * Read = 1
    * Unread = 0

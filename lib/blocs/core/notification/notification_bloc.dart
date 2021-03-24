@@ -72,6 +72,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       yield NotificationData(_notificationPage);
     }
 
+    if (event is OnReloadNotification) {
+      _notificationPage = null;
+      await _getNotificationData();
+      _changeNotificationModel();
+      yield NotificationData(_notificationPage);
+    }
+
     if (event is OnRemoveNotification) {
       Database db = await DBProvider.db.database;
       await db.delete('Notification', where: 'id = ?', whereArgs: [event.id]);

@@ -10,7 +10,7 @@ class DBProvider {
 
   static final _dbName = 'Presensi2.db';
 
-  static final _dbVersion = 4;
+  static final _dbVersion = 6;
 
   static final DBProvider db = DBProvider._();
 
@@ -62,7 +62,7 @@ class DBProvider {
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 3) {
+    if (oldVersion < _dbVersion) {
       try {
         // await db.execute("DROP TABLE IF EXISTS Messages");
         // await db.execute(_createTableMessages);

@@ -74,6 +74,8 @@ class _PengumumanState extends State<Pengumuman> {
           enablePullUp: false,
           onRefresh: _onRefresh,
           controller: _controller,
+          scrollController: _scrollController,
+          scrollDirection: Axis.vertical,
           header: ClassicHeader(
             idleText: Translate.of(context).translate('pull_down_refresh'),
             refreshingText: Translate.of(context).translate('refreshing'),
@@ -107,7 +109,7 @@ class _PengumumanState extends State<Pengumuman> {
   }
 
   Future<void> _onRefresh() async {
-    _pengumumanCubit.loadData();
+    _pengumumanCubit.reload();
     _controller.refreshCompleted();
   }
 

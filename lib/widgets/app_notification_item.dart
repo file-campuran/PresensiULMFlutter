@@ -160,8 +160,7 @@ class AppNotificationItem extends StatelessWidget {
                                 ImageModel(0, item.image, item.content)
                               ];
                               Navigator.pushNamed(context, Routes.photoPreview,
-                                  arguments: {'photo': image, 'index': 1});
-                              print('INKWELL');
+                                  arguments: {'photo': image, 'index': 0});
                             },
                             child: CachedNetworkImage(
                               fit: BoxFit.cover,

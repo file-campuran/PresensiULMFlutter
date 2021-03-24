@@ -21,12 +21,14 @@ class Beranda extends StatefulWidget {
 class _BerandaState extends State<Beranda> {
   JadwalCubit _jadwalCubit;
   PengumumanCubit _pengumumanCubit;
+  NotificationBloc _notificationBloc;
   final _controller = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     // _loadData();
     _pengumumanCubit = BlocProvider.of<PengumumanCubit>(context);
+    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
     _jadwalCubit = BlocProvider.of<JadwalCubit>(context);
     _jadwalCubit.initData();
     _pengumumanCubit.readMessage();
@@ -56,7 +58,7 @@ class _BerandaState extends State<Beranda> {
                   item: item.presensi != null
                       ? AppPresensiItem(
                           item: item.presensi,
-                          type: PresensiViewType.gird,
+                          type: PresensiViewType.list,
                           onPressed: (presensiModel) {
                             Navigator.pushNamed(context, Routes.riwayatDetail,
                                 arguments: presensiModel);
@@ -107,6 +109,7 @@ class _BerandaState extends State<Beranda> {
   Future<void> _onRefresh() async {
     _jadwalCubit.reInit();
     _jadwalCubit.initData();
+    _notificationBloc.add(OnReloadNotification());
     _controller.refreshCompleted();
   }
 

@@ -24,4 +24,6 @@ class OnMarkReadNotification extends NotificationEvent {
 
 class OnMarkAllReadNotification extends NotificationEvent {}
 
+class OnReloadNotification extends NotificationEvent {}
+
 class OnGetCountNotification extends NotificationEvent {}

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:absen_online/utils/utils.dart';
+import 'package:absen_online/configs/config.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
@@ -120,5 +121,8 @@ class LocalNotification {
   }
 
   BuildContext context;
-  Future<void> onSelectNotification(String payload) async {}
+  Future<void> onSelectNotification(String payload) async {
+    // CURENTLY NOT WORK
+    // Navigator.pushNamed(context, Routes.notification);
+  }
 }

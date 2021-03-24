@@ -21,6 +21,7 @@ class Routes {
   static const String messageDetail = "/messageDetail";
   static const String pengumumanDetail = "/pengumumanDetail";
   static const String version = "/version";
+  static const String pengumuman = "/pengumuman";
   static const String hariLibur = "/hariLibur";
 
   Route<dynamic> generateRoute(RouteSettings settings) {
@@ -67,6 +68,9 @@ class Routes {
 
       case fontSetting:
         return CustomRoutes(page: FontSetting());
+
+      case pengumuman:
+        return CustomRoutes(page: Pengumuman());
 
       case location:
         final location = settings.arguments;
