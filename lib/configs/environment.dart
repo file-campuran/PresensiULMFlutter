@@ -22,6 +22,9 @@ class Environment {
   static String namaCs = 'Muhammad Nebi Beri Muslim';
   static String noCs = '+6282149091899';
 
+  // IMAGE
+  static String logoUlmOnline = "https://simari.ulm.ac.id/logo/ulm.png";
+
   factory Environment.fromJson(Map<String, dynamic> json) {
     Environment.apiKey = json['key'] ?? Environment.apiKey;
     Environment.apiUrl = json['url'] ?? Environment.apiUrl;

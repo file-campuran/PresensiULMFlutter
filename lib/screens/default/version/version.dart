@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -32,10 +33,9 @@ class Version extends StatelessWidget {
                 Container(
                   height: 65,
                   width: 65,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(Images.Logo),
-                    ),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: Environment.logoUlmOnline,
                   ),
                 ),
                 Container(
@@ -53,7 +53,7 @@ class Version extends StatelessWidget {
                       Text(Environment.VERSION,
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Color(0xff10875F),
+                            color: Color(0xff27AE60),
                             fontWeight: FontWeight.w700,
                           )),
                     ],

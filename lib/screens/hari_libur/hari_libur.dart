@@ -73,6 +73,46 @@ class _HariLiburState extends State<HariLibur> {
     return parsedString;
   }
 
+  Widget _calendar({String dayname, String date}) {
+    return Container(
+      width: 50,
+      height: 50,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(color: Colors.grey),
+          ]),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 2),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            ),
+            width: double.infinity,
+            child: Text(
+              dayname,
+              textAlign: TextAlign.center,
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+              child: Center(
+            child: Text(
+              date,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+
   _buildLoading() {
     if (_errorData != null) {
       return Center(
@@ -86,80 +126,86 @@ class _HariLiburState extends State<HariLibur> {
       );
     }
 
-    return ListView.builder(
-      itemCount: 5,
-      itemBuilder: (context, index) => Container(
-          margin: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
-          child: Container(
-            margin: EdgeInsets.all(15.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AppSkeleton(
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10.0, top: 0.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Theme.of(context).highlightColor,
-                    ),
-                    width: 24.0,
-                    height: 24.0,
-                  ),
-                ),
-                Expanded(
-                  child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          // padding: EdgeInsets.symmetric(horizontal: Dimens.padding),
+          child: Wrap(
+            runAlignment: WrapAlignment.center,
+            children: [1, 2, 3, 4, 5, 6, 7]
+                .map((dummy) => _hariKerjaLoading())
+                .toList(),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: 5,
+            itemBuilder: (context, index) => Container(
+                margin: EdgeInsets.fromLTRB(0.0, 2.0, 0.0, 0.0),
+                child: Container(
+                  margin: EdgeInsets.all(15.0),
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      AppSkeleton(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Theme.of(context).highlightColor,
-                          ),
-                          width: MediaQuery.of(context).size.width,
-                          height: 20.0,
-                          margin: EdgeInsets.only(bottom: 5.0),
-                        ),
-                      ),
-                      AppSkeleton(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Theme.of(context).highlightColor,
-                          ),
-                          width: MediaQuery.of(context).size.width,
-                          height: 20.0,
-                          margin: EdgeInsets.only(top: 10.0, bottom: 5.0),
-                        ),
-                      ),
-                      AppSkeleton(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Theme.of(context).highlightColor,
-                          ),
-                          width: MediaQuery.of(context).size.width,
-                          height: 20.0,
-                          margin: EdgeInsets.only(bottom: 5.0),
-                        ),
-                      ),
-                      AppSkeleton(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Theme.of(context).highlightColor,
-                          ),
-                          width: MediaQuery.of(context).size.width - 250,
-                          height: 15.0,
-                          margin: EdgeInsets.only(bottom: 5.0),
+                      AppCalendarIcon(),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            AppSkeleton(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                height: 20.0,
+                                margin: EdgeInsets.only(bottom: 5.0),
+                              ),
+                            ),
+                            AppSkeleton(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                height: 20.0,
+                                margin: EdgeInsets.only(top: 10.0, bottom: 5.0),
+                              ),
+                            ),
+                            AppSkeleton(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                height: 20.0,
+                                margin: EdgeInsets.only(bottom: 5.0),
+                              ),
+                            ),
+                            AppSkeleton(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Theme.of(context).highlightColor,
+                                ),
+                                width: MediaQuery.of(context).size.width - 250,
+                                height: 15.0,
+                                margin: EdgeInsets.only(bottom: 5.0),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-          )),
+                )),
+          ),
+        ),
+      ],
     );
   }
 
@@ -167,7 +213,7 @@ class _HariLiburState extends State<HariLibur> {
     return Container(
       width: 80,
       margin: EdgeInsets.only(right: 5, bottom: 10),
-      padding: EdgeInsets.only(left: 10, right: 10, top: 6, bottom: 6),
+      padding: EdgeInsets.only(left: 10, right: 0, top: 6, bottom: 6),
       decoration: BoxDecoration(
         border: Border.all(
           color: active ? Colors.transparent : Colors.grey.withOpacity(0.5),
@@ -198,6 +244,28 @@ class _HariLiburState extends State<HariLibur> {
     );
   }
 
+  Widget _hariKerjaLoading() {
+    return Container(
+      margin: EdgeInsets.only(right: 5, bottom: 10),
+      padding: EdgeInsets.only(left: 10, right: 10, top: 6, bottom: 6),
+      width: 80,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(7),
+      ),
+      child: AppSkeleton(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Theme.of(context).highlightColor,
+          ),
+          width: MediaQuery.of(context).size.width - 250,
+          height: 22,
+          margin: EdgeInsets.only(bottom: 5.0),
+        ),
+      ),
+    );
+  }
+
   _buildContent() {
     if (listEvent == null) {
       return _buildLoading();
@@ -215,10 +283,11 @@ class _HariLiburState extends State<HariLibur> {
             ),
           ),
           for (EventModel event in listEvent.list) ...[
-            GestureDetector(
+            InkWell(
               child: Container(
                 // color: Theme.of(context).dialogBackgroundColor,
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.symmetric(
+                    horizontal: Dimens.padding, vertical: 8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -226,11 +295,7 @@ class _HariLiburState extends State<HariLibur> {
                         margin: EdgeInsets.only(right: 10),
                         child: Stack(
                           children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: 2.0),
-                              child: Icon(EvaIcons.calendarOutline,
-                                  color: Theme.of(context).primaryColor),
-                            ),
+                            AppCalendarIcon(date: event.tanggal),
                           ],
                         )),
                     Expanded(

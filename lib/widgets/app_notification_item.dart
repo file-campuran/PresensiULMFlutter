@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:absen_online/configs/config.dart';
+import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,6 +11,8 @@ class AppNotificationItem extends StatelessWidget {
   final NotificationModel item;
   final VoidCallback onPressed;
   final bool border;
+
+  NotificationBloc _notificationBloc;
 
   AppNotificationItem({
     Key key,
@@ -20,6 +23,8 @@ class AppNotificationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+
     if (item == null) {
       return Shimmer.fromColors(
         child: Container(
@@ -159,6 +164,8 @@ class AppNotificationItem extends StatelessWidget {
                               List<ImageModel> image = [
                                 ImageModel(0, item.image, item.content)
                               ];
+                              _notificationBloc
+                                  .add(OnMarkReadNotification(item.id));
                               Navigator.pushNamed(context, Routes.photoPreview,
                                   arguments: {'photo': image, 'index': 0});
                             },

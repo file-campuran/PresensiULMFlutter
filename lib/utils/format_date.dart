@@ -1,5 +1,19 @@
 import 'package:intl/intl.dart';
 
+Map<String, String> unixTimeStampToDateAndDayName(int millisecond) {
+  var formatDayName = DateFormat('EEEE', 'id');
+  var dayName =
+      formatDayName.format(DateTime.fromMillisecondsSinceEpoch(millisecond));
+
+  var date = DateFormat('dd', 'id');
+  var dateName = date.format(DateTime.fromMillisecondsSinceEpoch(millisecond));
+
+  return {
+    'dayName': dayName,
+    'date': dateName,
+  };
+}
+
 String unixTimeStampToDateTime(int millisecond) {
   var format = DateFormat('EEEE, dd MMMM yyyy HH:mm', 'id');
   var dateTimeString =

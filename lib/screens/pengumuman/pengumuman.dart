@@ -7,7 +7,7 @@ import 'package:absen_online/models/model.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+// import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Pengumuman extends StatefulWidget {
   Pengumuman({Key key}) : super(key: key);
@@ -24,19 +24,13 @@ class _PengumumanState extends State<Pengumuman> {
 
   PengumumanCubit _pengumumanCubit;
   bool showMarkAll = true;
-  final _controller = RefreshController(initialRefresh: false);
+  // final _controller = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     _pengumumanCubit = BlocProvider.of<PengumumanCubit>(context);
     _pengumumanCubit.readMessage();
     super.initState();
-  }
-
-  ///On load more
-  Future<void> _onLoading() async {
-    await Future.delayed(Duration(seconds: 1));
-    _controller.loadComplete();
   }
 
   @override
@@ -69,39 +63,43 @@ class _PengumumanState extends State<Pengumuman> {
             : null,
       ),
       body: SafeArea(
-        child: SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: false,
+        child: RefreshIndicator(
           onRefresh: _onRefresh,
-          controller: _controller,
-          scrollController: _scrollController,
-          scrollDirection: Axis.vertical,
-          header: ClassicHeader(
-            idleText: Translate.of(context).translate('pull_down_refresh'),
-            refreshingText: Translate.of(context).translate('refreshing'),
-            completeText: Translate.of(context).translate('refresh_completed'),
-            releaseText: Translate.of(context).translate('release_to_refresh'),
-            refreshingIcon: SizedBox(
-              width: 16.0,
-              height: 16.0,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          ),
-          footer: ClassicFooter(
-            loadingText: Translate.of(context).translate('loading'),
-            canLoadingText: Translate.of(context).translate(
-              'release_to_load_more',
-            ),
-            idleText: Translate.of(context).translate('pull_to_load_more'),
-            loadStyle: LoadStyle.ShowWhenLoading,
-            loadingIcon: SizedBox(
-              width: 16.0,
-              height: 16.0,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          ),
           child: _buildContent(),
         ),
+        // child: SmartRefresher(
+        //   enablePullDown: true,
+        //   enablePullUp: false,
+        //   onRefresh: _onRefresh,
+        //   controller: _controller,
+        //   scrollController: _scrollController,
+        //   scrollDirection: Axis.vertical,
+        //   header: ClassicHeader(
+        //     idleText: Translate.of(context).translate('pull_down_refresh'),
+        //     refreshingText: Translate.of(context).translate('refreshing'),
+        //     completeText: Translate.of(context).translate('refresh_completed'),
+        //     releaseText: Translate.of(context).translate('release_to_refresh'),
+        //     refreshingIcon: SizedBox(
+        //       width: 16.0,
+        //       height: 16.0,
+        //       child: CircularProgressIndicator(strokeWidth: 2),
+        //     ),
+        //   ),
+        //   footer: ClassicFooter(
+        //     loadingText: Translate.of(context).translate('loading'),
+        //     canLoadingText: Translate.of(context).translate(
+        //       'release_to_load_more',
+        //     ),
+        //     idleText: Translate.of(context).translate('pull_to_load_more'),
+        //     loadStyle: LoadStyle.ShowWhenLoading,
+        //     loadingIcon: SizedBox(
+        //       width: 16.0,
+        //       height: 16.0,
+        //       child: CircularProgressIndicator(strokeWidth: 2),
+        //     ),
+        //   ),
+        //   child: _buildContent(),
+        // ),
       ),
       floatingActionButton: _appBadge(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -110,7 +108,7 @@ class _PengumumanState extends State<Pengumuman> {
 
   Future<void> _onRefresh() async {
     _pengumumanCubit.reload();
-    _controller.refreshCompleted();
+    // _controller.refreshCompleted();
   }
 
   Widget _appBadge() {

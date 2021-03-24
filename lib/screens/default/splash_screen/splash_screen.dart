@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
@@ -35,7 +36,15 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Image.asset(Images.Logo, width: 120, height: 120),
+                Container(
+                  height: 120,
+                  width: 120,
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: Environment.logoUlmOnline,
+                  ),
+                ),
+                // Image.asset(Images.Logo, width: 120, height: 120),
               ],
             ),
           ),

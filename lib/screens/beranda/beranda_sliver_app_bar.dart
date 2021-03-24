@@ -4,6 +4,7 @@ import 'package:absen_online/models/model.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -125,10 +126,9 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
               Container(
                 height: 30,
                 width: 30,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(Images.Logo),
-                  ),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: Environment.logoUlmOnline,
                 ),
               ),
               SizedBox(width: 15),

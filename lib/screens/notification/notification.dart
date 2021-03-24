@@ -3,7 +3,7 @@ import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/widgets/widget.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+// import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationList extends StatefulWidget {
   NotificationList({Key key}) : super(key: key);
@@ -15,7 +15,7 @@ class NotificationList extends StatefulWidget {
 }
 
 class _NotificationListState extends State<NotificationList> {
-  final _controller = RefreshController(initialRefresh: false);
+  // final _controller = RefreshController(initialRefresh: false);
 
   NotificationBloc _notificationBloc;
 
@@ -30,13 +30,13 @@ class _NotificationListState extends State<NotificationList> {
   ///On load more
   Future<void> _onLoading() async {
     await Future.delayed(Duration(seconds: 1));
-    _controller.loadComplete();
+    // _controller.loadComplete();
   }
 
   ///On refresh
   Future<void> _onRefresh() async {
     _notificationBloc.add(OnReadDataNotification());
-    _controller.refreshCompleted();
+    // _controller.refreshCompleted();
   }
 
   ///Build list
@@ -118,38 +118,42 @@ class _NotificationListState extends State<NotificationList> {
           title: Translate.of(context).translate('notification'),
           context: context),
       body: SafeArea(
-        child: SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: false,
+        child: RefreshIndicator(
           onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          controller: _controller,
-          header: ClassicHeader(
-            idleText: Translate.of(context).translate('pull_down_refresh'),
-            refreshingText: Translate.of(context).translate('refreshing'),
-            completeText: Translate.of(context).translate('refresh_completed'),
-            releaseText: Translate.of(context).translate('release_to_refresh'),
-            refreshingIcon: SizedBox(
-              width: 16.0,
-              height: 16.0,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          ),
-          footer: ClassicFooter(
-            loadingText: Translate.of(context).translate('loading'),
-            canLoadingText: Translate.of(context).translate(
-              'release_to_load_more',
-            ),
-            idleText: Translate.of(context).translate('pull_to_load_more'),
-            loadStyle: LoadStyle.ShowWhenLoading,
-            loadingIcon: SizedBox(
-              width: 16.0,
-              height: 16.0,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          ),
           child: _buildList(),
         ),
+        // child: SmartRefresher(
+        //   enablePullDown: true,
+        //   enablePullUp: false,
+        //   onRefresh: _onRefresh,
+        //   onLoading: _onLoading,
+        //   controller: _controller,
+        //   header: ClassicHeader(
+        //     idleText: Translate.of(context).translate('pull_down_refresh'),
+        //     refreshingText: Translate.of(context).translate('refreshing'),
+        //     completeText: Translate.of(context).translate('refresh_completed'),
+        //     releaseText: Translate.of(context).translate('release_to_refresh'),
+        //     refreshingIcon: SizedBox(
+        //       width: 16.0,
+        //       height: 16.0,
+        //       child: CircularProgressIndicator(strokeWidth: 2),
+        //     ),
+        //   ),
+        //   footer: ClassicFooter(
+        //     loadingText: Translate.of(context).translate('loading'),
+        //     canLoadingText: Translate.of(context).translate(
+        //       'release_to_load_more',
+        //     ),
+        //     idleText: Translate.of(context).translate('pull_to_load_more'),
+        //     loadStyle: LoadStyle.ShowWhenLoading,
+        //     loadingIcon: SizedBox(
+        //       width: 16.0,
+        //       height: 16.0,
+        //       child: CircularProgressIndicator(strokeWidth: 2),
+        //     ),
+        //   ),
+        //   child: _buildList(),
+        // ),
       ),
       floatingActionButton: _appBadge(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

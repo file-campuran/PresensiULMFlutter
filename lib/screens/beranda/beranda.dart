@@ -109,7 +109,7 @@ class _BerandaState extends State<Beranda> {
   Future<void> _onRefresh() async {
     _jadwalCubit.reInit();
     _jadwalCubit.initData();
-    _notificationBloc.add(OnReloadNotification());
+    // _notificationBloc.add(OnReloadNotification());
     _controller.refreshCompleted();
   }
 
