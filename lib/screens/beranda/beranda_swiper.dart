@@ -4,6 +4,7 @@ import 'package:absen_online/models/model.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/services.dart';
 
 class HomeSwipe extends StatelessWidget {
   HomeSwipe({
@@ -18,6 +19,7 @@ class HomeSwipe extends StatelessWidget {
   Widget build(BuildContext context) {
     if (images.length > 0) {
       return Swiper(
+        viewportFraction: 0.9,
         onTap: (_) {
           Navigator.pushNamed(
             context,
@@ -27,8 +29,8 @@ class HomeSwipe extends StatelessWidget {
         },
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.symmetric(
-                vertical: Dimens.padding, horizontal: Dimens.padding),
+            margin:
+                EdgeInsets.symmetric(vertical: Dimens.padding, horizontal: 7),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
             ),

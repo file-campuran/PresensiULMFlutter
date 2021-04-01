@@ -31,7 +31,7 @@ class AppCalendarIcon extends StatelessWidget {
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
-            BoxShadow(color: Colors.grey),
+            BoxShadow(color: Colors.grey[300]),
           ]),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

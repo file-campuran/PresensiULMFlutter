@@ -40,14 +40,11 @@ class MyLocation {
     return currentLocation;
   }
 
-  inAreaPresensi() {
+  inAreaPresensi(Position position) {
     String result = 'Tidak dalam jangkauan area presensi';
     for (var zone in Application.remoteConfig.presensi.zone) {
       double distanceInMeters = Geolocator.distanceBetween(
-          currentLocation.latitude,
-          currentLocation.longitude,
-          zone.latitude,
-          zone.longitude);
+          position.latitude, position.longitude, zone.latitude, zone.longitude);
       if (distanceInMeters < zone.radius) {
         UtilLogger.log('PRESENSI IN AREA', zone.name);
         result =

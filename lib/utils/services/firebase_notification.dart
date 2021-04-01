@@ -7,9 +7,9 @@ import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'dart:io';
 import 'dart:convert';
-// import 'package:absen_online/models/model.dart';
+import 'package:absen_online/models/model.dart';
 // import 'dart:async';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseNotification {
   ///Singleton factory
@@ -24,47 +24,47 @@ class FirebaseNotification {
   final _firebaseMessaging = FirebaseMessaging();
 
   // ignore: unused_element
-  // static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
-  //   dynamic notification;
-  //   if (Platform.isAndroid) {
-  //     notification =
-  //         message['data'].isEmpty ? message['notification'] : message['data'];
-  //   } else {
-  //     notification = message['aps']['alert'];
-  //   }
-  //   UtilLogger.log("onBackground", '$message');
+  static Future myBackgroundMessageHandler(Map<String, dynamic> message) async {
+    dynamic notification;
+    if (Platform.isAndroid) {
+      notification =
+          message['data'].isEmpty ? message['notification'] : message['data'];
+    } else {
+      notification = message['aps']['alert'];
+    }
+    UtilLogger.log("onBackground", '$message');
 
-  //   Application.preferences = await SharedPreferences.getInstance();
+    Application.preferences = await SharedPreferences.getInstance();
 
-  //   if (UtilPreferences.containsKey(Preferences.notification)) {
-  //     if (!notification.isEmpty) {
-  //       final notificationModel = NotificationModel.fromJson(
-  //         {
-  //           "id": new DateTime.now().millisecondsSinceEpoch,
-  //           "isRead": 0,
-  //           "title": notification['title'],
-  //           "content": notification['body'],
-  //           "image": notification['image'],
-  //           "payload": notification['payload'],
-  //         },
-  //       );
+    if (UtilPreferences.containsKey(Preferences.notification)) {
+      if (!notification.isEmpty) {
+        final notificationModel = NotificationModel.fromJson(
+          {
+            "id": new DateTime.now().millisecondsSinceEpoch,
+            "isRead": 0,
+            "title": notification['title'],
+            "content": notification['body'],
+            "image": notification['image'],
+            "payload": notification['payload'],
+          },
+        );
 
-  //       if (notification['ignore'] == null) {
-  //         Database db = await DBProvider.db.database;
-  //         await db.insert(
-  //           'Notification',
-  //           notificationModel.toJson(),
-  //           conflictAlgorithm: ConflictAlgorithm.ignore,
-  //         );
-  //       }
+        if (notification['ignore'] == null) {
+          Database db = await DBProvider.db.database;
+          await db.insert(
+            'Notification',
+            notificationModel.toJson(),
+            conflictAlgorithm: ConflictAlgorithm.ignore,
+          );
+        }
 
-  //       LocalNotification().localNotifikasi(
-  //           title: notification['title'],
-  //           image: notification['image'],
-  //           body: notification['body']);
-  //     }
-  //   }
-  // }
+        LocalNotification().localNotifikasi(
+            title: notification['title'],
+            image: notification['image'],
+            body: notification['body']);
+      }
+    }
+  }
 
   void _iOSPermission() {
     _firebaseMessaging.requestNotificationPermissions(
@@ -106,6 +106,7 @@ class FirebaseNotification {
       //     : Platform.isIOS
       //         ? null
       //         : myBackgroundMessageHandler,
+      onBackgroundMessage: myBackgroundMessageHandler
     );
     _firebaseMessaging.subscribeToTopic('general');
     _firebaseMessaging.subscribeToTopic(Application.user.role);

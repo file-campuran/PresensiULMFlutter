@@ -73,46 +73,6 @@ class _HariLiburState extends State<HariLibur> {
     return parsedString;
   }
 
-  Widget _calendar({String dayname, String date}) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(color: Colors.grey),
-          ]),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 2),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-            ),
-            width: double.infinity,
-            child: Text(
-              dayname,
-              textAlign: TextAlign.center,
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ),
-          ),
-          Expanded(
-              child: Center(
-            child: Text(
-              date,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
-            ),
-          ))
-        ],
-      ),
-    );
-  }
-
   _buildLoading() {
     if (_errorData != null) {
       return Center(

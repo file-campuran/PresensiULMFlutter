@@ -24,7 +24,7 @@ import 'package:absen_online/models/model.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:absen_online/api/geocoder_repository.dart';
 import 'package:absen_online/utils/api/multipart_file_extended.dart';
-
+import 'package:geolocator/geolocator.dart';
 import 'dart:ui' as ui;
 
 List<CameraDescription> cameras;
@@ -63,7 +63,7 @@ class PresensiState extends State<Presensi> {
   bool isReady = false;
   bool showCamera = true;
 
-  double latitude, longitude;
+  double latitude, longitude, accuracy = 0;
   Position myPosition;
   String myAddress = '';
   String myArea = '';
@@ -104,6 +104,7 @@ class PresensiState extends State<Presensi> {
   @override
   void dispose() {
     controller.dispose();
+    positionStream.cancel();
     faceDetector.close();
     // myLocation.closeStream();
     super.dispose();
@@ -163,45 +164,85 @@ class PresensiState extends State<Presensi> {
   }
 
   final myLocation = MyLocation();
+  StreamSubscription<Position> positionStream;
   void _getLocation() async {
     setState(() {
       errorLocation.message = '';
       errorLocation.status = false;
     });
 
-    final isEnabled = await myLocation.gpsServiceEnable();
-    if (isEnabled) {
-      UtilLogger.log('LOCATION', 'SERVICE LOCATION IS ENABLE');
-    } else {
-      setState(() {
-        errorLocation.message = Translate.of(context).translate('ask_location');
-        errorLocation.status = true;
-      });
+    // myAddress = await GeocoderRepository().getAddress(
+    //       latitude: position.latitude, longitude: position.longitude);
+    positionStream =
+        Geolocator.getPositionStream(desiredAccuracy: LocationAccuracy.high)
+            .listen((Position position) {});
 
-      UtilLogger.log('LOCATION', 'SERVICE LOCATION IS DISABLED');
-    }
-
-    final position = await myLocation.getLoacation();
-    UtilLogger.log('LOCATION', 'POSITION INITIALIZE');
-    if (position != null) {
-      myArea = myLocation.inAreaPresensi();
-      myAddress = await GeocoderRepository().getAddress(
-          latitude: position.latitude, longitude: position.longitude);
+    positionStream.onError((handleError) {
       if (this.mounted) {
         setState(() {
+          errorLocation.message =
+              Translate.of(context).translate(handleError.toString());
+          errorLocation.status = true;
+        });
+        UtilLogger.log('ERROR', handleError.toString());
+      }
+    });
+
+    positionStream.onData((position) async {
+      UtilLogger.log('ACCURACY', position.accuracy);
+      UtilLogger.log('DATA', position);
+      myArea = myLocation.inAreaPresensi(position);
+      if (this.mounted) {
+        if (accuracy > position.accuracy || accuracy == 0) {
           myPosition = position;
+          accuracy = position.accuracy;
           latitude = position.latitude;
           longitude = position.longitude;
           isFakeGps = position.isMocked;
-        });
+          myAddress = await GeocoderRepository().getAddress(
+              latitude: position.latitude, longitude: position.longitude);
+          setState(() {});
+        }
       }
-    } else {
-      setState(() {
-        errorLocation.message =
-            Translate.of(context).translate('location_timeout');
-        errorLocation.status = true;
-      });
-    }
+    });
+    // setState(() {
+    //   errorLocation.message = '';
+    //   errorLocation.status = false;
+    // });
+
+    // final isEnabled = await myLocation.gpsServiceEnable();
+    // if (isEnabled) {
+    //   UtilLogger.log('LOCATION', 'SERVICE LOCATION IS ENABLE');
+    // } else {
+    //   setState(() {
+    //     errorLocation.message = Translate.of(context).translate('ask_location');
+    //     errorLocation.status = true;
+    //   });
+
+    //   UtilLogger.log('LOCATION', 'SERVICE LOCATION IS DISABLED');
+    // }
+
+    // final position = await myLocation.getLoacation();
+    // UtilLogger.log('LOCATION', 'POSITION INITIALIZE');
+    // if (position != null) {
+    //   myArea = myLocation.inAreaPresensi();
+    //   myAddress = await GeocoderRepository().getAddress(
+    //       latitude: position.latitude, longitude: position.longitude);
+    //   if (this.mounted) {
+    //     setState(() {
+    //       myPosition = position;
+    //       latitude = position.latitude;
+    //       longitude = position.longitude;
+    //       isFakeGps = position.isMocked;
+    //     });
+    //   }
+    // } else {
+    //   setState(() {
+    //     errorLocation.message =
+    //         Translate.of(context).translate('location_timeout');
+    //     errorLocation.status = true;
+    //   });
+    // }
   }
 
   void initPresensi() {
@@ -314,7 +355,8 @@ class PresensiState extends State<Presensi> {
         setState(() {
           isSendPresensi = false;
         });
-        appMyInfoDialog(context: context, message: response.message);
+        appMyInfoDialog(
+            context: context, title: 'Info', message: response.message);
       }
     } catch (e) {
       print(e);
@@ -677,9 +719,12 @@ class PresensiState extends State<Presensi> {
     } else {
       return Column(children: [
         if (errorLocation.status) ...[
+          SizedBox(
+            height: 20,
+          ),
           Text(errorLocation.message),
           SizedBox(
-            height: 10,
+            height: 20,
           ),
           AppMyButton(
             loading: false,
@@ -701,6 +746,14 @@ class PresensiState extends State<Presensi> {
       child: Column(
         children: [
           _itemContent2(
+              icon: Icons.location_on_outlined,
+              title: 'Latitude, Longitude',
+              content: "$latitude, $longitude"),
+          _itemContent2(
+              icon: Icons.vpn_lock_outlined,
+              title: 'Akurasi GPS (Semaikn kecil, semakin akurat)',
+              content: "$accuracy meters"),
+          _itemContent2(
               title: 'Lokasi Sekarang',
               content: myAddress,
               icon: Icons.location_on),
@@ -710,15 +763,6 @@ class PresensiState extends State<Presensi> {
                 content: myArea,
                 icon: Icons.radio_button_on_sharp),
           ],
-          // _itemContent2(
-          //     onTap: () {
-          //       _getLocation();
-          //     },
-          //     icon: Icons.my_location_rounded,
-          //     title: 'Akurasi GPS (Tap untuk refresh)',
-          //     content: myPosition?.accuracy == null
-          //         ? ''
-          //         : '${myPosition.accuracy.toStringAsFixed(2)} Meter'),
           _itemContent2(
               icon: Icons.edit_location_outlined,
               title: 'Fake GPS',
@@ -845,7 +889,8 @@ class PresensiState extends State<Presensi> {
         fit: BoxFit.cover,
         child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height - 150,
+            height: MediaQuery.of(context).size.height -
+                MediaQuery.of(context).size.height * .20,
             child: CameraPreview(controller)),
       ),
     );
@@ -862,8 +907,8 @@ class PresensiState extends State<Presensi> {
     try {
       cameras = await availableCameras();
       controller = new CameraController(
-          cameraDescription(CameraLensDirection.front), ResolutionPreset.max,
-          enableAudio: true);
+          cameraDescription(CameraLensDirection.front), ResolutionPreset.high,
+          enableAudio: false);
       await controller.initialize();
     } on CameraException catch (_) {
       setState(() {
@@ -1020,13 +1065,13 @@ class PresensiState extends State<Presensi> {
         children: <Widget>[
           showCamera ? _cameraTogglesRowWidget() : Container(),
           AppTransparentButton(
-              icon: Icons.map,
+              icon: Icons.location_on,
               size: 50,
               background: false,
               onTap: () async {
                 await Navigator.of(context).pushNamed(Routes.location,
                     arguments: LocationModel(1, '', latitude, longitude));
-                _getLocation();
+                // _getLocation();
               }),
         ],
       ),
@@ -1058,15 +1103,15 @@ class PresensiState extends State<Presensi> {
   }
 
   void eventRecapture() {
-    try {
-      File _tempFile = File(imagePath);
-      _tempFile.delete();
-    } catch (e) {}
     setState(() {
       showCamera = true;
       imagePath = null;
       _image = null;
     });
+    try {
+      File _tempFile = File(imagePath);
+      _tempFile.delete();
+    } catch (e) {}
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {

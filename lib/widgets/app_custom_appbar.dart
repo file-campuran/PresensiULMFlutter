@@ -96,19 +96,31 @@ class AppCustomAppBar {
   //       title: AppCustomAppBar.setTitleAppBar(context, title));
   // }
 
-  static Text setTitleAppBar(BuildContext context, String title) {
-    return Text(title,
-        style: TextStyle(
-          // fontSize: 16.0,
-          fontWeight: FontWeight.w600,
-          color: cleanStyle
-              ? Theme.of(context).brightness == Brightness.light
-                  ? Color(0xff303030)
-                  : Colors.white
-              : null,
-        ),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis);
+  static Widget setTitleAppBar(BuildContext context, String title) {
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 200),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return SlideTransition(
+          child: child,
+          position:
+              Tween<Offset>(begin: Offset(0.0, 0.5), end: Offset(0.0, 0.0))
+                  .animate(animation),
+        );
+      },
+      child: Text(title,
+          key: ValueKey<String>(title),
+          style: TextStyle(
+            // fontSize: 16.0,
+            fontWeight: FontWeight.w600,
+            color: cleanStyle
+                ? Theme.of(context).brightness == Brightness.light
+                    ? Color(0xff303030)
+                    : Colors.white
+                : null,
+          ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis),
+    );
   }
 
   static Widget buildSearchField(TextEditingController searchController,

@@ -94,8 +94,9 @@ class _PhotoPreviewState extends State<PhotoPreview> {
                       end: const Alignment(0.0, -1),
                       begin: const Alignment(0.0, 0.1),
                       colors: <Color>[
-                        const Color(0x8A000000),
-                        Colors.black12.withOpacity(0.0)
+                        Colors.black.withOpacity(0.4),
+                        Colors.black.withOpacity(0.3),
+                        Colors.black.withOpacity(0.1),
                       ],
                     ),
                   ),

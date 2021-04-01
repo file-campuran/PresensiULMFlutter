@@ -15,16 +15,50 @@ class PengumumanDetailScreen extends StatefulWidget {
 }
 
 class _PengumumanDetailScreenState extends State<PengumumanDetailScreen> {
+  ScrollController _scrollController = ScrollController();
+  String title = '';
+  double elavation = 0;
+  @override
+  void initState() {
+    _scrollController.addListener(_scrollListener);
+
+    super.initState();
+  }
+
+  _scrollListener() {
+    // UtilLogger.log('SCROLL POSITION', _scrollController.offset);
+
+    if (_scrollController.offset > 60) {
+      // UtilLogger.log('SHOW');
+      if (title == '') {
+        setState(() {
+          elavation = 0.5;
+          title = widget.message.judul;
+        });
+      }
+    } else if (title != '') {
+      // UtilLogger.log('HIDE');
+      setState(() {
+        elavation = 0;
+        title = '';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppCustomAppBar.defaultAppBar(
-            leading: BackButton(), title: '', context: context),
+            elavation: elavation,
+            leading: BackButton(),
+            title: title,
+            context: context),
         body: _buildContent(context, widget.message));
   }
 
   _buildContent(BuildContext context, PengumumanModel data) {
     return ListView(
+      controller: _scrollController,
       padding: EdgeInsets.all(10),
       children: <Widget>[
         _buildText(
