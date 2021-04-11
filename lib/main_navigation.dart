@@ -189,45 +189,45 @@ class _MainNavigationState extends State<MainNavigation> {
         ),
         onWillPop: onWillPop,
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(top: 20, bottom: 5),
-        child: SizedBox(
-          height: 50,
-          width: 50,
-          child: FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            onPressed: () {
-              _onItemTapped(2);
-            },
-            child: Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 4),
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: Colors.white, blurRadius: 1.5)],
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor.withOpacity(0.5),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Icon(
-                _selectedIndex == 2
-                    ? EvaIcons.bookOpen
-                    : EvaIcons.bookOpenOutline,
-                color: Colors.white,
-                size: 32,
-              ),
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: Padding(
+      //   padding: EdgeInsets.only(top: 20, bottom: 5),
+      //   child: SizedBox(
+      //     height: 50,
+      //     width: 50,
+      //     child: FloatingActionButton(
+      //       backgroundColor: Colors.transparent,
+      //       elevation: 0,
+      //       onPressed: () {
+      //         _onItemTapped(2);
+      //       },
+      //       child: Container(
+      //         height: 50,
+      //         width: 50,
+      //         decoration: BoxDecoration(
+      //           border: Border.all(color: Colors.white, width: 4),
+      //           shape: BoxShape.circle,
+      //           boxShadow: [BoxShadow(color: Colors.white, blurRadius: 1.5)],
+      //           gradient: LinearGradient(
+      //             colors: [
+      //               Theme.of(context).primaryColor,
+      //               Theme.of(context).primaryColor.withOpacity(0.5),
+      //             ],
+      //             begin: Alignment.topLeft,
+      //             end: Alignment.bottomRight,
+      //           ),
+      //         ),
+      //         child: Icon(
+      //           _selectedIndex == 2
+      //               ? EvaIcons.bookOpen
+      //               : EvaIcons.bookOpenOutline,
+      //           color: Colors.white,
+      //           size: 32,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomBarItem(context),
         currentIndex: _selectedIndex,

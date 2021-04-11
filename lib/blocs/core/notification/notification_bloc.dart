@@ -23,8 +23,9 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     });
   }
 
-  Future _getNotificationData() async {
-    if (_notificationPage == null) {
+  Future _getNotificationData({bool init = true}) async {
+    if (init) {
+      print('RELAOD');
       Database db = await DBProvider.db.database;
       UtilLogger.log('START READ', new DateTime.now());
       var res =

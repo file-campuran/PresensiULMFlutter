@@ -124,6 +124,20 @@ class PresensiState extends State<Presensi> {
     checkBiodata();
   }
 
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // App state changed before we got the chance to initialize.
+    if (controller == null || !controller.value.isInitialized) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive) {
+      controller?.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      if (controller != null) {
+        onNewCameraSelected(controller.description);
+      }
+    }
+  }
+
   void checkBiodata() {
     final user = Application.user;
     if (user.alamatRumahPresensi == '' &&
@@ -365,9 +379,9 @@ class PresensiState extends State<Presensi> {
 
   chooseFile() async {
     try {
-      File file = await FilePicker.getFile();
+      FilePickerResult file = await FilePicker.platform.pickFiles();
       setState(() {
-        filePath = file.path;
+        filePath = file.paths.first;
       });
     } catch (e) {}
   }
@@ -883,17 +897,7 @@ class PresensiState extends State<Presensi> {
       );
     }
 
-    return AspectRatio(
-      aspectRatio: 3 / 1,
-      child: FittedBox(
-        fit: BoxFit.cover,
-        child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height -
-                MediaQuery.of(context).size.height * .20,
-            child: CameraPreview(controller)),
-      ),
-    );
+    return AspectRatio(aspectRatio: 3 / 1, child: CameraPreview(controller));
   }
 
   CameraDescription cameraDescription(CameraLensDirection lensDirection) {

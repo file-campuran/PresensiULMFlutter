@@ -106,7 +106,7 @@ class FirebaseNotification {
       //     : Platform.isIOS
       //         ? null
       //         : myBackgroundMessageHandler,
-      onBackgroundMessage: myBackgroundMessageHandler
+      // onBackgroundMessage: myBackgroundMessageHandler
     );
     _firebaseMessaging.subscribeToTopic('general');
     _firebaseMessaging.subscribeToTopic(Application.user.role);

@@ -83,7 +83,7 @@ class AppSliverStagged extends StatelessWidget {
             ),
             SliverList(
               delegate: SliverChildListDelegate([
-                for (var item in new List<int>.generate(10, (i) => i + 1)) ...[
+                for (var item in new List<int>.generate(20, (i) => i + 1)) ...[
                   ListTile(
                     leading: Icon(Icons.wb_sunny),
                     title: Text('Sunday $item'),
