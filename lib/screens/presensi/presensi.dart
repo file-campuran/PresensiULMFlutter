@@ -124,20 +124,6 @@ class PresensiState extends State<Presensi> {
     checkBiodata();
   }
 
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // App state changed before we got the chance to initialize.
-    if (controller == null || !controller.value.isInitialized) {
-      return;
-    }
-    if (state == AppLifecycleState.inactive) {
-      controller?.dispose();
-    } else if (state == AppLifecycleState.resumed) {
-      if (controller != null) {
-        onNewCameraSelected(controller.description);
-      }
-    }
-  }
-
   void checkBiodata() {
     final user = Application.user;
     if (user.alamatRumahPresensi == '' &&
@@ -915,6 +901,7 @@ class PresensiState extends State<Presensi> {
           enableAudio: false);
       await controller.initialize();
     } on CameraException catch (_) {
+      controller?.dispose();
       setState(() {
         isReady = false;
       });
@@ -1046,14 +1033,16 @@ class PresensiState extends State<Presensi> {
     controller.addListener(() {
       if (mounted) setState(() {});
       if (controller.value.hasError) {
-        showInSnackBar('Camera error ${controller.value.errorDescription}');
+        controller?.dispose();
+        // showInSnackBar('Camera error ${controller.value.errorDescription}');
       }
     });
 
     try {
       await controller.initialize();
     } on CameraException catch (e) {
-      showInSnackBar('Camera error $e');
+      controller?.dispose();
+      // showInSnackBar('Camera error $e');
     }
 
     if (mounted) {

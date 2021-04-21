@@ -1,9 +1,9 @@
 class Environment {
-  static const bool DEBUG = true;
+  static const bool DEBUG = false;
 
   static const String APP_NAME = 'Presensi ULM';
-  static const String VERSION = '2.0.0 Beta.B11';
-  static const int VERSION_CODE = 11;
+  static const String VERSION = '2.0.0 Release.B16';
+  static const int VERSION_CODE = 16;
 
   // PRIMARY CONFIGS
   static String apiUrl = 'http://192.168.43.247/api-siapps/public/api';
