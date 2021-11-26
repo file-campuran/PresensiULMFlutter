@@ -24,7 +24,8 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
 
       if (hasToken) {
         yield AuthenticationSuccess();
-        Application.user = userModelFromJson(UtilPreferences.getString('user'));
+        Application.user =
+            userModelFromJson(UtilPreferences.getString(Preferences.user));
 
         // //Getting data from Storage
         // final getUserPreferences = UtilPreferences.getString(
@@ -59,7 +60,7 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
       ///Save to Storage phone
       final savePreferences = await UtilPreferences.setString(
         Preferences.user,
-        jsonEncode(event.user.toJson()),
+        event.user.toString(),
       );
 
       ///Check result save user
@@ -76,18 +77,19 @@ class AuthBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
       ///Delete user
       final deletePreferences =
           await UtilPreferences.remove(Preferences.refreshToken);
-      await UtilPreferences.remove(Preferences.accessToken);
-      await UtilPreferences.remove(Preferences.user);
-
-      final _fcm = FirebaseMessaging();
-      _fcm.unsubscribeFromTopic(Application.user.role);
 
       ///Check result delete user
-      if (deletePreferences) {
+      if (!UtilPreferences.containsKey(Preferences.refreshToken)) {
+        await UtilPreferences.remove(Preferences.accessToken);
+        await UtilPreferences.remove(Preferences.user);
+
+        final _fcm = FirebaseMessaging();
+        _fcm.unsubscribeFromTopic(Application.user.role ?? '');
+
         yield AuthenticationFail();
       } else {
         final String message = "Cannot delete user data to storage phone";
-        throw Exception(message);
+        // throw Exception(message);
       }
     }
   }
