@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Presensi</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<string>NO</string>
+	<key>FirebaseScreenReportingEnabled</key>
+	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Presensi ULM requires file access to upload performance files for agency purposes</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>ULM attendance requires calendar access in order to know the schedule for agency purposes</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Presensi ULM requires camera access to identify employees' faces</string>
+	<key>NSContactsUsageDescription</key>
+	<string>ULM Presence requires contact access in order to know the contact for agency purposes</string>
+	<key>NSFileProviderDomainUsageDescription</key>
+	<string>Presensi ULM requires file access to upload performance files for agency purposes</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Presensi ULM requires location access to find out the location of employee attendance</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Presensi ULM requires location access to find out the location of employee attendance</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Presensi ULM requires location access to find out the location of employee attendance</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Presensi ULM requires audio access to find out employee voices</string>
+	<key>NSMotionUsageDescription</key>
+	<string>ULM presence requires movement access to monitor movement for agency purposes</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Presensi ULM requires file access to upload performance files for agency purposes</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Presensi ULM requires file access to upload performance files photo for agency purposes</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>ULM Presence requires speech recognition access to record voice for agency purposes</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
+</dict>
+</plist>
