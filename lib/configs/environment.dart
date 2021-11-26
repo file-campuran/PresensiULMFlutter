@@ -2,18 +2,18 @@ class Environment {
   static const bool DEBUG = false;
 
   static const String APP_NAME = 'Presensi ULM';
-  static const String VERSION = '2.0.0 Release.B16';
-  static const int VERSION_CODE = 16;
+  static const String VERSION = '2.0.0 Release.B18';
+  static const int VERSION_CODE = 17;
 
   // PRIMARY CONFIGS
-  static String apiUrl = 'http://192.168.43.247/api-siapps/public/api';
+  static String apiUrl = 'https://apiv2.ulm.ac.id/api';
   static String apiKey = '605dafe39ee0780e8cf2c829434eea99';
   static String apiId = 'PresensiULM';
   static int apiTimeout = !DEBUG ? 20 : 10;
 
   // APP SUPPPORT URL
   static String presensiImageUrl = apiUrl + '/presensi/file/foto';
-  static String presensiFileUrl = 'https://presensi.ulm.ac.id/pwa/getFile';
+  static String presensiFileUrl = apiUrl + '/presensi/file/berkas';
   static String privacyPolicy =
       'https://simari.ulm.ac.id/privacy_policy_presensi.html';
   static String guide =
