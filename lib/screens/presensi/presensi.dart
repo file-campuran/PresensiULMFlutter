@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:absen_online/screens/default/location/location.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
@@ -66,7 +67,7 @@ class PresensiState extends State<Presensi> {
   double latitude, longitude, accuracy = 0;
   Position myPosition;
   String myAddress = '';
-  String myArea = '';
+  MyLocationModel myArea;
 
   bool mocked;
   String imagePath;
@@ -122,6 +123,19 @@ class PresensiState extends State<Presensi> {
     initPlatformState();
     initPresensi();
     checkBiodata();
+    initLokasiPresensi();
+  }
+
+  void initLokasiPresensi() async {
+    final response = await PresensiRepository().getLokasiPresensi();
+
+    if (response.code == CODE.SUCCESS) {
+      final lokasiModel = LokasiPresensiListModel.fromMap(response.data);
+
+      setState(() {
+        Application.lokasiPresensiList = lokasiModel;
+      });
+    }
   }
 
   void checkBiodata() {
@@ -195,7 +209,7 @@ class PresensiState extends State<Presensi> {
       if (this.mounted) {
         if (accuracy > position.accuracy || accuracy == 0) {
           myPosition = position;
-          accuracy = position.accuracy;
+          accuracy = double.parse(position.accuracy.toStringAsFixed(4));
           latitude = position.latitude;
           longitude = position.longitude;
           isFakeGps = position.isMocked;
@@ -633,10 +647,11 @@ class PresensiState extends State<Presensi> {
   Widget _bottomPanelSliderContent() {
     if (latitude != null) {
       return Container(
-        padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: Dimens.padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            wDetailLokasi(),
             Text(Translate.of(context).translate('performance_description'),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -656,7 +671,7 @@ class PresensiState extends State<Presensi> {
                   // labelText: 'Keterangan Kerja',
                   contentPadding: EdgeInsets.all(15.0),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10))),
+                      borderRadius: BorderRadius.circular(5))),
             ),
             if (_infoPresensi.ruleIsUploadFile) ...[
               SizedBox(height: 10),
@@ -740,45 +755,78 @@ class PresensiState extends State<Presensi> {
     }
   }
 
+  Widget wDetailLokasi() {
+    return Column(
+      children: [
+        if (Application.lokasiPresensiList.list.length != 0) ...[
+          _itemContent2(
+              title: 'Area Presensi',
+              content: myArea.message,
+              icon: Icons.radio_button_on_sharp,
+              color: myArea.status ? Colors.green : Colors.red,
+              onTap: () async {
+                await Navigator.of(context).pushNamed(Routes.location,
+                    arguments: LocationModel(1, '', latitude, longitude));
+              }),
+        ],
+        Row(
+          children: [
+            SizedBox(width: 40),
+            Expanded(
+              child: InkWell(
+                onTap: () async {
+                  await Navigator.of(context).pushNamed(Routes.location,
+                      arguments: LocationModel(1, '', latitude, longitude));
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    height: 100,
+                    child: Location(
+                      title: null,
+                      location:
+                          LocationModel(1, 'Lokasi Saya', latitude, longitude),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 20),
+        _itemContent2(
+            icon: Icons.location_on_outlined,
+            title: 'Latitude, Longitude',
+            content: "$latitude, $longitude"),
+        _itemContent2(
+            icon: Icons.vpn_lock_outlined,
+            title: 'Akurasi GPS (Semaikn kecil, semakin akurat)',
+            content: "$accuracy meters"),
+        _itemContent2(
+            title: 'Lokasi Sekarang',
+            content: myAddress,
+            icon: Icons.location_on),
+        _itemContent2(
+            icon: Icons.edit_location_outlined,
+            title: 'Fake GPS',
+            content: myPosition?.isMocked == null
+                ? ''
+                : myPosition.isMocked
+                    ? 'Ya'
+                    : 'Tidak'),
+        _itemContent2(
+            icon: Icons.phonelink_lock,
+            title:
+                Platform.isAndroid ? 'Terdeteksi Root' : 'Terdeteksi Jailbreak',
+            content: isRoot ? 'Ya' : 'Tidak'),
+      ],
+    );
+  }
+
   Widget _bottomPanelSliderContent2() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: Dimens.padding),
-      child: Column(
-        children: [
-          _itemContent2(
-              icon: Icons.location_on_outlined,
-              title: 'Latitude, Longitude',
-              content: "$latitude, $longitude"),
-          _itemContent2(
-              icon: Icons.vpn_lock_outlined,
-              title: 'Akurasi GPS (Semaikn kecil, semakin akurat)',
-              content: "$accuracy meters"),
-          _itemContent2(
-              title: 'Lokasi Sekarang',
-              content: myAddress,
-              icon: Icons.location_on),
-          if (Application.remoteConfig.presensi.zone.length != 0) ...[
-            _itemContent2(
-                title: 'Area Presensi',
-                content: myArea,
-                icon: Icons.radio_button_on_sharp),
-          ],
-          _itemContent2(
-              icon: Icons.edit_location_outlined,
-              title: 'Fake GPS',
-              content: myPosition?.isMocked == null
-                  ? ''
-                  : myPosition.isMocked
-                      ? 'Ya'
-                      : 'Tidak'),
-          _itemContent2(
-              icon: Icons.phonelink_lock,
-              title: Platform.isAndroid
-                  ? 'Terdeteksi Root'
-                  : 'Terdeteksi Jailbreak',
-              content: isRoot ? 'Ya' : 'Tidak'),
-        ],
-      ),
+      child: wDetailLokasi(),
     );
   }
 
@@ -794,16 +842,19 @@ class PresensiState extends State<Presensi> {
         onTap: onTap,
         child: Row(
           children: <Widget>[
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).dividerColor),
-              child: Icon(
-                icon ?? Icons.access_time,
-                color: color ?? Colors.white,
-                size: 18,
+            Visibility(
+              // visible: icon != null,
+              child: Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).dividerColor),
+                child: Icon(
+                  icon ?? Icons.access_time,
+                  color: color ?? Colors.white,
+                  size: 18,
+                ),
               ),
             ),
             Padding(

@@ -33,6 +33,10 @@ class PresensiRepository {
         .orderBy({'tanggal': 'DESC'}).execute(url: '/presensi/event');
   }
 
+  Future<ApiModel> getLokasiPresensi() async {
+    return await Consumer().limit(-1).execute(url: '/presensi/lokasiPresensi');
+  }
+
   Future<ApiModel> getHariKerja() async {
     return await Consumer().limit(7).execute(url: '/presensi/hari_libur');
   }

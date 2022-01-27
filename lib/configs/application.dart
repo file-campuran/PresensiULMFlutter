@@ -6,6 +6,7 @@ class Application {
   static SharedPreferences preferences;
   static Database db;
   static UserModel user;
+  static LokasiPresensiListModel lokasiPresensiList;
   static String pushToken;
   static ConfigModel remoteConfig;
 
