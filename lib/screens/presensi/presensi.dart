@@ -124,6 +124,8 @@ class PresensiState extends State<Presensi> {
     initPresensi();
     checkBiodata();
     initLokasiPresensi();
+    initPengaturan();
+    initKecamatan();
   }
 
   void initLokasiPresensi() async {
@@ -134,6 +136,30 @@ class PresensiState extends State<Presensi> {
 
       setState(() {
         Application.lokasiPresensiList = lokasiModel;
+      });
+    }
+  }
+
+  void initKecamatan() async {
+    final response = await PresensiRepository().getKecamatan();
+
+    if (response.code == CODE.SUCCESS) {
+      final lokasiModel = KecamatanListModel.fromMap(response.data);
+
+      setState(() {
+        Application.kecamatanListModel = lokasiModel;
+      });
+    }
+  }
+
+  void initPengaturan() async {
+    final response = await PresensiRepository().getPengaturanPresensi();
+
+    if (response.code == CODE.SUCCESS) {
+      final lokasiModel = PengaturanListModel.fromMap(response.data);
+
+      setState(() {
+        Application.pengaturanList = lokasiModel;
       });
     }
   }

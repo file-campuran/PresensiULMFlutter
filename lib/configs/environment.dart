@@ -6,8 +6,8 @@ class Environment {
   static const int VERSION_CODE = 18;
 
   // PRIMARY CONFIGS
-  static String apiUrl = 'https://apiv2.ulm.ac.id/api';
-  // static String apiUrl = 'https://git.ulm.ac.id/api-siapps/public/api';
+  // static String apiUrl = 'https://apiv2.ulm.ac.id/api';
+  static String apiUrl = 'https://git.ulm.ac.id/api-siapps/public/api';
   static String apiKey = '605dafe39ee0780e8cf2c829434eea99';
   static String apiId = 'PresensiULM';
   static int apiTimeout = !DEBUG ? 20 : 10;

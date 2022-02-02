@@ -1,0 +1,9 @@
+{
+    "version": "2.0.0",
+    "tasks": [{
+        "label": "build_apk_release",
+        "command": "flutter", // Could be any other shell command
+        "args": ["build", "apk", "--no-shrink", "--split-per-abi"],
+        "type": "shell"
+    }]
+}

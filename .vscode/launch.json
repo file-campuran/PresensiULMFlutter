@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Export Apk Release",
+            "request": "attach",
+            "type": "dart",
+            "preLaunchTask": "build_apk_release", // The name of the task defined above
+        },
+        {
             "name": "Flutter Debug",
             "request": "launch",
             "type": "dart",

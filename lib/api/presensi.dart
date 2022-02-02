@@ -37,6 +37,16 @@ class PresensiRepository {
     return await Consumer().limit(-1).execute(url: '/presensi/lokasiPresensi');
   }
 
+  Future<ApiModel> getPengaturanPresensi() async {
+    return await Consumer().limit(-1).execute(url: '/presensi/pengaturan');
+  }
+
+  Future<ApiModel> getKecamatan() async {
+    return await Consumer()
+        .limit(-1)
+        .execute(url: '/presensi/kecamatan?isValid[eq]=1');
+  }
+
   Future<ApiModel> getHariKerja() async {
     return await Consumer().limit(7).execute(url: '/presensi/hari_libur');
   }

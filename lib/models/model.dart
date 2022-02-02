@@ -14,3 +14,5 @@ export 'presensi/model_event.dart';
 export 'presensi/model_hari_kerja.dart';
 export 'presensi/model_pengumuman.dart';
 export 'presensi/model_lokasi_presensi.dart';
+export 'presensi/model_pengaturan.dart';
+export 'presensi/model_kecamatan.dart';
