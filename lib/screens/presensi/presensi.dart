@@ -557,7 +557,10 @@ class PresensiState extends State<Presensi> {
       child: FloatingActionButton(
         heroTag: 'sendPresensi',
         child: !isSendPresensi
-            ? Icon(Icons.save, color: Colors.white)
+            ? MyIconDuotone(
+                MyIconDuotoneIcon.save_close,
+                color: Colors.white,
+              )
             : CupertinoActivityIndicator(),
         onPressed: () {
           if (!isSendPresensi) {
@@ -616,7 +619,11 @@ class PresensiState extends State<Presensi> {
                       //   width: 35,
                       //   height: 35,
                       // ),
-                      Icon(EvaIcons.bookOpenOutline),
+                      MyIconDuotone(
+                        MyIconDuotoneIcon.address,
+                        color: Colors.grey[800],
+                      ),
+                      // Icon(EvaIcons.bookOpenOutline),
                       SizedBox(
                         width: 10.0,
                       ),

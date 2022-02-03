@@ -95,25 +95,41 @@ class _MainNavigationState extends State<MainNavigation> {
   List<BottomNavigationBarItem> _bottomBarItem(BuildContext context) {
     return [
       BottomNavigationBarItem(
-        icon: Icon(_selectedIndex == 0 ? EvaIcons.home : EvaIcons.homeOutline),
+        icon: MyIconDuotone(
+          MyIconDuotoneIcon.home_page,
+          color: _selectedIndex == 0
+              ? Theme.of(context).primaryColor
+              : Colors.grey,
+        ),
         label: Translate.of(context).translate('home'),
       ),
       BottomNavigationBarItem(
-        icon: Icon(
-            _selectedIndex == 1 ? EvaIcons.layers : EvaIcons.layersOutline),
+        icon: MyIconDuotone(
+          MyIconDuotoneIcon.clock_checked,
+          color: _selectedIndex == 1
+              ? Theme.of(context).primaryColor
+              : Colors.grey,
+        ),
         label: Translate.of(context).translate('history'),
       ),
       BottomNavigationBarItem(
-        icon: Icon(
-            _selectedIndex == 2 ? EvaIcons.bookOpen : EvaIcons.bookOpenOutline),
+        icon: MyIconDuotone(
+          MyIconDuotoneIcon.address,
+          color: _selectedIndex == 2
+              ? Theme.of(context).primaryColor
+              : Colors.grey,
+        ),
         label: Translate.of(context).translate('presence'),
       ),
       BottomNavigationBarItem(
         label: Translate.of(context).translate('announcement'),
         icon: new Stack(alignment: Alignment.center, children: <Widget>[
-          new Icon(_selectedIndex == 3
-              ? EvaIcons.messageCircle
-              : EvaIcons.messageCircleOutline),
+          MyIconDuotone(
+            MyIconDuotoneIcon.commercial,
+            color: _selectedIndex == 3
+                ? Theme.of(context).primaryColor
+                : Colors.grey,
+          ),
           BlocBuilder<PengumumanCubit, PengumumanState>(
             builder: (context, state) {
               if (state is PengumumanData) {
@@ -154,9 +170,12 @@ class _MainNavigationState extends State<MainNavigation> {
         ]),
       ),
       BottomNavigationBarItem(
-        icon: Icon(_selectedIndex == 4
-            ? Icons.account_circle
-            : Icons.account_circle_outlined),
+        icon: MyIconDuotone(
+          MyIconDuotoneIcon.account,
+          color: _selectedIndex == 4
+              ? Theme.of(context).primaryColor
+              : Colors.grey,
+        ),
         label: Translate.of(context).translate('account'),
       ),
     ];
@@ -236,6 +255,7 @@ class _MainNavigationState extends State<MainNavigation> {
         selectedItemColor: Theme.of(context).primaryColor,
         showUnselectedLabels: true,
         onTap: _onItemTapped,
+        selectedFontSize: 12,
       ),
     );
   }

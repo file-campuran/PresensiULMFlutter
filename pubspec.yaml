@@ -97,6 +97,7 @@ flutter:
     - assets/lottie/
     - assets/locale/
     - assets/svg/
+    - assets/icons/duotone/
     - ChangeLog.md
   fonts:
     - family: Raleway

@@ -85,7 +85,9 @@ class _ProfileState extends State<Profile> {
                     child: Column(
                       children: <Widget>[
                         AppListTitle(
-                          icon: Icon(EvaIcons.personOutline),
+                          icon: MyIconDuotone(
+                            MyIconDuotoneIcon.account,
+                          ),
                           title: Translate.of(context).translate(
                             'edit_profile',
                           ),
@@ -117,7 +119,9 @@ class _ProfileState extends State<Profile> {
                         //   ),
                         // ),
                         AppListTitle(
-                          icon: Icon(EvaIcons.settingsOutline),
+                          icon: MyIconDuotone(
+                            MyIconDuotoneIcon.settings,
+                          ),
                           title: Translate.of(context).translate('setting'),
                           onPressed: () {
                             _onNavigate(Routes.setting);
@@ -131,7 +135,9 @@ class _ProfileState extends State<Profile> {
                           ),
                         ),
                         AppListTitle(
-                          icon: Icon(EvaIcons.smartphoneOutline),
+                          icon: MyIconDuotone(
+                            MyIconDuotoneIcon.developer_mode,
+                          ),
                           title: Translate.of(context).translate('version'),
                           onPressed: () {
                             _onNavigate(Routes.version);

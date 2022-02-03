@@ -1,3 +1,4 @@
+import 'package:absen_online/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
@@ -34,11 +35,11 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                   InkWell(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 7),
-                      child: Icon(
-                        EvaIcons.calendarOutline,
+                      child: MyIconDuotone(
+                        MyIconDuotoneIcon.calendar,
                         color: Theme.of(context).brightness == Brightness.dark
                             ? Colors.white
-                            : Color(0xff303030),
+                            : Colors.grey,
                       ),
                     ),
                     onTap: () {
@@ -51,12 +52,12 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                         child: Stack(
                           children: [
                             Center(
-                              child: Icon(
-                                FontAwesomeIcons.bell,
+                              child: MyIconDuotone(
+                                MyIconDuotoneIcon.alarm,
                                 color: Theme.of(context).brightness ==
                                         Brightness.dark
                                     ? Colors.white
-                                    : Color(0xff303030),
+                                    : Colors.grey,
                               ),
                             ),
                             Positioned(
@@ -106,11 +107,11 @@ class AppBarHomeSliver extends SliverPersistentHeaderDelegate {
                   InkWell(
                     child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 7),
-                      child: Icon(
-                        EvaIcons.search,
+                      child: MyIconDuotone(
+                        MyIconDuotoneIcon.search,
                         color: Theme.of(context).brightness == Brightness.dark
                             ? Colors.white
-                            : Color(0xff303030),
+                            : Colors.grey,
                       ),
                     ),
                     onTap: () {
