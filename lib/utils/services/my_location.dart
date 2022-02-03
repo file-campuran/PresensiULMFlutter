@@ -84,6 +84,21 @@ class MyLocation {
       //     distanceInMeters);
     }
 
+    for (var zone in Application.kecamatanListModel?.rows) {
+      if (!status) {
+        bool find =
+            inside(position.latitude, position.longitude, zone.kordinat);
+        if (find) {
+          status = true;
+          // UtilLogger.log('PRESENSI IN AREA', zone.namaLokasi);
+          result = 'Berada dalam area kecamatan ${zone.nama}';
+          // result = 'Berada dalam titik presensi yang dibolehkan';
+        }
+        // UtilLogger.log('DISATANCE BEETWEEN AREA ${zone.namaLokasi} METERS',
+        //     distanceInMeters);
+      }
+    }
+
     return MyLocationModel(status: status, message: result);
   }
 
@@ -97,5 +112,25 @@ class MyLocation {
 
   void closeStream() {
     _locationController.sink.close();
+  }
+
+  bool inside(double latitude, double longitude, List vs) {
+    // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+    final x = latitude;
+    final y = longitude;
+
+    bool inside = false;
+    for (int i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+      final xi = double.parse(vs[i][0].toString());
+      final yi = double.parse(vs[i][1].toString());
+      final xj = double.parse(vs[j][0].toString());
+      final yj = double.parse(vs[j][1].toString());
+
+      final intersect =
+          ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if (intersect) inside = !inside;
+    }
+
+    return inside;
   }
 }

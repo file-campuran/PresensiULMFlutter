@@ -784,6 +784,19 @@ class PresensiState extends State<Presensi> {
   Widget wDetailLokasi() {
     return Column(
       children: [
+        _itemContent2(
+          title: Application.pengaturanList
+                      .getSettingConfig('presensi_berbasis_lokasi') ==
+                  '1'
+              ? 'Anda hanya bisa melakukan presensi di wilayah lokasi yang sudah ditentukan'
+              : 'Anda bisa presensi di manapun tetapi jika diluar lokasi yang ditetapkan maka akan di anggap mudik',
+          icon: Icons.info_outline,
+          color: Application.pengaturanList
+                      .getSettingConfig('presensi_berbasis_lokasi') ==
+                  '1'
+              ? Colors.orange
+              : Colors.green,
+        ),
         if (Application.lokasiPresensiList.list.length != 0) ...[
           _itemContent2(
               title: 'Area Presensi',
@@ -883,26 +896,32 @@ class PresensiState extends State<Presensi> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title ?? '',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  Container(
-                    width: Adapt.screenW() * 0.75,
-                    child: Text(
-                      content ?? '',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                  )
-                ],
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    if (title != null) ...[
+                      Text(
+                        title ?? '',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
+                    if (content != null) ...[
+                      Container(
+                        width: Adapt.screenW() * 0.80,
+                        child: Text(
+                          content ?? '',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText1
+                              .copyWith(fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    ],
+                  ],
+                ),
               ),
             ),
           ],

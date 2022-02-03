@@ -178,16 +178,12 @@ class _LocationState extends State<Location> {
                 padding: EdgeInsets.symmetric(vertical: Dimens.padding),
                 children: [
                   //Keterangan Wajib Presensi
+                  // _itemContentCustom(title: 'Lokasi', content: 'Lokasi'),
+
                   //Radius
                   wTitle('Radius Presensi',
-                      badge: wBadge(Application.pengaturanList
-                              .getSettingConfig('presensi_lokasi_radius') ==
-                          '1'),
-                      subtitle: Application.pengaturanList
-                                  .getSettingConfig('presensi_lokasi_radius') ==
-                              '1'
-                          ? 'Anda wajib berada dalam radius berikut untuk bisa melakukan presensi'
-                          : 'Anda bisa melakukan presensi diluar radius yang tersedia'),
+                      subtitle:
+                          'Berikut daftar lokasi presensi berbasis radius'),
                   ...Application.lokasiPresensiList.list
                       .map(
                         (e) => _itemContent(
@@ -200,14 +196,8 @@ class _LocationState extends State<Location> {
 
                   // Kecamatan
                   wTitle('Kecamatan Presensi',
-                      badge: wBadge(Application.pengaturanList
-                              .getSettingConfig('presensi_lokasi_kecamatan') ==
-                          '1'),
-                      subtitle: Application.pengaturanList.getSettingConfig(
-                                  'presensi_lokasi_kecamatan') ==
-                              '1'
-                          ? 'Anda wajib berada dalam kecamatan berikut untuk bisa melakukan presensi'
-                          : 'Anda bisa melakukan presensi diluar kecamatan yang tersediaa'),
+                      subtitle:
+                          'Berikut daftar lokasi presensi berbasis kecamatan'),
                   ...Application.kecamatanListModel.rows
                       .map(
                         (e) => _itemContent2(
@@ -363,6 +353,58 @@ class _LocationState extends State<Location> {
             ),
           );
         },
+        child: Row(
+          children: <Widget>[
+            Visibility(
+              // visible: icon != null,
+              child: Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).dividerColor),
+                child: Icon(
+                  icon ?? Icons.access_time,
+                  color: color ?? Colors.white,
+                  size: 18,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title ?? '',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                  Container(
+                    width: Adapt.screenW() * 0.75,
+                    child: Text(
+                      content ?? '',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _itemContentCustom(
+      {String title, String content, IconData icon, Color color}) {
+    return Container(
+      padding: EdgeInsets.only(bottom: Dimens.padding) +
+          EdgeInsets.symmetric(horizontal: Dimens.padding),
+      child: InkWell(
+        onTap: () {},
         child: Row(
           children: <Widget>[
             Visibility(
