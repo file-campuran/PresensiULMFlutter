@@ -7,20 +7,26 @@ Aplikasi Presensi Berbasis Mobile adalah aplikasi yang digunakan oleh tenaga pen
 # 
 # 
 ## **ChangeLog**
-###### *Version 2.0.0 Beta.B18 [11/17/2021]*
+###### *Version 2.0.0 Release.B19 [02/03/2022]*
+### **Whats New**
+- Add Radius Maps
+- Add Kecamatan Polygon Maps
+
+
+# 
+# 
+###### *Version 2.0.0 Release.B18 [11/17/2021]*
 ### **Whats New**
 - Fix Logout
 
 # 
-## **ChangeLog**
-###### *Version 2.0.0 Beta.B17 [9/23/2021]*
+###### *Version 2.0.0 Release.B17 [9/23/2021]*
 ### **Whats New**
 - Fix Error Force Logout
 
 # 
 # 
-## **ChangeLog**
-###### *Version 2.0.0 Beta.B11 [2/27/2021]*
+###### *Version 2.0.0 Release.B11 [2/27/2021]*
 ### **Whats New**
 - New UI
 - Pengumuman

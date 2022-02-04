@@ -14,6 +14,10 @@ enum MyIconDuotoneIcon {
   save_close,
   search,
   settings,
+  font_size,
+  geography,
+  paint_palette,
+  theme_park,
 }
 
 const iconsMap = <MyIconDuotoneIcon, String>{
@@ -28,21 +32,24 @@ const iconsMap = <MyIconDuotoneIcon, String>{
   MyIconDuotoneIcon.save_close: '$baseUrl/save_close.svg',
   MyIconDuotoneIcon.search: '$baseUrl/search.svg',
   MyIconDuotoneIcon.settings: '$baseUrl/settings.svg',
+  MyIconDuotoneIcon.font_size: '$baseUrl/font_size.svg',
+  MyIconDuotoneIcon.geography: '$baseUrl/geography.svg',
+  MyIconDuotoneIcon.paint_palette: '$baseUrl/paint_palette.svg',
+  MyIconDuotoneIcon.theme_park: '$baseUrl/theme_park.svg',
 };
 
 class MyIconDuotone extends StatelessWidget {
   final double height;
   final Color color;
   final MyIconDuotoneIcon icon;
-  const MyIconDuotone(this.icon,
-      {Key key, this.height, this.color = Colors.grey})
+  const MyIconDuotone(this.icon, {Key key, this.height, this.color})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       iconsMap[icon],
-      color: color,
+      color: color ?? Theme.of(context).hintColor,
       height: height,
     );
   }

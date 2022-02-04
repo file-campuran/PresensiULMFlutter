@@ -621,7 +621,6 @@ class PresensiState extends State<Presensi> {
                       // ),
                       MyIconDuotone(
                         MyIconDuotoneIcon.address,
-                        color: Colors.grey[800],
                       ),
                       // Icon(EvaIcons.bookOpenOutline),
                       SizedBox(

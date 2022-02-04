@@ -130,7 +130,7 @@ class _SettingState extends State<Setting> {
             //   ),
             // ),
             AppListTitle(
-              icon: Icon(EvaIcons.globeOutline),
+              icon: MyIconDuotone(MyIconDuotoneIcon.geography),
               title: Translate.of(context).translate('language'),
               onPressed: () {
                 _onNavigate(Routes.changeLanguage);
@@ -154,24 +154,21 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              icon: Icon(Icons.palette_outlined),
+              icon: MyIconDuotone(MyIconDuotoneIcon.paint_palette),
               title: Translate.of(context).translate('theme'),
               onPressed: () {
                 _onNavigate(Routes.themeSetting);
               },
               trailing: Container(
                 margin: EdgeInsets.only(right: 10),
-                width: 16,
-                height: 16,
-                // color: Theme.of(context).primaryColor,
-                child: Icon(
-                  Icons.palette_outlined,
+                child: MyIconDuotone(
+                  MyIconDuotoneIcon.paint_palette,
                   color: Theme.of(context).primaryColor,
                 ),
               ),
             ),
             AppListTitle(
-              icon: Icon(EvaIcons.moonOutline),
+              icon: MyIconDuotone(MyIconDuotoneIcon.theme_park),
               title: Translate.of(context).translate('dark_mode'),
               onPressed: _showDarkModeSetting,
               trailing: Row(
@@ -193,7 +190,7 @@ class _SettingState extends State<Setting> {
               ),
             ),
             AppListTitle(
-              icon: Icon(EvaIcons.textOutline),
+              icon: MyIconDuotone(MyIconDuotoneIcon.font_size),
               title: Translate.of(context).translate('font'),
               onPressed: () {
                 _onNavigate(Routes.fontSetting);

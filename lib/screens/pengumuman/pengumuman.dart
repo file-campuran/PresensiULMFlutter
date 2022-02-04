@@ -256,11 +256,12 @@ class _PengumumanState extends State<Pengumuman> {
                               Padding(
                                 padding:
                                     EdgeInsets.only(top: hasRead ? 0.0 : 2.0),
-                                child: Icon(
-                                    hasRead
-                                        ? EvaIcons.messageCircleOutline
-                                        : EvaIcons.messageCircle,
-                                    color: Theme.of(context).primaryColor),
+                                child: MyIconDuotone(
+                                  MyIconDuotoneIcon.commercial,
+                                  color: hasRead
+                                      ? Theme.of(context).hintColor
+                                      : Theme.of(context).primaryColor,
+                                ),
                               ),
                             ],
                           )),
