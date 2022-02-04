@@ -398,58 +398,6 @@ class _LocationState extends State<Location> {
     );
   }
 
-  Widget _itemContentCustom(
-      {String title, String content, IconData icon, Color color}) {
-    return Container(
-      padding: EdgeInsets.only(bottom: Dimens.padding) +
-          EdgeInsets.symmetric(horizontal: Dimens.padding),
-      child: InkWell(
-        onTap: () {},
-        child: Row(
-          children: <Widget>[
-            Visibility(
-              // visible: icon != null,
-              child: Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).dividerColor),
-                child: Icon(
-                  icon ?? Icons.access_time,
-                  color: color ?? Colors.white,
-                  size: 18,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title ?? '',
-                    style: Theme.of(context).textTheme.caption,
-                  ),
-                  Container(
-                    width: Adapt.screenW() * 0.75,
-                    child: Text(
-                      content ?? '',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1
-                          .copyWith(fontWeight: FontWeight.w600),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget wGoogleMap() {
     return GoogleMap(
       initialCameraPosition: CameraPosition(

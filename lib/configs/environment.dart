@@ -3,7 +3,7 @@ class Environment {
 
   static const String APP_NAME = 'Presensi ULM';
   static const String VERSION = '2.0.0 Release.B19';
-  static const int VERSION_CODE = 18;
+  static const int VERSION_CODE = 19;
 
   // PRIMARY CONFIGS
   // static String apiUrl = 'https://apiv2.ulm.ac.id/api';
@@ -17,8 +17,7 @@ class Environment {
   static String presensiFileUrl = apiUrl + '/presensi/file/berkas';
   static String privacyPolicy =
       'https://simari.ulm.ac.id/privacy_policy_presensi.html';
-  static String guide =
-      'https://cdn01.ovo.id/homepage/public/assets/webview/panduan_ovo.html';
+  static String guide = 'https://simari.ulm.ac.id/privacy_policy_presensi.html';
 
   static String namaCs = 'Muhammad Nebi Beri Muslim';
   static String noCs = '+6282149091899';
