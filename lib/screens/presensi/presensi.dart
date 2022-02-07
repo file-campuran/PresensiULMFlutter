@@ -794,8 +794,10 @@ class PresensiState extends State<Presensi> {
           title: Application.pengaturanList
                       .getSettingConfig('presensi_berbasis_lokasi') ==
                   '1'
-              ? 'Anda hanya bisa melakukan presensi di wilayah lokasi yang sudah ditentukan'
-              : 'Anda bisa presensi di manapun tetapi jika diluar lokasi yang ditetapkan maka akan di anggap mudik',
+              ? Application.pengaturanList
+                  .getSettingConfig('presensi_berbasis_lokasi_keterangan_ya')
+              : Application.pengaturanList.getSettingConfig(
+                  'presensi_berbasis_lokasi_keterangan_tidak'),
           icon: Icons.info_outline,
           color: Application.pengaturanList
                       .getSettingConfig('presensi_berbasis_lokasi') ==
