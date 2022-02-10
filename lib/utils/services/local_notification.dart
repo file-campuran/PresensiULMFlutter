@@ -102,7 +102,7 @@ class LocalNotification {
 
     var androidPlatformChannelSpecifics = AndroidNotificationDetails('presensi',
         'Presensi ULM', 'Presensi tenaga kependidikan dan tenaga pendidik',
-        sound: RawResourceAndroidNotificationSound('notification_sound'),
+        // sound: RawResourceAndroidNotificationSound('notification_sound'),
         importance: Importance.max,
         priority: Priority.high,
         styleInformation: bigPictureStyleInformation ?? null,

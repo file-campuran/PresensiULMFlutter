@@ -36,15 +36,15 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Container(
-                  height: 120,
-                  width: 120,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: Environment.logoUlmOnline,
-                  ),
-                ),
-                // Image.asset(Images.Logo, width: 120, height: 120),
+                // Container(
+                //   height: 120,
+                //   width: 120,
+                //   child: CachedNetworkImage(
+                //     fit: BoxFit.cover,
+                //     imageUrl: Environment.logoUlmOnline,
+                //   ),
+                // ),
+                Image.asset(Images.Logo /* , width: 120, height: 120 */),
               ],
             ),
           ),
