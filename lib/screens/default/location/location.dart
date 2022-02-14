@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
+import 'package:absen_online/api/presensi.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -38,7 +39,33 @@ class _LocationState extends State<Location> {
   @override
   void initState() {
     _onLoadMap();
+    initLokasiPresensi();
+    initKecamatan();
     super.initState();
+  }
+
+  void initLokasiPresensi() async {
+    final response = await PresensiRepository().getLokasiPresensi();
+
+    if (response.code == CODE.SUCCESS) {
+      final lokasiModel = LokasiPresensiListModel.fromMap(response.data);
+
+      setState(() {
+        Application.lokasiPresensiList = lokasiModel;
+      });
+    }
+  }
+
+  void initKecamatan() async {
+    final response = await PresensiRepository().getKecamatan();
+
+    if (response.code == CODE.SUCCESS) {
+      final lokasiModel = KecamatanListModel.fromMap(response.data);
+
+      setState(() {
+        Application.kecamatanListModel = lokasiModel;
+      });
+    }
   }
 
   ///On load map
@@ -58,20 +85,22 @@ class _LocationState extends State<Location> {
     }
 
     // Set Kecamatan Polygon
-    Application.kecamatanListModel.rows.forEach((kecamatan) {
-      List<LatLng> coordsToAdd = [];
-      kecamatan.kordinat.forEach((coordinat) {
-        coordsToAdd.add(LatLng(double.parse(coordinat[0].toString()),
-            double.parse(coordinat[1].toString())));
-      });
+    if (Application.kecamatanListModel != null) {
+      Application.kecamatanListModel.rows.forEach((kecamatan) {
+        List<LatLng> coordsToAdd = [];
+        kecamatan.kordinat.forEach((coordinat) {
+          coordsToAdd.add(LatLng(double.parse(coordinat[0].toString()),
+              double.parse(coordinat[1].toString())));
+        });
 
-      myPolygons.add(Polygon(
-          polygonId: PolygonId(kecamatan.kode.toString()),
-          points: coordsToAdd,
-          strokeColor: kecamatan.color.withOpacity(.4),
-          fillColor: kecamatan.color.withOpacity(.2),
-          strokeWidth: 2));
-    });
+        myPolygons.add(Polygon(
+            polygonId: PolygonId(kecamatan.kode.toString()),
+            points: coordsToAdd,
+            strokeColor: kecamatan.color.withOpacity(.4),
+            fillColor: kecamatan.color.withOpacity(.2),
+            strokeWidth: 2));
+      });
+    }
 
     //Set Icon Radius
     // myIcon = await createCustomMarkerBitmap('TEST');
@@ -79,7 +108,7 @@ class _LocationState extends State<Location> {
         ImageConfiguration(size: Size(100, 2)),
         'assets/images/lokasi_presensi80.png');
 
-    if (widget.withBlueZone) {
+    if (Application.lokasiPresensiList != null) {
       for (var item in Application.lokasiPresensiList.list ?? []) {
         circle.add(Circle(
           strokeWidth: 0,
@@ -180,34 +209,40 @@ class _LocationState extends State<Location> {
                   //Keterangan Wajib Presensi
                   // _itemContentCustom(title: 'Lokasi', content: 'Lokasi'),
 
-                  //Radius
-                  wTitle('Radius Presensi',
-                      subtitle:
-                          'Berikut daftar lokasi presensi berbasis radius'),
-                  ...Application.lokasiPresensiList.list
-                      .map(
-                        (e) => _itemContent(
-                            title: e.namaLokasi,
-                            content: 'Radius ${e.radius} Meter',
-                            lokasiPresensi: e,
-                            icon: Icons.location_on_outlined),
-                      )
-                      .toList(),
+                  if (Application.lokasiPresensiList != null &&
+                      Application.lokasiPresensiList.list.length != 0) ...[
+                    //Radius
+                    wTitle('Radius Presensi',
+                        subtitle:
+                            'Berikut daftar lokasi presensi berbasis radius'),
+                    ...Application.lokasiPresensiList.list
+                        .map(
+                          (e) => _itemContent(
+                              title: e.namaLokasi,
+                              content: 'Radius ${e.radius} Meter',
+                              lokasiPresensi: e,
+                              icon: Icons.location_on_outlined),
+                        )
+                        .toList(),
+                  ],
 
-                  // Kecamatan
-                  wTitle('Kecamatan Presensi',
-                      subtitle:
-                          'Berikut daftar lokasi presensi berbasis kecamatan'),
-                  ...Application.kecamatanListModel.rows
-                      .map(
-                        (e) => _itemContent2(
-                            kecamatan: e,
-                            title: e.kabKota,
-                            content: e.nama,
-                            color: e.color,
-                            icon: Icons.location_city),
-                      )
-                      .toList()
+                  if (Application.kecamatanListModel != null &&
+                      Application.kecamatanListModel.rows.length != 0) ...[
+                    // Kecamatan
+                    wTitle('Kecamatan Presensi',
+                        subtitle:
+                            'Berikut daftar lokasi presensi berbasis kecamatan'),
+                    ...Application.kecamatanListModel.rows
+                        .map(
+                          (e) => _itemContent2(
+                              kecamatan: e,
+                              title: e.kabKota,
+                              content: e.nama,
+                              color: e.color,
+                              icon: Icons.location_city),
+                        )
+                        .toList()
+                  ],
                 ],
               ),
             ),

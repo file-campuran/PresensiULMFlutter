@@ -805,7 +805,7 @@ class PresensiState extends State<Presensi> {
               ? Colors.orange
               : Colors.green,
         ),
-        if (Application.lokasiPresensiList.list.length != 0) ...[
+        if (Application.lokasiPresensiList != null) ...[
           _itemContent2(
               title: 'Area Presensi',
               content: myArea.message,
