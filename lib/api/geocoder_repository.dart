@@ -13,8 +13,8 @@ class GeocoderRepository {
           final Placemark pos = placemarks[0];
           String stringAddress =
               pos.thoroughfare.isEmpty ? '' : pos.thoroughfare + ', ';
-          stringAddress = pos.locality.isEmpty ? '' : pos.locality + ', ';
-          stringAddress = pos.subAdministrativeArea.isEmpty
+          stringAddress += pos.locality.isEmpty ? '' : pos.locality + ', ';
+          stringAddress += pos.subAdministrativeArea.isEmpty
               ? ''
               : pos.subAdministrativeArea;
 
