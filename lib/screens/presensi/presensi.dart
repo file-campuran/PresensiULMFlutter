@@ -819,33 +819,35 @@ class PresensiState extends State<Presensi> {
               color: myArea.status ? Colors.green : Colors.red,
               onTap: () {
                 // #TODO FIX THIS
-                Navigator.of(context).pushNamed(Routes.location,
-                    arguments:
-                        LocationModel(1, 'Lokasi Saya', latitude, longitude));
+                if (Platform.isAndroid) {
+                  Navigator.of(context).pushNamed(Routes.location,
+                      arguments:
+                          LocationModel(1, 'Lokasi Saya', latitude, longitude));
+                }
               }),
         ],
 
         // #TODO FIX THIS
-        // if (Platform.isAndroid) ...[
-        Row(
-          children: [
-            SizedBox(width: 40),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  height: 100,
-                  child: Location(
-                    title: null,
-                    location:
-                        LocationModel(1, 'Lokasi Saya', latitude, longitude),
+        if (Platform.isAndroid) ...[
+          Row(
+            children: [
+              SizedBox(width: 40),
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    height: 100,
+                    child: Location(
+                      title: null,
+                      location:
+                          LocationModel(1, 'Lokasi Saya', latitude, longitude),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        // ],
+            ],
+          ),
+        ],
         SizedBox(height: 20),
         _itemContent2(
             icon: Icons.location_on_outlined,
@@ -1174,17 +1176,17 @@ class PresensiState extends State<Presensi> {
           showCamera ? _cameraTogglesRowWidget() : Container(),
 
           // #TODO FIX THIS
-          // if (Platform.isAndroid) ...[
-          AppTransparentButton(
-              icon: Icons.location_on,
-              size: 50,
-              background: false,
-              onTap: () {
-                Navigator.of(context).pushNamed(Routes.location,
-                    arguments: LocationModel(1, '', latitude, longitude));
-                // _getLocation();
-              }),
-          // ],
+          if (Platform.isAndroid) ...[
+            AppTransparentButton(
+                icon: Icons.location_on,
+                size: 50,
+                background: false,
+                onTap: () {
+                  Navigator.of(context).pushNamed(Routes.location,
+                      arguments: LocationModel(1, '', latitude, longitude));
+                  // _getLocation();
+                }),
+          ],
         ],
       ),
     );
