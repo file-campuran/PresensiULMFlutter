@@ -1179,8 +1179,8 @@ class PresensiState extends State<Presensi> {
               icon: Icons.location_on,
               size: 50,
               background: false,
-              onTap: () async {
-                await Navigator.of(context).pushNamed(Routes.location,
+              onTap: () {
+                Navigator.of(context).pushNamed(Routes.location,
                     arguments: LocationModel(1, '', latitude, longitude));
                 // _getLocation();
               }),
