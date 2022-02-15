@@ -70,32 +70,37 @@ class MyLocation {
   MyLocationModel inAreaPresensi(Position position) {
     bool status = false;
     String result = 'Tidak dalam jangkauan titik presensi';
-    for (var zone in Application.lokasiPresensiList?.list ?? []) {
-      double distanceInMeters = Geolocator.distanceBetween(
-          position.latitude, position.longitude, zone.latitude, zone.longitude);
-      if (distanceInMeters <= zone.radius) {
-        status = true;
-        // UtilLogger.log('PRESENSI IN AREA', zone.namaLokasi);
-        result =
-            'Berada dalam area ${zone.namaLokasi} dengan jarak ${distanceInMeters.toStringAsFixed(2)} Meter dari titik presensi';
-        result = 'Berada dalam titik presensi yang dibolehkan';
-      }
-      // UtilLogger.log('DISATANCE BEETWEEN AREA ${zone.namaLokasi} METERS',
-      //     distanceInMeters);
-    }
 
-    for (var zone in Application.kecamatanListModel?.rows) {
-      if (!status) {
-        bool find =
-            inside(position.latitude, position.longitude, zone.kordinat);
-        if (find) {
+    if (Application.lokasiPresensiList != null) {
+      for (var zone in Application.lokasiPresensiList?.list ?? []) {
+        double distanceInMeters = Geolocator.distanceBetween(position.latitude,
+            position.longitude, zone.latitude, zone.longitude);
+        if (distanceInMeters <= zone.radius) {
           status = true;
           // UtilLogger.log('PRESENSI IN AREA', zone.namaLokasi);
-          result = 'Berada dalam area kecamatan ${zone.nama}';
-          // result = 'Berada dalam titik presensi yang dibolehkan';
+          result =
+              'Berada dalam area ${zone.namaLokasi} dengan jarak ${distanceInMeters.toStringAsFixed(2)} Meter dari titik presensi';
+          result = 'Berada dalam titik presensi yang dibolehkan';
         }
         // UtilLogger.log('DISATANCE BEETWEEN AREA ${zone.namaLokasi} METERS',
         //     distanceInMeters);
+      }
+    }
+
+    if (Application.kecamatanListModel != null) {
+      for (var zone in Application.kecamatanListModel?.rows) {
+        if (!status) {
+          bool find =
+              inside(position.latitude, position.longitude, zone.kordinat);
+          if (find) {
+            status = true;
+            // UtilLogger.log('PRESENSI IN AREA', zone.namaLokasi);
+            result = 'Berada dalam area kecamatan ${zone.nama}';
+            // result = 'Berada dalam titik presensi yang dibolehkan';
+          }
+          // UtilLogger.log('DISATANCE BEETWEEN AREA ${zone.namaLokasi} METERS',
+          //     distanceInMeters);
+        }
       }
     }
 

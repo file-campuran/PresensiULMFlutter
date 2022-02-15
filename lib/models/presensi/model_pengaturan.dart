@@ -31,7 +31,11 @@ class PengaturanListModel {
       };
 
   String getSettingConfig(String key) {
-    return rows.firstWhere((element) => element.key == key)?.value ?? '';
+    if (rows != null) {
+      return rows.firstWhere((element) => element.key == key)?.value ?? '';
+    }
+
+    return '';
   }
 }
 

@@ -106,7 +106,10 @@ class PresensiState extends State<Presensi> {
   void dispose() {
     controller.dispose();
     positionStream.cancel();
-    faceDetector.close();
+
+    if (Platform.isAndroid) {
+      faceDetector.close();
+    }
     // myLocation.closeStream();
     super.dispose();
   }
@@ -119,7 +122,10 @@ class PresensiState extends State<Presensi> {
 
     setupCameras();
     _getLocation();
-    initFirebaseML();
+
+    if (Platform.isAndroid) {
+      initFirebaseML();
+    }
     initPlatformState();
     initPresensi();
     checkBiodata();
@@ -973,7 +979,7 @@ class PresensiState extends State<Presensi> {
           width: _image.width.toDouble(),
           height: _image.height.toDouble(),
           child: CustomPaint(
-            painter: AppFacePainter(_image, _faces),
+            painter: AppFacePainter(_image, _faces ?? []),
           ),
         ),
       ),
@@ -1073,8 +1079,11 @@ class PresensiState extends State<Presensi> {
     startTime = DateTime.now().millisecondsSinceEpoch;
     UtilLogger.log('START DETECT FACE IMAGE', startTime.toString());
 
-    final visionImage = FirebaseVisionImage.fromFile(fileRaw);
-    List<Face> faces = await faceDetector.processImage(visionImage);
+    List<Face> faces;
+    if (Platform.isAndroid) {
+      final visionImage = FirebaseVisionImage.fromFile(fileRaw);
+      faces = await faceDetector.processImage(visionImage);
+    }
 
     final dataFaceFirebase = await fileRaw.readAsBytes();
     final decodeImage = await decodeImageFromList(dataFaceFirebase);
