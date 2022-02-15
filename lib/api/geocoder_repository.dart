@@ -11,13 +11,16 @@ class GeocoderRepository {
 
         if (placemarks != null && placemarks.isNotEmpty) {
           final Placemark pos = placemarks[0];
-          final stringAddress = pos.thoroughfare +
-              ', ' +
-              pos.locality +
-              ', ' +
-              pos.subAdministrativeArea;
+          String stringAddress =
+              pos.thoroughfare.isEmpty ? '' : pos.thoroughfare + ', ';
+          stringAddress = pos.locality.isEmpty ? '' : pos.locality + ', ';
+          stringAddress = pos.subAdministrativeArea.isEmpty
+              ? ''
+              : pos.subAdministrativeArea;
 
-          return stringAddress;
+          return stringAddress.isEmpty
+              ? 'Lokasi tidak ditemukan'
+              : stringAddress;
         } else {
           return 'Terjadi kesalahan mengambil lokasi';
         }

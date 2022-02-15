@@ -79,8 +79,9 @@ class MyLocation {
           status = true;
           // UtilLogger.log('PRESENSI IN AREA', zone.namaLokasi);
           result =
-              'Berada dalam area ${zone.namaLokasi} dengan jarak ${distanceInMeters.toStringAsFixed(2)} Meter dari titik presensi';
-          result = 'Berada dalam titik presensi yang dibolehkan';
+              'Anda berada di dalam area yang diperbolehkan untuk presensi (${zone.namaLokasi})';
+          // 'Berada dalam area ${zone.namaLokasi} dengan jarak ${distanceInMeters.toStringAsFixed(2)} Meter dari titik presensi';
+          // result = 'Berada dalam titik presensi yang dibolehkan';
         }
         // UtilLogger.log('DISATANCE BEETWEEN AREA ${zone.namaLokasi} METERS',
         //     distanceInMeters);
@@ -95,7 +96,8 @@ class MyLocation {
           if (find) {
             status = true;
             // UtilLogger.log('PRESENSI IN AREA', zone.namaLokasi);
-            result = 'Berada dalam area kecamatan ${zone.nama}';
+            result =
+                'Anda berada di dalam area yang diperbolehkan untuk presensi (Kec. ${zone.nama}, ${zone.kabKota})';
             // result = 'Berada dalam titik presensi yang dibolehkan';
           }
           // UtilLogger.log('DISATANCE BEETWEEN AREA ${zone.namaLokasi} METERS',

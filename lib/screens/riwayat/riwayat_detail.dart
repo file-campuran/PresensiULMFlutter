@@ -246,19 +246,27 @@ class _RiwayatDetailState extends State<RiwayatDetail> {
           SliverAppBar(
             expandedHeight: MediaQuery.of(context).size.height * 0.7,
             pinned: true,
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.map),
-                onPressed: _onLocation,
+            leading: IconButton(
+              icon: Container(
+                padding: EdgeInsets.all(7),
+                decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(.2),
+                    borderRadius: BorderRadius.circular(20)),
+                child: Icon(Icons.arrow_back),
               ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            actions: <Widget>[
+              wIcon(icon: Icons.map, onPress: _onLocation),
               Visibility(
                 visible: widget.item.fileBerkas != null,
-                child: IconButton(
-                  icon: Icon(Icons.file_download),
-                  onPressed: () {
-                    launchExternal(widget.item.fileBerkas);
-                  },
-                ),
+                child: wIcon(
+                    icon: Icons.file_download,
+                    onPress: () {
+                      launchExternal(widget.item.fileBerkas);
+                    }),
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
@@ -280,6 +288,22 @@ class _RiwayatDetailState extends State<RiwayatDetail> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget wIcon({IconData icon, Function onPress}) {
+    return Container(
+      width: 60,
+      child: IconButton(
+        icon: Container(
+          padding: EdgeInsets.all(7),
+          decoration: BoxDecoration(
+              color: Colors.black.withOpacity(.2),
+              borderRadius: BorderRadius.circular(20)),
+          child: Icon(icon),
+        ),
+        onPressed: onPress,
       ),
     );
   }

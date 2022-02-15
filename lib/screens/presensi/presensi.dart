@@ -813,39 +813,46 @@ class PresensiState extends State<Presensi> {
         ),
         if (Application.lokasiPresensiList != null) ...[
           _itemContent2(
-              title: 'Area Presensi',
+              title: 'Status Presensi',
               content: myArea.message,
               icon: Icons.radio_button_on_sharp,
               color: myArea.status ? Colors.green : Colors.red,
               onTap: () async {
-                await Navigator.of(context).pushNamed(Routes.location,
-                    arguments: LocationModel(1, '', latitude, longitude));
-              }),
-        ],
-        Row(
-          children: [
-            SizedBox(width: 40),
-            Expanded(
-              child: InkWell(
-                onTap: () async {
+                // #TODO FIX THIS
+                if (Platform.isAndroid) {
                   await Navigator.of(context).pushNamed(Routes.location,
                       arguments: LocationModel(1, '', latitude, longitude));
-                },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Container(
-                    height: 100,
-                    child: Location(
-                      title: null,
-                      location:
-                          LocationModel(1, 'Lokasi Saya', latitude, longitude),
+                }
+              }),
+        ],
+
+        // #TODO FIX THIS
+        if (Platform.isAndroid) ...[
+          Row(
+            children: [
+              SizedBox(width: 40),
+              Expanded(
+                child: InkWell(
+                  onTap: () async {
+                    await Navigator.of(context).pushNamed(Routes.location,
+                        arguments: LocationModel(1, '', latitude, longitude));
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Container(
+                      height: 100,
+                      child: Location(
+                        title: null,
+                        location: LocationModel(
+                            1, 'Lokasi Saya', latitude, longitude),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
         SizedBox(height: 20),
         _itemContent2(
             icon: Icons.location_on_outlined,
@@ -1043,7 +1050,9 @@ class PresensiState extends State<Presensi> {
 
     UtilLogger.log('TAKE PICTURE PATH', filePath);
     if (mounted) {
-      if (controller.description.lensDirection == CameraLensDirection.front) {
+      // #TODO FIX THIS
+      if (controller.description.lensDirection == CameraLensDirection.front &&
+          Platform.isAndroid) {
         flipImage(filePath);
       } else {
         File file = new File(filePath);
@@ -1170,15 +1179,19 @@ class PresensiState extends State<Presensi> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           showCamera ? _cameraTogglesRowWidget() : Container(),
-          AppTransparentButton(
-              icon: Icons.location_on,
-              size: 50,
-              background: false,
-              onTap: () async {
-                await Navigator.of(context).pushNamed(Routes.location,
-                    arguments: LocationModel(1, '', latitude, longitude));
-                // _getLocation();
-              }),
+
+          // #TODO FIX THIS
+          if (Platform.isAndroid) ...[
+            AppTransparentButton(
+                icon: Icons.location_on,
+                size: 50,
+                background: false,
+                onTap: () async {
+                  await Navigator.of(context).pushNamed(Routes.location,
+                      arguments: LocationModel(1, '', latitude, longitude));
+                  // _getLocation();
+                }),
+          ],
         ],
       ),
     );
