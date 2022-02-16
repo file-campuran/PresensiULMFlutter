@@ -45,26 +45,30 @@ class _LocationState extends State<Location> {
   }
 
   void initLokasiPresensi() async {
-    final response = await PresensiRepository().getLokasiPresensi();
+    if (Application.lokasiPresensiList == null) {
+      final response = await PresensiRepository().getLokasiPresensi();
 
-    if (response.code == CODE.SUCCESS) {
-      final lokasiModel = LokasiPresensiListModel.fromMap(response.data);
+      if (response.code == CODE.SUCCESS) {
+        final lokasiModel = LokasiPresensiListModel.fromMap(response.data);
 
-      setState(() {
-        Application.lokasiPresensiList = lokasiModel;
-      });
+        setState(() {
+          Application.lokasiPresensiList = lokasiModel;
+        });
+      }
     }
   }
 
   void initKecamatan() async {
-    final response = await PresensiRepository().getKecamatan();
+    if (Application.kecamatanListModel == null) {
+      final response = await PresensiRepository().getKecamatan();
 
-    if (response.code == CODE.SUCCESS) {
-      final lokasiModel = KecamatanListModel.fromMap(response.data);
+      if (response.code == CODE.SUCCESS) {
+        final lokasiModel = KecamatanListModel.fromMap(response.data);
 
-      setState(() {
-        Application.kecamatanListModel = lokasiModel;
-      });
+        setState(() {
+          Application.kecamatanListModel = lokasiModel;
+        });
+      }
     }
   }
 
