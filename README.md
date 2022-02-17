@@ -22,7 +22,44 @@
 
 2. [Konfigurasi aplikasi android untuk menggunakan Firebase](https://firebase.google.com/docs/flutter/setup#configure_an_android_app)
 
+#### Firebase Remote Config <KEY, VALUE>
+``` json
+{
+  "update": {
+    "release_version": "2.0.0",
+    "min_version": 10,
+    "ios_url": "https://play.google.com/store/apps/details?id=com.absen_online&hl=en&gl=US",
+    "android_url": "https://play.google.com/store/apps/details?id=com.absen_online&hl=en&gl=US",
+    "news": [
+      "Penambahan deteksi wajah",
+      "Perbaikan flash yang selalu menyala"
+    ]
+  },
+  "environments": {
+    "key": "605dafe39ee0780e8cf2c829434eea99",
+    "url": "https://apiv2.ulm.ac.id/api",
+    "id": "PresensiULM",
+    "timeout": 20,
+    "presensi_image_url": "https://apiv2.ulm.ac.id/api/presensi/file/foto",
+    "presensi_file_url": "https://apiv2.ulm.ac.id/api/presensi/file/berkas",
+    "privacy_policy_url": "https://simari.ulm.ac.id/privacy_policy_presensi.html",
+    "guide_url": "https://simari.ulm.ac.id",
+    "no_cs": "+6282149091899"
+  },
+  "presensi": {
+    "zone": [],
+    "upload": {
+      "max": "Maksimal berkas upload 3 MB",
+      "mime": "File yang diperbolehkan hanya jpg|jpeg|png|pdf|docx|doc|xls|xlsx|ppt|pptx|csv"
+    },
+    "detect_fake_gps": false,
+    "detect_face": true,
+    "detect_face_recognition": false,
+    "show_face_information": true
+  }
+}
 
+```
 
 ## Windows Android Setup
 ``` bash
