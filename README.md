@@ -8,9 +8,12 @@
 
 ## Index
 
-- [Firebase Setup](#firebase-setup)
-	- [Firebase SDK](#firebase-sdk)
-- [Build Setup](#build-setup)
+- [Presensi ULM Mobile App (Flutter)](#presensi-ulm-mobile-app-flutter)
+  - [Index](#index)
+      - [Firebase SDK](#firebase-sdk)
+  - [Windows Android Setup](#windows-android-setup)
+  - [iOS Setup](#ios-setup)
+    - [Manual Upload DSYM](#manual-upload-dsym)
 
   
 #### Firebase SDK
@@ -21,25 +24,52 @@
 
 
 
-## Build Setup
+## Windows Android Setup
 ``` bash
 # install dependencies
 $ flutter pub get
-# run debug mode
-$ flutter run
-# run release mode
-$ flutter run --release
-# build app bundle
-$ flutter build appbundle
 # build apk
-$ flutter build apk
+$ flutter build apk --split-per-abi
+#  ( Jika stuck di splash screen )
+$ flutter build apk --no-shrink --split-per-abi
 ```
 
 ## iOS Setup
 ``` bash
 # Set Path Flutter
 $ export PATH="/Users/ptik/Downloads/flutter/bin":$PATH
+# Build IOS (Generate Codesigning)
+$ flutter buiild ios
+# Install Pods jika ada pembaharuan
+$ Pods install
+
+Open Runner.xcodeworkspace
+
+#FIX IOS 15 XCODE
+Other Code Signing Flags : --generate-entitlement-der
+
+#UPLOAD DYSM
+Xcode -> Organize -> Show In Finder -> Explore archive -> Archive dsyms.zip -> Copy to ios folder https://i.stack.imgur.com/qIaU3.gif
+
+# OR
+cek di d derived data Xcode -> Preferences -> Location -> Derived Data -> Runner XXX -> Build -> Products (Cari dSYM file)
+
+# OR
+run command di path /ios
+find /Users/ptik/Library/Developer/Xcode/DerivedData/Runner*/Build/Products/*/Runner* -name "*.dSYM" | xargs -I \{\} Pods/FirebaseCrashlytics/upload-symbols -gsp GoogleService-Info.plist -p ios \{\}
+
+iMac-UPP:ios ptik$ Pods/FirebaseCrashlytics/upload-symbols -gsp GoogleService-Info.plist -p ios /dSYMs.zip
+
+
+#FIX IOS 15 XCODE
+Other Code Signing Flags : --generate-entitlement-der
+
 ```
+
+
+### Manual Upload DSYM
+Upload dSYM untuk keperluan Firebase Crashltic
+![alt](https://i.stack.imgur.com/qIaU3.gif)
 
 
 For detailed explanation on how things work, check out [Flutter docs](https://flutter.dev/docs).
