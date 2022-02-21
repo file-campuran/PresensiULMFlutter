@@ -53,7 +53,7 @@
     "orange": "Jeruk",
     "green": "Hijau",
     "yellow": "Kuning",
-    "close": "Menutup",
+    "close": "Tutup",
     "pull_down_refresh": "Tarik ke bawah, segarkan",
     "refreshing": "Segar...",
     "refresh_completed": "Penyegaran selesai",
@@ -104,5 +104,7 @@
     "update": "Cek Pembaharuan",
     "day_off": "Hari Libur",
     "announcement": "Pengumuman",
-    "mark_read": "Lewati"
+    "mark_read": "Lewati",
+    "yes": "Ya",
+    "no": "Tidak"
 }

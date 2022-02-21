@@ -188,8 +188,8 @@ class _ProfileState extends State<Profile> {
                               .translate('confirm_sign_out'),
                           image: Images.Reading,
                           title: Translate.of(context).translate('sign_out'),
-                          onTapText:
-                              Translate.of(context).translate('sign_out'),
+                          onTapText: Translate.of(context).translate('yes'),
+                          onCloseText: Translate.of(context).translate('no'),
                           onTap: () {
                             _logout();
                             Navigator.of(context).pop();
@@ -269,7 +269,7 @@ class _ProfileState extends State<Profile> {
                     fontWeight: FontWeight.bold),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
-                    await launchExternal('tel:082149091899');
+                    await launchExternal('tel:${Environment.noCs}');
                   })
           ],
         ),

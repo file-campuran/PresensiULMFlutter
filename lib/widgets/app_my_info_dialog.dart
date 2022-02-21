@@ -11,6 +11,7 @@ void appMyInfoDialog({
   String image,
   Function onTap,
   String onTapText = 'understand',
+  String onCloseText = 'close',
 }) {
   showModalBottomSheet(
     isScrollControlled: true,
@@ -67,7 +68,7 @@ void appMyInfoDialog({
                 children: <Widget>[
                   Expanded(
                     child: AppRoundedButton(
-                      title: Translate.of(context).translate('close'),
+                      title: Translate.of(context).translate(onCloseText),
                       textStyle: TextStyle(
                           fontSize: 12.0, fontWeight: FontWeight.bold),
                       borderSide:

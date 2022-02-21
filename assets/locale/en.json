@@ -104,5 +104,7 @@
     "update": "Check Update",
     "day_off": "Day Off",
     "announcement": "Announcement",
-    "mark_read": "Mark Read"
+    "mark_read": "Mark Read",
+    "yes": "Yes",
+    "no": "No"
 }

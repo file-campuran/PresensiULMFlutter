@@ -69,7 +69,7 @@ class _MainNavigationState extends State<MainNavigation> {
           message:
               'Coba periksa apakah smartphone anda sudah terhubung ke jaringan seluler atau Wi-Fi',
           image: Images.Working,
-          title: 'Yah, sepertinya anda tidak terhubung ke sambungan internet',
+          title: 'Sepertinya anda tidak terhubung ke sambungan internet',
         );
         break;
       default:
