@@ -11,21 +11,32 @@ class GeocoderRepository {
 
         if (placemarks != null && placemarks.isNotEmpty) {
           final Placemark pos = placemarks[0];
-          String stringAddress =
-              pos.thoroughfare.isEmpty ? '' : pos.thoroughfare + ', ';
-          stringAddress += pos.locality.isEmpty ? '' : pos.locality + ', ';
-          stringAddress += pos.subAdministrativeArea.isEmpty
-              ? ''
-              : pos.subAdministrativeArea;
+          List<String> stringAddress = [];
 
-          return stringAddress.isEmpty
-              ? 'Lokasi tidak ditemukan'
-              : stringAddress;
+          // Jalan A. Yani
+          if (pos.thoroughfare.isNotEmpty) stringAddress.add(pos.thoroughfare);
+
+          // Kecamatan Banjarbaru Selatan
+          if (pos.locality.isNotEmpty) stringAddress.add(pos.locality);
+
+          // Kota Banjarbaru
+          if (pos.subAdministrativeArea.isNotEmpty)
+            stringAddress.add(pos.subAdministrativeArea);
+
+          // Kalimantan Selatan
+          if (pos.administrativeArea.isNotEmpty)
+            stringAddress.add(pos.administrativeArea);
+
+          // Indonesia
+          if (pos.country.isNotEmpty) stringAddress.add(pos.country);
+
+          // Combine Area
+          return stringAddress.isEmpty ? '-' : stringAddress.join(', ');
         } else {
           return 'Terjadi kesalahan mengambil lokasi';
         }
       } catch (e) {
-        return 'Terjadi kesalahan mengambil lokasi';
+        return e.toString();
       }
     }
   }

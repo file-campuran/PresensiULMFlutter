@@ -39,7 +39,7 @@ class AppCalendarIcon extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 2),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).primaryColor.withOpacity(.8),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(5), topRight: Radius.circular(5)),
             ),
@@ -47,8 +47,9 @@ class AppCalendarIcon extends StatelessWidget {
             child: Text(
               data['dayName'],
               textAlign: TextAlign.center,
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
           ),
           Expanded(

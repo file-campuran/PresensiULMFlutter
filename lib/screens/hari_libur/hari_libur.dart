@@ -177,7 +177,7 @@ class _HariLiburState extends State<HariLibur> {
       decoration: BoxDecoration(
         border: Border.all(
           color: active ? Colors.transparent : Colors.grey.withOpacity(0.5),
-          width: active ? 0 : 0.5,
+          width: active ? 0 : 0.3,
         ),
         borderRadius: BorderRadius.circular(7),
         color: active ? Theme.of(context).primaryColor.withOpacity(0.1) : null,
@@ -298,6 +298,10 @@ class _HariLiburState extends State<HariLibur> {
                   message: event.keterangan,
                 );
               },
+            ),
+            Divider(
+              color: Theme.of(context).highlightColor.withOpacity(.2),
+              height: 9,
             ),
           ]
         ],

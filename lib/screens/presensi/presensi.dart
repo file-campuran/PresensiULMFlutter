@@ -237,7 +237,13 @@ class PresensiState extends State<Presensi> {
     positionStream.onData((position) async {
       UtilLogger.log('ACCURACY', position.accuracy);
       UtilLogger.log('DATA', position);
+      final myAreaStatusBefore = myArea?.message;
       myArea = myLocation.inAreaPresensi(position);
+
+      if (myArea.message != myAreaStatusBefore) {
+        setState(() {});
+      }
+
       if (this.mounted) {
         if (accuracy > position.accuracy || accuracy == 0) {
           myPosition = position;
@@ -794,27 +800,27 @@ class PresensiState extends State<Presensi> {
   }
 
   Widget wDetailLokasi() {
+    final keteranganYa = Application.pengaturanList
+        .getSettingConfig('presensi_berbasis_lokasi_keterangan_ya');
+    final keteranganTidak = Application.pengaturanList
+        .getSettingConfig('presensi_berbasis_lokasi_keterangan_tidak');
+    final berbasisLokasi = Application.pengaturanList
+        .getSettingConfig('presensi_berbasis_lokasi_keterangan_tidak');
+
     return Column(
       children: [
-        _itemContent2(
-          title: Application.pengaturanList
-                      .getSettingConfig('presensi_berbasis_lokasi') ==
-                  '1'
-              ? Application.pengaturanList
-                  .getSettingConfig('presensi_berbasis_lokasi_keterangan_ya')
-              : Application.pengaturanList.getSettingConfig(
-                  'presensi_berbasis_lokasi_keterangan_tidak'),
-          icon: Icons.info_outline,
-          color: Application.pengaturanList
-                      .getSettingConfig('presensi_berbasis_lokasi') ==
-                  '1'
-              ? Colors.orange
-              : Colors.green,
-        ),
+        if (keteranganYa.isNotEmpty && keteranganTidak.isNotEmpty) ...[
+          _itemContent2(
+            title: berbasisLokasi == '1' ? keteranganYa : keteranganTidak,
+            icon: Icons.info_outline,
+            color: berbasisLokasi == '1' ? Colors.orange : Colors.green,
+          ),
+        ],
         if (Application.lokasiPresensiList != null) ...[
           _itemContent2(
               title: 'Status Presensi',
               content: myArea.message,
+              isLoading: accuracy >= 100,
               icon: Icons.radio_button_on_sharp,
               color: myArea.status ? Colors.green : Colors.red,
               onTap: () {
@@ -847,8 +853,8 @@ class PresensiState extends State<Presensi> {
               ),
             ],
           ),
+          SizedBox(height: 20),
         ],
-        SizedBox(height: 20),
         _itemContent2(
             icon: Icons.location_on_outlined,
             title: 'Latitude, Longitude',
@@ -890,6 +896,7 @@ class PresensiState extends State<Presensi> {
       String content,
       IconData icon,
       Color color,
+      bool isLoading = false,
       Function onTap}) {
     return Container(
       padding: EdgeInsets.only(bottom: Dimens.padding),
@@ -918,23 +925,41 @@ class PresensiState extends State<Presensi> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    if (title != null) ...[
-                      Text(
-                        title ?? '',
-                        style: Theme.of(context).textTheme.caption,
+                    if (isLoading) ...[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppSkeleton(
+                            borderRadius: BorderRadius.circular(3),
+                            height: 13,
+                            width: 90,
+                          ),
+                          SizedBox(height: 5),
+                          AppSkeleton(
+                            borderRadius: BorderRadius.circular(3),
+                            height: 13,
+                          ),
+                        ],
                       ),
-                    ],
-                    if (content != null) ...[
-                      Container(
-                        width: Adapt.screenW() * 0.80,
-                        child: Text(
-                          content ?? '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              .copyWith(fontWeight: FontWeight.w600),
+                    ] else ...[
+                      if (title != null) ...[
+                        Text(
+                          title ?? '',
+                          style: Theme.of(context).textTheme.caption,
                         ),
-                      )
+                      ],
+                      if (content != null) ...[
+                        Container(
+                          width: Adapt.screenW() * 0.80,
+                          child: Text(
+                            content ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(fontWeight: FontWeight.w600),
+                          ),
+                        )
+                      ],
                     ],
                   ],
                 ),
