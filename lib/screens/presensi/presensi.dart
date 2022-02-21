@@ -823,22 +823,21 @@ class PresensiState extends State<Presensi> {
             color: berbasisLokasi == '1' ? Colors.orange : Colors.green,
           ),
         ],
-        if (Application.lokasiPresensiList != null) ...[
-          _itemContent2(
-              title: 'Status Presensi',
-              content: myArea.message,
-              isLoading: accuracy >= 100,
-              icon: Icons.radio_button_on_sharp,
-              color: myArea.status ? Colors.green : Colors.red,
-              onTap: () {
-                // #TODO FIX THIS
-                if (Platform.isAndroid) {
-                  Navigator.of(context).pushNamed(Routes.location,
-                      arguments:
-                          LocationModel(1, 'Lokasi Saya', latitude, longitude));
-                }
-              }),
-        ],
+        _itemContent2(
+            title: 'Status Presensi',
+            content: myArea.message,
+            isLoading: Application.kecamatanListModel == null ||
+                Application.lokasiPresensiList == null,
+            icon: Icons.radio_button_on_sharp,
+            color: myArea.status ? Colors.green : Colors.red,
+            onTap: () {
+              // #TODO FIX THIS
+              if (Platform.isAndroid) {
+                Navigator.of(context).pushNamed(Routes.location,
+                    arguments:
+                        LocationModel(1, 'Lokasi Saya', latitude, longitude));
+              }
+            }),
 
         // #TODO FIX THIS
         if (Platform.isAndroid) ...[
