@@ -36,6 +36,7 @@ class GeocoderRepository {
           return 'Terjadi kesalahan mengambil lokasi';
         }
       } catch (e) {
+        return 'Terjadi kesalahan mengambil lokasi.';
         return e.toString();
       }
     }

@@ -712,10 +712,17 @@ class PresensiState extends State<Presensi> {
                 });
               },
               decoration: InputDecoration(
-                  // labelText: 'Keterangan Kerja',
-                  contentPadding: EdgeInsets.all(15.0),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5))),
+                // labelText: 'Keterangan Kerja',
+                contentPadding: EdgeInsets.all(15.0),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 1.0),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).highlightColor, width: 1.0),
+                ),
+              ),
             ),
             if (_infoPresensi.ruleIsUploadFile) ...[
               SizedBox(height: 10),

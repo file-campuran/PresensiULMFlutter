@@ -34,6 +34,10 @@ class AppButton extends StatelessWidget {
       height: 35,
       child: RaisedButton(
         shape: shape,
+        elevation: 0,
+        hoverElevation: 0,
+        focusElevation: 0,
+        highlightElevation: 0,
         onPressed: disableTouchWhenLoading && loading ? null : onPressed,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
