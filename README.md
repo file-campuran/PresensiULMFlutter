@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="https://github.com/Killers007/PresensiULMFlutter/blob/master/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" />
+</p>
 
 # Presensi ULM Mobile App (Flutter)
 
@@ -23,6 +26,8 @@
 2. [Konfigurasi aplikasi android untuk menggunakan Firebase](https://firebase.google.com/docs/flutter/setup#configure_an_android_app)
 
 #### Firebase Remote Config <KEY, VALUE>
+![Screenshot 2022-02-21 111239](https://user-images.githubusercontent.com/28392136/154883249-73edb5b7-a026-453c-966b-9452b3fcb8de.png)
+
 ``` json
 {
   "update": {
