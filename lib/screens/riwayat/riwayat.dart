@@ -233,12 +233,12 @@ class _RiwayatState extends State<Riwayat> {
     _mapController.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          // bearing: 270.0,
+          bearing: 270.0,
           target: LatLng(
             _presensiList.list[_indexLocation].latitude,
             _presensiList.list[_indexLocation].longitude,
           ),
-          // tilt: 30.0,
+          tilt: 30.0,
           zoom: 15.0,
         ),
       ),
