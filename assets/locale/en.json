@@ -106,5 +106,11 @@
     "announcement": "Announcement",
     "mark_read": "Mark Read",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "presensi_location": "Presence Location",
+    "view_location": "View Location",
+    "radius_precense": "Presence Radius",
+    "radius_precense_detail": "The following is a list of radius-based presence locations",
+    "district_precense": "Presence District",
+    "district_precense_detail": "The following is a list of district-based attendance locations"
 }

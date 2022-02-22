@@ -194,34 +194,6 @@ class _ProfileState extends State<Profile> {
                             _logout();
                             Navigator.of(context).pop();
                           });
-                      return;
-                      showDialog<void>(
-                        context: context,
-                        barrierDismissible: true, // user must tap button!
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Logout'),
-                            content: Text(Translate.of(context)
-                                .translate('confirm_sign_out')),
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text(
-                                    Translate.of(context).translate('close')),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              RaisedButton(
-                                child: Text('OK'),
-                                onPressed: () {
-                                  _logout();
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
                     },
                     child: Padding(
                       padding: EdgeInsets.all(15),

@@ -106,5 +106,11 @@
     "announcement": "Pengumuman",
     "mark_read": "Lewati",
     "yes": "Ya",
-    "no": "Tidak"
+    "no": "Tidak",
+    "presensi_location": "Lokasi Presensi",
+    "view_location": "Lihat Lokasi",
+    "radius_precense": "Radius Presensi",
+    "radius_precense_detail": "Berikut daftar lokasi presensi berbasis radius",
+    "district_precense": "Kecamatan Presensi",
+    "district_precense_detail": "Berikut daftar lokasi presensi berbasis kecamatan"
 }

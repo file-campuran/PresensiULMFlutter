@@ -7,7 +7,7 @@ class Application {
   static Database db;
   static UserModel user;
   static LokasiPresensiListModel lokasiPresensiList;
-  static PengaturanListModel pengaturanList;
+  static PengaturanListModel pengaturanList = new PengaturanListModel();
   static KecamatanListModel kecamatanListModel;
   static String pushToken;
   static ConfigModel remoteConfig;

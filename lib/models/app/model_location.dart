@@ -6,10 +6,10 @@ class LocationModel {
 
   LocationModel(
     this.id,
-    this.name,
-    this.lat,
-    this.long,
-  );
+    this.name, [
+    this.lat = -3.4460363,
+    this.long = 114.8416522,
+  ]);
 
   factory LocationModel.fromJson(Map<String, dynamic> json) {
     return LocationModel(

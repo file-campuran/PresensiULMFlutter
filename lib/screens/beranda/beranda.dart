@@ -7,7 +7,9 @@ import 'beranda_sliver_app_bar.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/widgets/widget.dart';
+import 'package:absen_online/screens/screen.dart';
 import 'beranda_swiper.dart';
+import 'package:absen_online/api/presensi.dart';
 
 class Beranda extends StatefulWidget {
   Beranda({Key key}) : super(key: key);
@@ -32,6 +34,9 @@ class _BerandaState extends State<Beranda> {
     _jadwalCubit = BlocProvider.of<JadwalCubit>(context);
     _jadwalCubit.initData();
     _pengumumanCubit.readMessage();
+    initKecamatan();
+    initLokasiPresensi();
+    initPengaturan();
     super.initState();
   }
 
@@ -126,6 +131,13 @@ class _BerandaState extends State<Beranda> {
         : Application.remoteConfig.banner
             .map((banner) => ImageModel(1, banner))
             .toList();
+
+    String keteranganYa = Application.pengaturanList
+        .getSettingConfig('presensi_berbasis_lokasi_keterangan_ya');
+    String keteranganTidak = Application.pengaturanList
+        .getSettingConfig('presensi_berbasis_lokasi_keterangan_tidak');
+    String berbasisLokasi =
+        Application.pengaturanList.getSettingConfig('presensi_berbasis_lokasi');
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: Theme.of(context).brightness == Brightness.dark
@@ -288,6 +300,8 @@ class _BerandaState extends State<Beranda> {
                               ],
                             ),
                           ),
+
+                          // Jadwal
                           Container(
                             padding: EdgeInsets.only(
                                 left: Dimens.padding,
@@ -295,6 +309,149 @@ class _BerandaState extends State<Beranda> {
                                 bottom: 20),
                             child: _buildListJadwal(),
                           ),
+
+                          // Maps
+                          // Loading
+                          if (Application.kecamatanListModel == null ||
+                              Application.lokasiPresensiList == null) ...[
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Dimens.padding,
+                                  vertical: Dimens.padding),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      AppSkeleton(
+                                        height: 16,
+                                        width: 100,
+                                        borderRadius: BorderRadius.circular(3),
+                                      ),
+                                      Row(
+                                        children: [
+                                          AppSkeleton(
+                                            height: 16,
+                                            width: 100,
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                          ),
+                                          SizedBox(width: 10),
+                                          AppSkeleton(
+                                            height: 16,
+                                            width: 16,
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                  AppSkeleton(
+                                    height: 16,
+                                    borderRadius: BorderRadius.circular(3),
+                                  ),
+                                  SizedBox(height: 10),
+                                  AppSkeleton(
+                                    height: 16,
+                                    borderRadius: BorderRadius.circular(3),
+                                  ),
+                                  SizedBox(height: 10),
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: AppSkeleton(
+                                        height: 400,
+                                      )),
+                                ],
+                              ),
+                            ),
+                          ] else ...[
+                            //
+
+                            Container(
+                                padding: EdgeInsets.only(
+                                  left: Dimens.padding,
+                                  right: Dimens.padding,
+                                  bottom: 5,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              Translate.of(context).translate(
+                                                  'presensi_location'),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                            ),
+                                          ],
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .pushNamed(Routes.location,
+                                                    arguments: LocationModel(
+                                                      1,
+                                                      '',
+                                                    ));
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                Translate.of(context)
+                                                    .translate('view_location'),
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor),
+                                              ),
+                                              SizedBox(width: 5),
+                                              MyIconDuotone(
+                                                  MyIconDuotoneIcon.address,
+                                                  color: Theme.of(context)
+                                                      .primaryColor),
+                                              // Icon(Icons.map),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    if (keteranganYa.isNotEmpty ||
+                                        keteranganTidak.isNotEmpty) ...[
+                                      SizedBox(height: 5),
+                                      Text(berbasisLokasi == '1'
+                                          ? keteranganYa
+                                          : keteranganTidak),
+                                    ],
+                                  ],
+                                )),
+
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Dimens.padding,
+                                  vertical: Dimens.padding),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Container(
+                                  height: 400,
+                                  child: Location(
+                                    title: null,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ],
@@ -306,5 +463,45 @@ class _BerandaState extends State<Beranda> {
         ),
       ),
     );
+  }
+
+  void initLokasiPresensi() async {
+    if (Application.lokasiPresensiList == null) {
+      final response = await PresensiRepository().getLokasiPresensi();
+
+      if (response.code == CODE.SUCCESS) {
+        final lokasiModel = LokasiPresensiListModel.fromMap(response.data);
+
+        setState(() {
+          Application.lokasiPresensiList = lokasiModel;
+        });
+      }
+    }
+  }
+
+  void initKecamatan() async {
+    if (Application.kecamatanListModel == null) {
+      final response = await PresensiRepository().getKecamatan();
+
+      if (response.code == CODE.SUCCESS) {
+        final lokasiModel = KecamatanListModel.fromMap(response.data);
+
+        setState(() {
+          Application.kecamatanListModel = lokasiModel;
+        });
+      }
+    }
+  }
+
+  void initPengaturan() async {
+    final response = await PresensiRepository().getPengaturanPresensi();
+
+    if (response.code == CODE.SUCCESS) {
+      final lokasiModel = PengaturanListModel.fromMap(response.data);
+
+      setState(() {
+        Application.pengaturanList = lokasiModel;
+      });
+    }
   }
 }

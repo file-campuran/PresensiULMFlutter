@@ -536,7 +536,9 @@ class PresensiState extends State<Presensi> {
           //BUTTON CAPTURE
           Positioned(
               width: MediaQuery.of(context).size.width,
-              bottom: _bottomPanelSliderHeightClosed + 80,
+              bottom: _bottomPanelSliderHeightClosed +
+                  80 +
+                  (Platform.isIOS ? 20 : 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -811,8 +813,8 @@ class PresensiState extends State<Presensi> {
         .getSettingConfig('presensi_berbasis_lokasi_keterangan_ya');
     final keteranganTidak = Application.pengaturanList
         .getSettingConfig('presensi_berbasis_lokasi_keterangan_tidak');
-    final berbasisLokasi = Application.pengaturanList
-        .getSettingConfig('presensi_berbasis_lokasi_keterangan_tidak');
+    final berbasisLokasi =
+        Application.pengaturanList.getSettingConfig('presensi_berbasis_lokasi');
 
     return Column(
       children: [
@@ -831,16 +833,16 @@ class PresensiState extends State<Presensi> {
             icon: Icons.radio_button_on_sharp,
             color: myArea.status ? Colors.green : Colors.red,
             onTap: () {
-              // #TODO FIX THIS
-              if (Platform.isAndroid) {
+              // #TODO FIX THIS (Disabled)
+              if (false) {
                 Navigator.of(context).pushNamed(Routes.location,
                     arguments:
                         LocationModel(1, 'Lokasi Saya', latitude, longitude));
               }
             }),
 
-        // #TODO FIX THIS
-        if (Platform.isAndroid) ...[
+        // #TODO FIX THIS (Disabled)
+        if (false) ...[
           Row(
             children: [
               SizedBox(width: 40),
@@ -867,7 +869,7 @@ class PresensiState extends State<Presensi> {
             content: "$latitude, $longitude"),
         _itemContent2(
             icon: Icons.vpn_lock_outlined,
-            title: 'Akurasi GPS (Semaikn kecil, semakin akurat)',
+            title: 'Akurasi GPS (Semakin kecil, semakin akurat)',
             content: "$accuracy meters"),
         _itemContent2(
             title: 'Lokasi Sekarang',
@@ -1206,8 +1208,8 @@ class PresensiState extends State<Presensi> {
         children: <Widget>[
           showCamera ? _cameraTogglesRowWidget() : Container(),
 
-          // #TODO FIX THIS
-          if (Platform.isAndroid) ...[
+          // #TODO FIX THIS (DISABLED)
+          if (false) ...[
             AppTransparentButton(
                 icon: Icons.location_on,
                 size: 50,

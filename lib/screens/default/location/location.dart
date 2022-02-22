@@ -78,12 +78,12 @@ class _LocationState extends State<Location> {
     MarkerId markerId;
     Marker marker;
 
-    if (widget.location.lat != null) {
+    if (widget.location != null) {
       markerId = MarkerId('MY_LOCATION');
       marker = Marker(
         markerId: markerId,
         position: LatLng(widget.location.lat, widget.location.long),
-        infoWindow: InfoWindow(title: 'Lokasi Saya'),
+        infoWindow: InfoWindow(title: widget.location.name),
         onTap: () {},
       );
     }
@@ -128,7 +128,8 @@ class _LocationState extends State<Location> {
           position: LatLng(item.latitude, item.longitude),
           infoWindow: InfoWindow(title: item.namaLokasi),
           onTap: () {},
-          icon: myIcon,
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
         );
         _markers[lokasiMarkerPresensi] = lokasiMarker;
       }
@@ -137,7 +138,7 @@ class _LocationState extends State<Location> {
     }
 
     setState(() {
-      if (widget.location.lat != null) {
+      if (widget.location != null) {
         _markers[markerId] = marker;
       }
     });
@@ -216,9 +217,9 @@ class _LocationState extends State<Location> {
                   if (Application.lokasiPresensiList != null &&
                       Application.lokasiPresensiList.list.length != 0) ...[
                     //Radius
-                    wTitle('Radius Presensi',
-                        subtitle:
-                            'Berikut daftar lokasi presensi berbasis radius'),
+                    wTitle(Translate.of(context).translate('radius_precense'),
+                        subtitle: Translate.of(context)
+                            .translate('radius_precense_detail')),
                     ...Application.lokasiPresensiList.list
                         .map(
                           (e) => _itemContent(
@@ -233,9 +234,9 @@ class _LocationState extends State<Location> {
                   if (Application.kecamatanListModel != null &&
                       Application.kecamatanListModel.rows.length != 0) ...[
                     // Kecamatan
-                    wTitle('Kecamatan Presensi',
-                        subtitle:
-                            'Berikut daftar lokasi presensi berbasis kecamatan'),
+                    wTitle(Translate.of(context).translate('district_precense'),
+                        subtitle: Translate.of(context)
+                            .translate('district_precense_detail')),
                     ...Application.kecamatanListModel.rows
                         .map(
                           (e) => _itemContent2(
@@ -440,8 +441,8 @@ class _LocationState extends State<Location> {
   Widget wGoogleMap() {
     return GoogleMap(
       initialCameraPosition: CameraPosition(
-        target: LatLng(widget.location.lat ?? -3.2975608,
-            widget.location.long ?? 114.5846911),
+        target: LatLng(widget.location?.lat ?? -3.4460363,
+            widget.location?.long ?? 114.8416522),
         zoom: 14.4746,
       ),
       onMapCreated: (controller) {
@@ -452,6 +453,7 @@ class _LocationState extends State<Location> {
       myLocationButtonEnabled: true,
       circles: circles,
       polygons: Set<Polygon>.of(myPolygons),
+      mapType: MapType.terrain,
     );
   }
 
