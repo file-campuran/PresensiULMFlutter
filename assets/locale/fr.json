@@ -100,5 +100,17 @@
     "mark_all_read": " Marquer comme lu tout ",
     "help_center": " Centre d'aide ",
     "select_location": " Sélectionner un emplacement ",
-    "there_is_no": " Aucun "
+    "there_is_no": "Il n'y en a pas",
+    "update": "Vérifier le renouvellement",
+    "day_off": "Vacances",
+    "announcement": "annonce",
+    "mark_read": "Passe",
+    "yes": "ya",
+    "no": "Pas",
+    "presensi_location": "Emplacement de la présence",
+    "view_location": "Voir lieu",
+    "radius_precense": "Rayon de présence",
+    "radius_precense_detail": "Ce qui suit est une liste d'un lieu de présence basé sur un rayon",
+    "district_precense": "District de présentations",
+    "district_precense_detail": "Ce qui suit est une liste de présence basée sur le sous-district"
 }

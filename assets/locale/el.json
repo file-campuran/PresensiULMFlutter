@@ -100,5 +100,17 @@
     "mark_all_read": " Επισήμανση ανάγνωσης όλων ",
     "help_center": " Κέντρο βοήθειας ",
     "select_location": " Επιλογή τοποθεσίας ",
-    "there_is_no": " Κανένα "
+    "there_is_no": "Δεν υπάρχει κανένα",
+    "update": "Ελέγξτε την ανανέωση",
+    "day_off": "Αργία",
+    "announcement": "ανακοίνωση",
+    "mark_read": "Πέρασμα",
+    "yes": "σάς",
+    "no": "Δεν",
+    "presensi_location": "Προεδρία θέση",
+    "view_location": "Δείτε την τοποθεσία",
+    "radius_precense": "Ακτίνα προτεραιότητας",
+    "radius_precense_detail": "Το παρακάτω είναι μια λίστα μιας θέσης παρουσίας βασισμένη σε ακτίνα",
+    "district_precense": "Προεδρία",
+    "district_precense_detail": "Το παρακάτω είναι μια υπο-περιοχή που βασίζεται σε προδιαγραφές"
 }

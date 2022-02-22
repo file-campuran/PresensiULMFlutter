@@ -1,8 +1,8 @@
-const got = require('got');
-const { HttpsProxyAgent } = require('hpagent');
+import got from "got";
+import { HttpsProxyAgent } from "hpagent";
 
-let proxy = null;
-proxy = 'http:/122.155.165.191:3128';
+// let proxy = null;
+// proxy = ;
 let tkk = '429175.1243284773';
 let config = {};
 
@@ -74,7 +74,7 @@ function getCandidate(tran) {
     return words;
 }
 
-async function translate(text, lang) {
+async function translate(text, lang, proxy) {
     let url = `${config['google-translate.serverDomain'].replace(/\/$/, '')}/translate_a/single?client=webapp&sl=${lang.from}&tl=${lang.to}&hl=zh-CN&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=sos&dt=ss&dt=t&source=bh&ssel=0&tsel=0&kc=1${tk(text, tkk)}&q=${encodeURIComponent(text)}`
 
     try {
@@ -121,7 +121,7 @@ function getConfig() {
     return keys;
 }
 
-module.exports = async(word, l) => {
+export default async(word, l, proxy) => {
     if (word == '') return null;
     config = getConfig();
     let lang = {
@@ -135,15 +135,15 @@ module.exports = async(word, l) => {
             .replace(/(\b)\.(\b)/g, '$1 \n{>}\n $2 ');
     }
 
-    let tran = await translate(word, lang);
+    let tran = await translate(word, lang, proxy);
     if (tran.word.replace(/\s/g, '') == word.replace(/\s/g, '') || !tran.word.trim()) {
         lang.to = config['google-translate.secondLanguage'];
-        let tranSecond = await translate(word, lang);
+        let tranSecond = await translate(word, lang, proxy);
         if (tranSecond.word) tran = tranSecond;
     }
     if (l && tran.word.replace(/\s/g, '') == word.replace(/\s/g, '')) {
         lang.to = config['google-translate.firstLanguage'];
-        let tranSecond = await translate(word, lang);
+        let tranSecond = await translate(word, lang, proxy);
         if (tranSecond.word) tran = tranSecond;
     }
     if (config['google-translate.switchFunctionTranslation']) {

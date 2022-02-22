@@ -100,5 +100,17 @@
     "mark_all_read": " すべて読み取りマーク ",
     "help_center": " ヘルプセンター ",
     "select_location": " 場所の選択 ",
-    "there_is_no": " なし "
+    "there_is_no": "そこにはなにも",
+    "update": "更新を確認してください",
+    "day_off": "ホリデー",
+    "announcement": "発表",
+    "mark_read": "合格",
+    "yes": "y A",
+    "no": "いいえ",
+    "presensi_location": "プレゼンシーロケーション",
+    "view_location": "場所を見てください",
+    "radius_precense": "プレゼンシー半径",
+    "radius_precense_detail": "以下は、RADIUSベースのプレゼンスの場所のリストです。",
+    "district_precense": "プレゼンシー地区",
+    "district_precense_detail": "以下はサブ地区ベースのプレシンションリストです。"
 }

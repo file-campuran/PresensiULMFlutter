@@ -10,6 +10,7 @@
         "type": "git",
         "url": "git+https://github.com/Killers007/PresensiULMFlutter.git"
     },
+    "type": "module",
     "author": "@killers007",
     "license": "PTIK",
     "bugs": {
@@ -18,7 +19,8 @@
     "homepage": "https://github.com/Killers007/PresensiULMFlutter#readme",
     "dependencies": {
         "firebase-admin": "^8.10.0",
+        "got": "^12.0.1",
+        "hpagent": "^0.1.2",
         "node-firestore-import-export": "^0.14.1"
-    },
-    "devDependencies": {}
+    }
 }

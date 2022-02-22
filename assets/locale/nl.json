@@ -100,5 +100,17 @@
     "mark_all_read": " Markeer als gelezen ",
     "help_center": " Helpcentrum ",
     "select_location": " Selecteer locatie ",
-    "there_is_no": " Geen "
+    "there_is_no": "Er is geen enkele",
+    "update": "Controleer de vernieuwing",
+    "day_off": "Vakantie",
+    "announcement": "Aankondiging",
+    "mark_read": "Voorbij gaan aan",
+    "yes": "ya",
+    "no": "Niet",
+    "presensi_location": "Presensuele locatie",
+    "view_location": "Zie locatie",
+    "radius_precense": "Presensieve radius",
+    "radius_precense_detail": "Het volgende is een lijst met een op Radius gebaseerde aanwezigheidslocatie",
+    "district_precense": "Presenscy District",
+    "district_precense_detail": "Het volgende is een subdistrict-gebaseerde Prescy-lijst"
 }

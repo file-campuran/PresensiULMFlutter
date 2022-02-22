@@ -119,7 +119,7 @@
     "friday": "יום שישי",
     "saturday": "יום שבת",
     "sunday": "יום ראשון",
-    "day_off": "יום חופש",
+    "day_off": "חַג",
     "close": "סגור",
     "pull_down_refresh": "הורד את הרענון",
     "refreshing": "מרענן ...",
@@ -128,5 +128,17 @@
     "release_to_load_more": "שחרר כדי לטעון יותר",
     "pull_to_load_more": "משוך למעלה כדי לטעון יותר",
     "explore_product": "חקור את המוצר",
-    "view_list": "רשימת צפיה"
+    "view_list": "רשימת צפיה",
+    "there_is_no": "אין",
+    "update": "בדוק חידוש",
+    "announcement": "הַכרָזָה",
+    "mark_read": "לַעֲבוֹר",
+    "yes": "אתה",
+    "no": "לֹא",
+    "presensi_location": "מיקום צנוע",
+    "view_location": "ראה מיקום",
+    "radius_precense": "רדיוס צנוע",
+    "radius_precense_detail": "להלן רשימה של מיקום נוכחות מבוסס רדיוס",
+    "district_precense": "מחוז צנוע",
+    "district_precense_detail": "להלן רשימת נקודה המבוססת על תת-מחוז"
 }

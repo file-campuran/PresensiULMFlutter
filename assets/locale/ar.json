@@ -100,5 +100,17 @@
     "mark_all_read": " وضع علامة مقروءة للكل ",
     "help_center": " مركز المساعدة ",
     "select_location": " حدد موقعًا ",
-    "there_is_no": " بلا "
+    "there_is_no": "لم يكن هناك أي",
+    "update": "التحقق من التجديد",
+    "day_off": "يوم الاجازة",
+    "announcement": "إعلان",
+    "mark_read": "يمر",
+    "yes": "يا",
+    "no": "لا",
+    "presensi_location": "موقع الحضور",
+    "view_location": "انظر الموقع",
+    "radius_precense": "نصف قطر الحضارة",
+    "radius_precense_detail": "فيما يلي قائمة بتوجيه دائم نصف قطرها",
+    "district_precense": "حي الحضور",
+    "district_precense_detail": "فيما يلي قائمة الآثار المعينة القائمة على المناطق دون المستوى"
 }

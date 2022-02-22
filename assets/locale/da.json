@@ -100,5 +100,17 @@
     "mark_all_read": " Marker læst alt ",
     "help_center": " Hjælp ",
     "select_location": " Vælg placering ",
-    "there_is_no": " Ingen "
+    "there_is_no": "Der er ikke nogen",
+    "update": "Tjek fornyelse",
+    "day_off": "Ferie",
+    "announcement": "bekendtgørelse",
+    "mark_read": "Passere",
+    "yes": "Ya.",
+    "no": "Ikke",
+    "presensi_location": "Presensensy placering",
+    "view_location": "Se placering",
+    "radius_precense": "Presensens-radius",
+    "radius_precense_detail": "Følgende er en liste over en radiusbaseret tilstedeværelse",
+    "district_precense": "Presensensens distrikt",
+    "district_precense_detail": "Følgende er en sub-distriktsbaseret præsentantliste"
 }

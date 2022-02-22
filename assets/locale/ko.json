@@ -100,5 +100,17 @@
     "mark_all_read": "모두 읽음 표시 ",
     "help_center": "도움말 센터 ",
     "select_location": "지역 선택 ",
-    "there_is_no": "없음 "
+    "there_is_no": "아무것도 없다",
+    "update": "갱신을 확인하십시오",
+    "day_off": "휴일",
+    "announcement": "발표",
+    "mark_read": "통과하다",
+    "yes": "당신",
+    "no": "아니다",
+    "presensi_location": "지령 위치",
+    "view_location": "위치를 참조하십시오",
+    "radius_precense": "지령 반경",
+    "radius_precense_detail": "다음은 반경 기반 존재 위치 목록입니다.",
+    "district_precense": "찬양 구역",
+    "district_precense_detail": "다음은 하위 지구 기반의 예정성 목록입니다."
 }
