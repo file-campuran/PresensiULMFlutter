@@ -400,12 +400,9 @@ class _BerandaState extends State<Beranda> {
                                         ),
                                         InkWell(
                                           onTap: () {
-                                            Navigator.of(context)
-                                                .pushNamed(Routes.location,
-                                                    arguments: LocationModel(
-                                                      1,
-                                                      '',
-                                                    ));
+                                            Navigator.of(context).pushNamed(
+                                              Routes.location,
+                                            );
                                           },
                                           child: Row(
                                             children: [
