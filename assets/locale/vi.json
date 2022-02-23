@@ -100,5 +100,17 @@
     "mark_all_read": " Đánh dấu là đã đọc tất cả ",
     "help_center": " Trung tâm trợ giúp ",
     "select_location": " Chọn vị trí ",
-    "there_is_no": " Không có "
+    "there_is_no": "Không",
+    "update": "Kiểm tra cập nhật",
+    "day_off": "Holiday",
+    "announcement": "Thông báo",
+    "mark_read": "Có",
+    "yes": "Không",
+    "no": "Vị trí hiện diện",
+    "presensi_location": "Xem vị trí",
+    "view_location": "Presence Radius",
+    "radius_precense": "Sau đây là danh sách các vị trí bán kính định vị Presensi",
+    "radius_precense_detail": "Quận Presence",
+    "district_precense": "Đây là danh sách vị trí tiềm năng dựa trên cơ sở của tiểu học",
+    "district_precense_detail": "Sau đây là danh sách tổng thể của quận phụ"
 }

@@ -2,10 +2,9 @@ import translate from './translate.js';
 import { readFileSync, writeFileSync } from 'fs';
 import { exit } from 'process';
 
-// NOT WORK => zh, lo, km, he, fa, de, 
 var to = 'en';
 const separator = '=';
-const batchWSeparator = false;
+const batchWSeparator = true;
 
 (async() => {
     // translateByOne();
@@ -18,20 +17,20 @@ function path(lang) {
 
 /**
  * Translator
+ * https://www.freeproxylists.net/?page=2
+ * List: 
+ * http:/196.15.213.235:3128
+ * http:/38.84.12.86:3128
+ * http:/51.15.54.21:3128
+ * 
  * @param {*} word 
  */
 async function myTranslate(word) {
-    let trans = await translate(word, to, 'http:/50.232.250.157:8080');
+    let trans = await translate(word, to, 'http:/38.84.12.86:3128');
     if (!trans) return;
 
     console.log(trans.word)
     return trans.word;
-}
-
-async function asyncForEach(array, callback) {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
-    }
 }
 
 /**
@@ -57,7 +56,9 @@ async function translateBatch() {
             let data = word.split(separator);
             let index = 0;
             Object.keys(orign).map((key) => {
-                orign[key] = data[index].trim();
+                if (data[index]) {
+                    orign[key] = data[index].trim();
+                }
                 index++;
             });
         } else {
