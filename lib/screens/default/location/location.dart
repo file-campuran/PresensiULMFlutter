@@ -264,11 +264,13 @@ class _LocationState extends State<Location> {
         children: [
           Row(
             children: [
-              Text(
-                text,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
+              Expanded(
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
               if (badge != null) ...[
