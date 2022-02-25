@@ -26,7 +26,7 @@ class MyException {
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
               'content': ErrorSocket,
-              "image": Images.Monitor
+              "image": Images.NoConnection
             },
           });
         }
@@ -39,7 +39,7 @@ class MyException {
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
               'content': ErrorFormat,
-              "image": Images.LocationSearch
+              "image": Images.NoConnection
             },
           });
         }
@@ -52,7 +52,7 @@ class MyException {
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
               'content': ErrorHttp,
-              "image": Images.Monitor
+              "image": Images.NoConnection
             },
           });
         }
@@ -66,7 +66,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': e.message.toString(),
-                "image": Images.ServerStatus
+                "image": Images.NoConnection2
               },
             });
           } else if (e.response.statusCode == 500) {
@@ -77,7 +77,7 @@ class MyException {
                 'content': e.response.data.isEmpty
                     ? e.message
                     : e.response.data['message'],
-                "image": Images.BugFixing
+                "image": Images.NoConnection2
               },
             });
           } else if (e.response.statusCode == 401) {
@@ -86,7 +86,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': Error401,
-                "image": Images.BugFixing
+                "image": Images.NoConnection2
               },
             });
           } else if (e.response.statusCode == 403) {
@@ -95,7 +95,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': Error401,
-                "image": Images.BugFixing
+                "image": Images.NoConnection
               },
             });
           } else if (e.response.statusCode == 404) {
@@ -113,7 +113,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': e.message.toString(),
-                "image": Images.ServerStatus
+                "image": Images.NoConnection2
               },
             });
           }

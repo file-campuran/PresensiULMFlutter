@@ -186,7 +186,7 @@ class _ProfileState extends State<Profile> {
                           context: context,
                           message: Translate.of(context)
                               .translate('confirm_sign_out'),
-                          image: Images.Reading,
+                          image: Images.LogoutConfirm,
                           title: Translate.of(context).translate('sign_out'),
                           onTapText: Translate.of(context).translate('yes'),
                           onCloseText: Translate.of(context).translate('no'),

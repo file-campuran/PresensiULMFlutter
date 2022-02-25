@@ -209,7 +209,7 @@ class _LoginState extends State<Login> {
                             appMyInfoDialog(
                               context: context,
                               message: loginListener.message,
-                              image: Images.BugFixing,
+                              image: Images.Error,
                               title: 'Error',
                             );
                           }

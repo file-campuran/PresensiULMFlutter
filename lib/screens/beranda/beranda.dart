@@ -114,6 +114,14 @@ class _BerandaState extends State<Beranda> {
   Future<void> _onRefresh() async {
     _jadwalCubit.reInit();
     _jadwalCubit.initData();
+
+    Application.kecamatanListModel = null;
+    Application.lokasiPresensiList = null;
+
+    initKecamatan();
+    initLokasiPresensi();
+    initPengaturan();
+
     // _notificationBloc.add(OnReloadNotification());
     _controller.refreshCompleted();
   }
