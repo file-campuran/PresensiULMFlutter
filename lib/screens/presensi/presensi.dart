@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:absen_online/screens/default/location/location.dart';
 import 'package:absen_online/widgets/widget.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,6 @@ import 'package:absen_online/models/model.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:absen_online/api/geocoder_repository.dart';
 import 'package:absen_online/utils/api/multipart_file_extended.dart';
-import 'package:geolocator/geolocator.dart';
 import 'dart:ui' as ui;
 
 List<CameraDescription> cameras;

@@ -30,14 +30,6 @@ class DBProvider {
         version: _dbVersion, onCreate: _onCreate, onUpgrade: _onUpgrade);
   }
 
-  static final String _createTableMessages = "CREATE TABLE Messages ("
-      "id TEXT PRIMARY KEY,"
-      "content TEXT,"
-      "title TEXT,"
-      "read_at INTEGER,"
-      "published_at TEXT"
-      ")";
-
   static final String _createTableNotificaton = """CREATE TABLE Notification (
       id TEXT PRIMARY KEY,
       isRead INTEGER,
@@ -64,8 +56,6 @@ class DBProvider {
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < _dbVersion) {
       try {
-        // await db.execute("DROP TABLE IF EXISTS Messages");
-        // await db.execute(_createTableMessages);
         await db.execute("DROP TABLE IF EXISTS Notification");
         await db.execute(_createTableNotificaton);
         await db.execute("DROP TABLE IF EXISTS Pengumuman");

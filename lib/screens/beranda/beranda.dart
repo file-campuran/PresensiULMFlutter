@@ -23,14 +23,14 @@ class Beranda extends StatefulWidget {
 class _BerandaState extends State<Beranda> {
   JadwalCubit _jadwalCubit;
   PengumumanCubit _pengumumanCubit;
-  NotificationBloc _notificationBloc;
+  // NotificationBloc _notificationBloc;
   final _controller = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     // _loadData();
     _pengumumanCubit = BlocProvider.of<PengumumanCubit>(context);
-    _notificationBloc = BlocProvider.of<NotificationBloc>(context);
+    // _notificationBloc = BlocProvider.of<NotificationBloc>(context);
     _jadwalCubit = BlocProvider.of<JadwalCubit>(context);
     _jadwalCubit.initData();
     _pengumumanCubit.readMessage();

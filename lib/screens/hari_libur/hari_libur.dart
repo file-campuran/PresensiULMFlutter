@@ -1,4 +1,3 @@
-import 'package:absen_online/blocs/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
@@ -6,7 +5,6 @@ import 'package:html/parser.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/api/presensi.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 class HariLibur extends StatefulWidget {
@@ -19,7 +17,7 @@ class HariLibur extends StatefulWidget {
 }
 
 class _HariLiburState extends State<HariLibur> {
-  ScrollController _scrollController = ScrollController();
+  // ScrollController _scrollController = ScrollController();
   EventListModel listEvent;
   HariKerjaListModel listHariKerja;
   Map<String, dynamic> _errorData;

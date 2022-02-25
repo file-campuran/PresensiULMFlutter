@@ -5,7 +5,6 @@ import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/utils/language.dart';
 import 'package:absen_online/utils/utils.dart';
 import 'package:absen_online/widgets/widget.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 
 class Setting extends StatefulWidget {
   Setting({Key key}) : super(key: key);
@@ -17,8 +16,8 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
-  bool _receiveNotification =
-      UtilPreferences.containsKey(Preferences.notification);
+  // bool _receiveNotification =
+  //     UtilPreferences.containsKey(Preferences.notification);
   DarkOption _darkOption = AppTheme.darkThemeOption;
   ThemeBloc _themeBloc;
 

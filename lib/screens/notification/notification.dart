@@ -27,12 +27,6 @@ class _NotificationListState extends State<NotificationList> {
     super.initState();
   }
 
-  ///On load more
-  Future<void> _onLoading() async {
-    await Future.delayed(Duration(seconds: 1));
-    // _controller.loadComplete();
-  }
-
   ///On refresh
   Future<void> _onRefresh() async {
     _notificationBloc.add(OnReadDataNotification());

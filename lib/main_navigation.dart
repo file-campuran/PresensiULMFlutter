@@ -5,7 +5,6 @@ import 'package:absen_online/blocs/bloc.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/widgets/widget.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'dart:async';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/foundation.dart';

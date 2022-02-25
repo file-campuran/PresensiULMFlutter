@@ -6,7 +6,6 @@ import 'package:html/parser.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 // import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Pengumuman extends StatefulWidget {

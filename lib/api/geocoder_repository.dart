@@ -37,7 +37,7 @@ class GeocoderRepository {
         }
       } catch (e) {
         return 'Terjadi kesalahan mengambil lokasi.';
-        return e.toString();
+        // return e.toString();
       }
     }
   }

@@ -1,4 +1,3 @@
-import 'package:absen_online/widgets/template/index.dart';
 import 'package:bloc/bloc.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -8,7 +7,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:absen_online/app.dart';
 import 'package:absen_online/utils/utils.dart';
-import 'package:absen_online/configs/config.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override

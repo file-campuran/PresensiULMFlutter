@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:absen_online/configs/config.dart';
 import 'package:absen_online/models/model.dart';
 import 'package:absen_online/blocs/bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class AppBarHomeSliver extends SliverPersistentHeaderDelegate {

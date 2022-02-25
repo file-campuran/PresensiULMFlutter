@@ -1,9 +1,5 @@
 import 'package:absen_online/utils/services/translate.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/rich_text_parser.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:absen_online/configs/config.dart';
 import 'package:html/parser.dart';
 
