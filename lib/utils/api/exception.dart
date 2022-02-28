@@ -39,7 +39,7 @@ class MyException {
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
               'content': ErrorFormat,
-              "image": Images.NoConnection
+              "image": Images.Error
             },
           });
         }
@@ -52,7 +52,7 @@ class MyException {
             "message": <String, dynamic>{
               'title': ErrorApplicationTitle,
               'content': ErrorHttp,
-              "image": Images.NoConnection
+              "image": Images.ServerError
             },
           });
         }
@@ -66,7 +66,7 @@ class MyException {
               "message": <String, dynamic>{
                 'title': ErrorInternalTitle,
                 'content': e.message.toString(),
-                "image": Images.NoConnection2
+                "image": Images.ServerError
               },
             });
           } else if (e.response.statusCode == 500) {
@@ -77,7 +77,7 @@ class MyException {
                 'content': e.response.data.isEmpty
                     ? e.message
                     : e.response.data['message'],
-                "image": Images.NoConnection2
+                "image": Images.ServerError
               },
             });
           } else if (e.response.statusCode == 401) {

@@ -322,8 +322,9 @@ class PresensiState extends State<Presensi> {
             _infoData = {
               'title': title,
               'content': message,
-              'image':
-                  result.message is String ? Images.Document : Images.Calendar,
+              'image': result.message is String
+                  ? Images.KonfirmasiPresensi
+                  : Images.Calendar,
             };
           });
         } else if (result.code == CODE.TOKEN_EXPIRED) {
@@ -398,7 +399,7 @@ class PresensiState extends State<Presensi> {
           _infoData = {
             'title': 'Informasi',
             'content': 'Terimakasih sudah melakukan presensi',
-            'image': Images.Document,
+            'image': Images.KonfirmasiPresensi,
           };
         });
       } else {
