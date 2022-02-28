@@ -58,6 +58,7 @@ class Images {
   static const String Empty = "assets/svg/empty.svg";
   static const String KonfirmasiPresensi = "assets/svg/konfirmasi_presensi.svg";
   static const String ServerError = "assets/svg/server_error.svg";
+  static const String Login = "assets/svg/login.svg";
 
   ///Singleton factory
   static final Images _instance = Images._internal();

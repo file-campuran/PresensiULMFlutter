@@ -137,9 +137,9 @@ class _LoginState extends State<Login> {
                 children: <Widget>[
                   Center(
                     child: SvgPicture.asset(
-                      Images.Security,
+                      Images.Login,
                       matchTextDirection: true,
-                      width: MediaQuery.of(context).size.width * 0.45,
+                      width: 300,
                     ),
                   ),
                   SizedBox(height: 40),
