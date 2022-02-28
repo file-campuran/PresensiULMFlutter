@@ -1,13 +1,16 @@
+import 'package:flutter/foundation.dart';
+
 class Environment {
-  static const bool DEBUG = true;
+  static const bool DEBUG = !kReleaseMode;
 
   static const String APP_NAME = 'Presensi ULM';
   static const String VERSION = '2.0.0 Release.B19';
   static const int VERSION_CODE = 19;
 
   // PRIMARY CONFIGS
-  // static String apiUrl = 'https://apiv2.ulm.ac.id/api';
-  static String apiUrl = 'https://git.ulm.ac.id/api-siapps/public/api';
+  static String apiUrl = DEBUG
+      ? 'https://git.ulm.ac.id/api-siapps/public/api'
+      : 'https://apiv2.ulm.ac.id/api';
   static String apiKey = '605dafe39ee0780e8cf2c829434eea99';
   static String apiId = 'PresensiULM';
   static int apiTimeout = !DEBUG ? 20 : 10;
