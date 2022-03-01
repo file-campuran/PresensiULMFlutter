@@ -1,6 +1,6 @@
 name: absen_online
 description: Presensi ULM
-version: 2.0.0+19
+version: 2.0.0+20
 environment:
   sdk: ">=2.6.0 <3.0.0"
 dependencies:

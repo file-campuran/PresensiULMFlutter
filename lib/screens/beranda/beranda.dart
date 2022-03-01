@@ -94,15 +94,51 @@ class _BerandaState extends State<Beranda> {
       return Column(
         children: List.generate(2, (index) => index).map(
           (item) {
-            return AppSkeleton(
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 7),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Theme.of(context).highlightColor,
-                ),
-                width: double.infinity,
-                height: 120,
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Theme.of(context).cardColor.withOpacity(1)
+                    : Colors.grey[50],
+                borderRadius: BorderRadius.circular(10),
+                // border: Border.all(color: Colors.grey, width: 0.2),
+              ),
+              padding: EdgeInsets.all(Dimens.padding),
+              margin: EdgeInsets.only(bottom: Dimens.padding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppSkeleton(
+                        width: 100,
+                        height: 20,
+                      ),
+                      AppSkeleton(
+                        width: 20,
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppSkeleton(
+                        width: 150,
+                        height: 20,
+                      ),
+                      AppSkeleton(
+                        width: 100,
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  AppSkeleton(
+                    height: 20,
+                  ),
+                ],
               ),
             );
           },

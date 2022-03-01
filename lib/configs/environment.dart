@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 
 class Environment {
-  static const bool DEBUG = !kReleaseMode;
+  static const bool DEBUG = true;
 
   static const String APP_NAME = 'Presensi ULM';
   static const String VERSION = '2.0.0 Release.B19';
-  static const int VERSION_CODE = 19;
+  static const int VERSION_CODE = 20;
 
   // PRIMARY CONFIGS
   static String apiUrl = DEBUG
